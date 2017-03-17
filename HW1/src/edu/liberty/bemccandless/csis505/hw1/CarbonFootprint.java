@@ -6,5 +6,6 @@ package edu.liberty.bemccandless.csis505.hw1;
  */
 public interface CarbonFootprint {
     
-    public Double getCarbonFootprint();
+    public double getCarbonFootprint();
+    
 }
