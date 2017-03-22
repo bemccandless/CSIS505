@@ -8,6 +8,12 @@ public class Building implements CarbonFootprint {
     private double monthlyElectricBill;
     private double monthlyGasBill;
 
+    /**
+     * 
+     * @param monthlyElectricBill
+     * @param monthlyGasBill
+     * @throws InvalidFootprintException 
+     */
     public Building(double monthlyElectricBill, double monthlyGasBill) throws InvalidFootprintException {
         if (monthlyElectricBill < 0 || monthlyGasBill < 0) {
             throw new InvalidFootprintException();
@@ -17,6 +23,10 @@ public class Building implements CarbonFootprint {
         this.monthlyGasBill = monthlyGasBill;
     }
 
+    /**
+     * 
+     * @return the calculated carbon footprint
+     */
     @Override
     public double getCarbonFootprint() {
         return ((monthlyGasBill / 10.68) * 119.58 * 12) + ((monthlyElectricBill / 0.1188) * 1232 * 12);

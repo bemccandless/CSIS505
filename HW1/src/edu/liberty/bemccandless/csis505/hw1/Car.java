@@ -8,6 +8,12 @@ public class Car implements CarbonFootprint {
     private double milesDrivenPerYear;
     private double milesPerGallon;
 
+    /**
+     * 
+     * @param milesDrivenPerYear
+     * @param milesPerGallon
+     * @throws InvalidFootprintException 
+     */
     public Car(double milesDrivenPerYear, double milesPerGallon) throws InvalidFootprintException {
         if (milesDrivenPerYear < 0 || milesPerGallon < 0) {
             throw new InvalidFootprintException();
@@ -17,6 +23,10 @@ public class Car implements CarbonFootprint {
         this.milesPerGallon = milesPerGallon;
     }
 
+    /**
+     * 
+     * @return the calculated carbon footprint
+     */
     @Override
     public double getCarbonFootprint() {
         return milesDrivenPerYear / milesPerGallon * 0.9;

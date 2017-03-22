@@ -7,6 +7,11 @@ package edu.liberty.bemccandless.csis505.hw1;
 public class Bicycle implements CarbonFootprint {
     private double milesTraveledPerMonth;
 
+    /**
+     * 
+     * @param milesTraveledPerMonth
+     * @throws InvalidFootprintException 
+     */
     public Bicycle(double milesTraveledPerMonth) throws InvalidFootprintException {
         if (milesTraveledPerMonth < 0) {
             throw new InvalidFootprintException();
@@ -15,6 +20,10 @@ public class Bicycle implements CarbonFootprint {
         this.milesTraveledPerMonth = milesTraveledPerMonth;
     }
 
+    /**
+     * 
+     * @return the calculated carbon footprint
+     */
     @Override
     public double getCarbonFootprint() {
         return milesTraveledPerMonth * 0.9;
