@@ -26,14 +26,14 @@ public class SpamCalculator {
     }
     
     private int findNumberOfOccurences(String message, String searchWord) {
-        int lastIndex = 0;
+        int index = 0;
         int numOfOccurences = 0;
         
-        while (lastIndex != -1) {
-            lastIndex = message.toLowerCase().indexOf(searchWord, lastIndex);
+        while (index != -1) {
+            index = message.toLowerCase().indexOf(searchWord, index);
 
-            if (lastIndex != -1) {
-                lastIndex += searchWord.length();
+            if (index != -1) {
+                index += searchWord.length();
                 numOfOccurences++;
             }
         }
