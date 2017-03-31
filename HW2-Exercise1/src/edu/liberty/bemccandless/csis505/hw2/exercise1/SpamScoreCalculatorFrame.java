@@ -16,7 +16,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 /**
- *
+ * This class handles placing the components on a frame for the user interface
+ * 
  * @author bemccandless
  */
 public class SpamScoreCalculatorFrame extends JFrame {
@@ -27,6 +28,9 @@ public class SpamScoreCalculatorFrame extends JFrame {
     private static final String SPAMCOUNT_MESSAGE = "The spam score for this message is %s.";
     private int spamCount;
     
+    /**
+     * setup the frame for the user interface
+     */
     public SpamScoreCalculatorFrame() {
         super("Spam Score Calculator");
         setLayout(new BorderLayout());

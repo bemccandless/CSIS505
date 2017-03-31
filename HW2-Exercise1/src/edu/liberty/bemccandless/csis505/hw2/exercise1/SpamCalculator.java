@@ -1,7 +1,8 @@
 package edu.liberty.bemccandless.csis505.hw2.exercise1;
 
 /**
- *
+ * This class calculates the number of spam words found in a given String
+ * 
  * @author bemccandless
  */
 public class SpamCalculator {
@@ -15,24 +16,38 @@ public class SpamCalculator {
             "weekend getaway", "you're a winner!", "offer", "unlimited", "no obligation", 
             "trial", "guarantee", "no purchase necessary"};
 
+    /**
+     * 
+     * @param message
+     * @return the number of spam words found in <code>String message</code>
+     */
     public int calculateSpamCount(String message) {
         spamCount = 0;
         
         for (String word : spamWords) {
-            spamCount += findNumberOfOccurences(message, word);
+            spamCount += findNumberOfOccurrences(message, word);
         }
         
         return spamCount;
     }
     
-    private int findNumberOfOccurences(String message, String searchWord) {
+    /**
+     * 
+     * @param message
+     * @param searchWord
+     * @return the number of occurrences of the <code>String searchWord</code> 
+     *         that are found in the <code>String message</code>
+     */
+    private int findNumberOfOccurrences(String message, String searchWord) {
         int index = 0;
         int numOfOccurences = 0;
         
         while (index != -1) {
+            // find the first occurrence of the word
             index = message.toLowerCase().indexOf(searchWord, index);
 
             if (index != -1) {
+                // move the starting position of the search to the end of the last occurrence
                 index += searchWord.length();
                 numOfOccurences++;
             }

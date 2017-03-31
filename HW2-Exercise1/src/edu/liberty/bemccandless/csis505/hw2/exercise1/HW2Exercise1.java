@@ -3,7 +3,9 @@ package edu.liberty.bemccandless.csis505.hw2.exercise1;
 import javax.swing.JFrame;
 
 /**
- *
+ * Presents a interface for the user to calculate the number of 
+ * spam words found in a provided text
+ * 
  * @author bemccandless
  */
 public class HW2Exercise1 {
