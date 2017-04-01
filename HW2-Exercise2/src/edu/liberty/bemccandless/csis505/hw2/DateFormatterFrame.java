@@ -15,7 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- *
+ * This class handles placing the components on a frame for the user interface
+ * 
  * @author bemccandless
  */
 public class DateFormatterFrame extends JFrame {

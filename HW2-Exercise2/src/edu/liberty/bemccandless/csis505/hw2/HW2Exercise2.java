@@ -4,6 +4,9 @@ import javax.swing.JFrame;
 
 /**
  *
+ * Presents a interface for the user to convert a date formatted mm/dd/yyyy
+ * into a long date format
+ * 
  * @author bemccandless
  */
 public class HW2Exercise2 {

@@ -1,7 +1,8 @@
 package edu.liberty.bemccandless.csis505.hw2;
 
 /**
- *
+ * Thrown when an invalid date format has been entered
+ * 
  * @author bemccandless
  */
 public class InvalidDateException extends Exception {
