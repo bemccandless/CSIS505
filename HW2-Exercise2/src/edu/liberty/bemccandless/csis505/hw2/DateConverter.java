@@ -1,41 +1,39 @@
 package edu.liberty.bemccandless.csis505.hw2;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  *
  * @author bemccandless
  */
 public class DateConverter {
     
-    private final String[] months = {
-        "January", "February", "March", "April", "May", "June", "July",
-        "August", "September", "October", "November", "December"
-    };
-        
     public String convertDate(String date) throws InvalidDateException {
         if (!validDateFormat(date)) {
             throw new InvalidDateException("Invalid date format, must be 'mm/dd/yyyy'");
         }
         
-        FormattedDate formattedDate = parseDate(date);
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        DateFormat longDateFormat = DateFormat.getDateInstance(DateFormat.LONG);
+        dateFormat.setLenient(false);
         
-        return String.format("%s %d, %d", months[formattedDate.getMonth() - 1], formattedDate.getDay(), formattedDate.getYear());
+        Date parsedDate;
+        try {
+            parsedDate = dateFormat.parse(date);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(parsedDate);
+            
+            return longDateFormat.format(parsedDate);
+        } catch (ParseException ex) {
+            throw new InvalidDateException("Invalid date format, must be 'mm/dd/yyyy'", ex);
+        }
     }
     
     private boolean validDateFormat(String date) {
-        return date.matches("[0-1][0-9]\\/[0-3][0-9]\\/\\d\\d\\d\\d");
+        return date.matches("[0-1][0-9]\\/[0-3][0-9]\\/\\d{4}");
     }
-    
-    private FormattedDate parseDate(String date) {
-        FormattedDate formattedDate = new FormattedDate();
-        int index = 0;
-        int firstSlash = date.indexOf("/");
-        int secondSlash = date.indexOf("/", firstSlash + 1);
-        
-        formattedDate.setMonth(Integer.valueOf(date.substring(index, firstSlash)));
-        formattedDate.setDay(Integer.valueOf(date.substring(firstSlash + 1, secondSlash)));
-        formattedDate.setYear(Integer.valueOf(date.substring(secondSlash + 1)));
-        
-        return formattedDate;
-    }
-    
 }
