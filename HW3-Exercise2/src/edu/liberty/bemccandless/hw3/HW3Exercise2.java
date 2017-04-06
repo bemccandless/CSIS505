@@ -1,14 +1,17 @@
 package edu.liberty.bemccandless.hw3;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- *
+ * Works with lambdas and streams to transform, filter and sort a List of Invoices
+ * 
  * @author bemccandless
  */
 public class HW3Exercise2 {
@@ -49,21 +52,47 @@ public class HW3Exercise2 {
                 .forEach(System.out::println);
         System.out.println("");
         
-        System.out.println("Map invoices to part description and quantity, calculate invoice value, then sort by invoice value");
-        System.out.println("----------------------------------------------------------------------------------------------------");
-        Map<String, Integer>  invoiceMap2 = invoices.stream()
-                .collect(Collectors.toMap(Invoice::getPartDescription, Invoice::getQuantity));
+        System.out.println("Map invoices to part description and calculated invoice value, then sort by invoice value");
+        System.out.println("------------------------------------------------------------------------------------------");
+        Map<String, Double> invoiceMap2 = invoices.stream()
+                .collect(Collectors.toMap(Invoice::getPartDescription, (i) -> i.getQuantity() * i.getPrice()));
+        invoiceMap2.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue())
+                .forEach(HW3Exercise2::printEntryCurrencyFormatted);
+        System.out.println("");
         
+        System.out.println("Map invoices to part description and calculated invoice value, filter between $200-$500 then sort by invoice value");
+        System.out.println("-------------------------------------------------------------------------------------------------------------------");
+        Map<String, Double> invoiceMap3 = invoices.stream()
+                .collect(Collectors.toMap(Invoice::getPartDescription, (i) -> i.getQuantity() * i.getPrice()));
+        invoiceMap3.entrySet().stream()
+                .filter((e) -> e.getValue() >= 200 && e.getValue() < 500)
+                .sorted(Map.Entry.comparingByValue())
+                .forEach(HW3Exercise2::printEntryCurrencyFormatted);
         
     }
     
+    /**
+     * Creates a new random valued Invoice
+     * 
+     * @param partNumber
+     * @return Invoice
+     */
     private static Invoice createInvoice(int partNumber) {
         return new Invoice(
                     partNumber, 
                     partDescriptions[--partNumber], 
                     randomGenerator.nextInt(20), 
-                    randomGenerator.nextInt(100) + randomGenerator.nextDouble()
+                    randomGenerator.nextInt(150) + randomGenerator.nextDouble()
                 );
     }
     
+    /**
+     * Prints a Map Entry to the output stream
+     * 
+     * @param entry 
+     */
+    private static void printEntryCurrencyFormatted(Entry<String, Double> entry) {
+        System.out.println(String.format("%s=%s", entry.getKey(), NumberFormat.getCurrencyInstance().format(entry.getValue())));
+    }
 }

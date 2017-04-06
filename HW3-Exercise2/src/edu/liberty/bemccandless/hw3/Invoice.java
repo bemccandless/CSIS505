@@ -3,7 +3,8 @@ package edu.liberty.bemccandless.hw3;
 import java.text.NumberFormat;
 
 /**
- *
+ * The Invoice class holds the part number, part description, quantity and price
+ * 
  * @author bemccandless
  */
 public class Invoice {
