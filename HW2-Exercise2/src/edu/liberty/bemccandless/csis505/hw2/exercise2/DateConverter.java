@@ -1,4 +1,4 @@
-package edu.liberty.bemccandless.csis505.hw2;
+package edu.liberty.bemccandless.csis505.hw2.exercise2;
 
 import java.text.DateFormat;
 import java.text.ParseException;

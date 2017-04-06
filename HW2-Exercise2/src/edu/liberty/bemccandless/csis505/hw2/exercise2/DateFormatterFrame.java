@@ -1,4 +1,4 @@
-package edu.liberty.bemccandless.csis505.hw2;
+package edu.liberty.bemccandless.csis505.hw2.exercise2;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;

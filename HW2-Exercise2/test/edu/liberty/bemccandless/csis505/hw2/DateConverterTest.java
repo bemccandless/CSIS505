@@ -1,5 +1,7 @@
 package edu.liberty.bemccandless.csis505.hw2;
 
+import edu.liberty.bemccandless.csis505.hw2.exercise2.InvalidDateException;
+import edu.liberty.bemccandless.csis505.hw2.exercise2.DateConverter;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;

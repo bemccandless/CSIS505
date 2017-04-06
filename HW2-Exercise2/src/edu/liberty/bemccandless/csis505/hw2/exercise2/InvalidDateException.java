@@ -1,4 +1,4 @@
-package edu.liberty.bemccandless.csis505.hw2;
+package edu.liberty.bemccandless.csis505.hw2.exercise2;
 
 /**
  * Thrown when an invalid date format has been entered
