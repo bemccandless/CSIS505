@@ -1,4 +1,4 @@
-package edu.liberty.bemccandless.hw3;
+package edu.liberty.bemccandless.csis505.hw3.exercise2;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
