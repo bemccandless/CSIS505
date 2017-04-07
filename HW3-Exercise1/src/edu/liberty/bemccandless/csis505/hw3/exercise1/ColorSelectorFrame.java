@@ -10,7 +10,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 
 /**
- *
+ * Setup the frame to contain a color list box 
+ * and a panel to display a selected color.
+ * 
  * @author bemccandless
  */
 public class ColorSelectorFrame extends JFrame {

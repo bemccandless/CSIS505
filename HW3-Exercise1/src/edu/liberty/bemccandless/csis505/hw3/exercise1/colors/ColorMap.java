@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * Static class that holds a HashMap of all Color objects
+ * 
  * @author bemccandless
  */
 public final class ColorMap {
@@ -28,6 +29,11 @@ public final class ColorMap {
         COLORS.put("Yellow", Color.YELLOW);
     }
 
+    /**
+     * Static method to get the Map of Color objects
+     * 
+     * @return Map<String, Color>
+     */
     public static Map<String, Color> getColors() {
         return COLORS;
     }
