@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 
@@ -16,6 +17,7 @@ public class ColorSelectorFrame extends JFrame {
     
     private final JPanel background;
     private final JList colorList;
+    private final JScrollPane scrollPane;
     
     public ColorSelectorFrame() {
         super("Color Selector");
@@ -37,8 +39,12 @@ public class ColorSelectorFrame extends JFrame {
             background.setBackground(ColorMap.getColors().get(colorList.getSelectedValue().toString()));
         });
         
+        scrollPane = new JScrollPane(colorList);
+        JPanel colorListPanel = new JPanel();
+        colorListPanel.add(scrollPane);
+        
         background.setBackground(ColorMap.getColors().get(colorList.getSelectedValue().toString()));
-        background.add(colorList, BorderLayout.WEST);
+        background.add(scrollPane, BorderLayout.WEST);
         
         add(background);
     }
