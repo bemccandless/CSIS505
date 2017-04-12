@@ -51,7 +51,13 @@ public class BinarySearchTest {
     
     public static int recursiveSearchMcCandless(int key, int startIndex, int endIndex) {
         int middle = (startIndex + endIndex + 1) / 2;
-        System.out.println(Arrays.toString(data));
+        System.out.print(remainingElements(data, startIndex, endIndex));
+
+        for (int i = 0; i < middle; i++) {
+            System.out.print("   ");
+        }
+        System.out.println(" * ");
+        
         if (key != data[middle] && (middle == startIndex || middle == endIndex)) {
             return -1;
         } else if (key == data[middle]) {
