@@ -4,7 +4,9 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 /**
- *
+ * This class contains different sorting algorithms used to sort
+ * data arrays into sequential order.
+ * 
  * @author bemccandless
  */
 public class Evaluator {

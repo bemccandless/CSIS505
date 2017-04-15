@@ -3,7 +3,9 @@ package edu.liberty.bemccandless.csis505.hw4.exercise2;
 import java.time.Duration;
 
 /**
- *
+ * <code>TimingResult</code> holds the minimum, maximum and average time it
+ * takes for a sorting algorithm to compete sorting a data array.
+ * 
  * @author bemccandless
  */
 public class TimingResult {
