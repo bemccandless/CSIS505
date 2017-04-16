@@ -53,4 +53,13 @@ public class TimingResult {
                 
     }
     
+//    @Override
+//    public String toString() {
+//        return String.format("%12s | %12s | %12s", 
+//                String.format("%d", min),
+//                String.format("%d", max),
+//                String.format("%d", average));
+//                
+//    }
+    
 }

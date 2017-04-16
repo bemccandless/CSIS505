@@ -27,6 +27,11 @@ public class HW4Exercise2 {
         sortDataArrays(size);
         printResults(selectionSortResults, insertionSortResults, mergeSortResults, size);
         
+        // clear lists
+        selectionSortResults.clear();
+        insertionSortResults.clear();
+        mergeSortResults.clear();
+        
         // Sort dataset of 1000 elements
         size = 1000;
         sortDataArrays(size);
