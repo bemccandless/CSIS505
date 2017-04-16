@@ -1,7 +1,5 @@
 package edu.liberty.bemccandless.csis505.hw4.exercise2;
 
-import java.time.Duration;
-
 /**
  * <code>TimingResult</code> holds the minimum, maximum and average time it
  * takes for a sorting algorithm to compete sorting a data array.
@@ -43,23 +41,14 @@ public class TimingResult {
     public void setAverage(long average) {
         this.average = average;
     }
-
+  
     @Override
     public String toString() {
         return String.format("%12s | %12s | %12s", 
-                String.format("%d.%d", Duration.ofNanos(min).getSeconds(), Duration.ofNanos(min).getNano()),
-                String.format("%d.%d", Duration.ofNanos(max).getSeconds(), Duration.ofNanos(max).getNano()),
-                String.format("%d.%d", Duration.ofNanos(average).getSeconds(), Duration.ofNanos(average).getNano()));
+                String.format("%d", min),
+                String.format("%d", max),
+                String.format("%d", average));
                 
     }
-    
-//    @Override
-//    public String toString() {
-//        return String.format("%12s | %12s | %12s", 
-//                String.format("%d", min),
-//                String.format("%d", max),
-//                String.format("%d", average));
-//                
-//    }
     
 }

@@ -125,7 +125,7 @@ public class HW4Exercise2 {
      */
     private static void printResults(List<Long> selectionSortResult, List<Long> insertionSortResult, List<Long> mergeSortResult, int size) {
         System.out.println(String.format("Data set of %d elements", size));
-        System.out.println(String.format("%-15s | %-12s | %-12s | %-12s", "Sort Algorithm", "Min [s]", "Max [s]", "Average [s]"));
+        System.out.println(String.format("%-15s | %-12s | %-12s | %-12s", "Sort Algorithm", "Min", "Max", "Average"));
         System.out.println("-------------------------------------------------------------");
         System.out.println(String.format("%-15s | %s", "Selection", getTimingResult(selectionSortResult)));
         System.out.println(String.format("%-15s | %s", "Insertion", getTimingResult(insertionSortResult)));
