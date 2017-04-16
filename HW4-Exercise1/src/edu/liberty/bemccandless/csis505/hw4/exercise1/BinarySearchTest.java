@@ -4,6 +4,11 @@ import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * Altering the binarySearch method to be recursive
+ * 
+ * @author bemccandless
+ */
 public class BinarySearchTest {
 
     private static int[] data;
