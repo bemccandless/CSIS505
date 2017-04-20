@@ -19,23 +19,23 @@ public class Pair<F, S> {
         this.firstElement = firstElement;
         this.secondElement = secondElement;
     }
-    
-    public F getFirst() {
+
+    public F getFirstElement() {
         return firstElement;
     }
 
-    public void setFirst(F first) {
-        this.firstElement = first;
+    public void setFirstElement(F firstElement) {
+        this.firstElement = firstElement;
     }
 
-    public S getSecond() {
+    public S getSecondElement() {
         return secondElement;
     }
 
-    public void setSecond(S second) {
-        this.secondElement = second;
+    public void setSecondElement(S secondElement) {
+        this.secondElement = secondElement;
     }
-
+    
     @Override
     public String toString() {
         return "Pair{" + "firstElement=" + firstElement + ", secondElement=" + secondElement + '}';
