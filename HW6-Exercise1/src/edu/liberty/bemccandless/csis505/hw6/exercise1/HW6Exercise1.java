@@ -33,7 +33,7 @@ public class HW6Exercise1 {
         }
         
         // Select all authors for a specifed book title ordered by last name then first name
-        String title = "Operating Systems";
+        String title = "Android for Programmers: An App-Driven Approach";
         try (ResultSet resultSet = selectAuthorsByTitle(title)) {
             printResults("Select all authors for a specifed book title ordered by last name then first name", resultSet);
         } catch (SQLException e) {
