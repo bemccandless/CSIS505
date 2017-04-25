@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- *
+ * This application interacts with a Java Database to select specific information
+ * regarding the different tables associated with Books, Authors and ISBN.
+ * 
  * @author bemccandless
  */
 public class HW6Exercise1 {
@@ -16,6 +18,11 @@ public class HW6Exercise1 {
     private static final String password = "deitel";
     private static final String DATABASE_URL = "jdbc:derby://localhost:1527/books";
     
+    /**
+     * Runs predefined queries to retrieve data from the database
+     * 
+     * @param args 
+     */
     public static void main(String[] args) {
         // Select all authors
         try (ResultSet allAuthors = selectAllAuthors()) {
@@ -42,11 +49,20 @@ public class HW6Exercise1 {
         
     }
     
+    /**
+     * @return ResultSet of selecting all authors in the Author table
+     * @throws SQLException 
+     */
     public static ResultSet selectAllAuthors() throws SQLException {
         final String SELECT_ALL_AUTHORS = "SELECT authorID, firstName, lastName FROM authors";
         return runQuery(SELECT_ALL_AUTHORS);
     }
     
+    /**
+     * @param author
+     * @return ResultSet of selecting all book title, isbn and copyright for a specific author.
+     * @throws SQLException 
+     */
     public static ResultSet selectBooksByAuthor(String author) throws SQLException {
         final String SELECT_AUTHORS_BOOKS = 
                 " SELECT DISTINCT title, titles.isbn, copyright FROM titles"
@@ -58,6 +74,11 @@ public class HW6Exercise1 {
         return runQuery(SELECT_AUTHORS_BOOKS);
     }
     
+    /**
+     * @param title
+     * @return ResultSet of selecting all authors for a specified book title.
+     * @throws SQLException 
+     */
     public static ResultSet selectAuthorsByTitle(String title) throws SQLException {
         final String SELECT_TITLE_AUTHORS = 
                 " SELECT authors.firstName, authors.lastName FROM authors"
@@ -68,6 +89,13 @@ public class HW6Exercise1 {
         return runQuery(SELECT_TITLE_AUTHORS);
     }
     
+    /**
+     * Prints the specified Header and ResultSet in a table format to the System.out stream.
+     * 
+     * @param header
+     * @param resultSet
+     * @throws SQLException 
+     */
     private static void printResults(String header, ResultSet resultSet) throws SQLException {
         ResultSetMetaData metaData = resultSet.getMetaData();
         int numberOfColumns = metaData.getColumnCount();
@@ -90,6 +118,13 @@ public class HW6Exercise1 {
         System.out.println();
     }
     
+    /**
+     * Connects to a specified database and runs the given query.
+     * 
+     * @param query
+     * @return ResultSet
+     * @throws SQLException 
+     */
     private static ResultSet runQuery(String query) throws SQLException {
         Connection connection = DriverManager.getConnection(DATABASE_URL, username, password);
         Statement statement = connection.createStatement();
