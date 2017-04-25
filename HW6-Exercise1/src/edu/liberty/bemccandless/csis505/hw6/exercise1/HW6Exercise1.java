@@ -25,7 +25,7 @@ public class HW6Exercise1 {
         }
         
         // Select all book titles for a specified author ordered by year
-        String author = "Deitel";
+        String author = "Abbey";
         try (ResultSet resultSet = selectBooksByAuthor(author)) {
             printResults("Select all book titles for a specified author ordered by year", resultSet);
         } catch (SQLException e) {
