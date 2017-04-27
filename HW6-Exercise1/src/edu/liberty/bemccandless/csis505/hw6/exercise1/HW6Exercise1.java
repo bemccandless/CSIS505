@@ -103,13 +103,13 @@ public class HW6Exercise1 {
         System.out.printf("%s%n%n", header);
 
         for (int i = 1; i <= numberOfColumns; i++) {
-            System.out.printf("%-" + metaData.getColumnDisplaySize(i) + "s\t", metaData.getColumnName(i));
+            System.out.printf("%-" + metaData.getColumnDisplaySize(i) + "s", metaData.getColumnName(i));
         }
         System.out.println();
 
         while (resultSet.next()) {
             for (int i = 1; i <= numberOfColumns; i++) {
-                System.out.printf("%-" + metaData.getColumnDisplaySize(i) + "s\t", resultSet.getObject(i));
+                System.out.printf("%-" + metaData.getColumnDisplaySize(i) + "s", resultSet.getObject(i));
             }
             System.out.println();
         }
