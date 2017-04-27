@@ -4,12 +4,12 @@ package edu.liberty.bemccandless.csis505.hw6.exercise2;
  *
  * @author bemccandless
  */
-public class SqlDataView extends javax.swing.JFrame {
+public class HW6Exercise2 extends javax.swing.JFrame {
 
     /**
      * Creates new form SqlDataView
      */
-    public SqlDataView() {
+    public HW6Exercise2() {
         initComponents();
     }
 
@@ -64,14 +64,14 @@ public class SqlDataView extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(jList1);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/user-plus.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/user-plus.png"))); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pencil.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/pencil.png"))); // NOI18N
 
         jButton3.setText("Previous");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -84,18 +84,18 @@ public class SqlDataView extends javax.swing.JFrame {
 
         jTextField6.setEditable(false);
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/plus.png"))); // NOI18N
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/plus.png"))); // NOI18N
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
         });
 
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pencil.png"))); // NOI18N
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/pencil.png"))); // NOI18N
 
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/user-minus.png"))); // NOI18N
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/user-minus.png"))); // NOI18N
 
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/trashcan.png"))); // NOI18N
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/trashcan.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -237,20 +237,21 @@ public class SqlDataView extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SqlDataView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HW6Exercise2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SqlDataView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HW6Exercise2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SqlDataView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HW6Exercise2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SqlDataView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HW6Exercise2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                SqlDataView form = new SqlDataView();
+                HW6Exercise2 form = new HW6Exercise2();
                 form.setVisible(true);
                 form.setTitle("Book Catalog");
                 form.setResizable(false);

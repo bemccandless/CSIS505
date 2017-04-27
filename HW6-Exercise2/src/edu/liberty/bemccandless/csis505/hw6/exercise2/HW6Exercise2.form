@@ -221,7 +221,7 @@
         <Component class="javax.swing.JButton" name="jButton1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/user-plus.png"/>
+              <Image iconType="3" name="/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/user-plus.png"/>
             </Property>
           </Properties>
           <Events>
@@ -231,7 +231,7 @@
         <Component class="javax.swing.JButton" name="jButton2">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/pencil.png"/>
+              <Image iconType="3" name="/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/pencil.png"/>
             </Property>
           </Properties>
         </Component>
@@ -256,7 +256,7 @@
         <Component class="javax.swing.JButton" name="jButton5">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/plus.png"/>
+              <Image iconType="3" name="/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/plus.png"/>
             </Property>
           </Properties>
           <Events>
@@ -266,21 +266,21 @@
         <Component class="javax.swing.JButton" name="jButton6">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/pencil.png"/>
+              <Image iconType="3" name="/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/pencil.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton7">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/user-minus.png"/>
+              <Image iconType="3" name="/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/user-minus.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton8">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/trashcan.png"/>
+              <Image iconType="3" name="/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/trashcan.png"/>
             </Property>
           </Properties>
         </Component>
