@@ -4,20 +4,24 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  *
  * @author bemccandless
  */
 public class DataService {
-    private static final String username = "deitel";
-    private static final String password = "deitel";
+    private static final String USERNAME = "deitel";
+    private static final String PASSWORD = "deitel";
     private static final String DATABASE_URL = "jdbc:derby://localhost:1527/books";
+    private final Connection connection;
+
+    public DataService() throws SQLException {
+        this.connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
+    }
     
     public ResultSet selectAllAuthors() throws SQLException {
         final String SELECT_ALL_AUTHORS = "SELECT authorID, lastName, firstName FROM authors ORDER BY lastName, firstName";
-        return runQuery(SELECT_ALL_AUTHORS);
+        return connection.createStatement().executeQuery(SELECT_ALL_AUTHORS);
     }
 
     /**
@@ -32,21 +36,29 @@ public class DataService {
                 + " INNER JOIN authors ON authors.authorId = authorISBN.authorID"
                 + " WHERE authors.authorId = " + authorId
                 + " ORDER BY title";
-        return runQuery(SELECT_AUTHORS_BOOKS);
+        
+        return connection.createStatement().executeQuery(SELECT_AUTHORS_BOOKS);
     }
     
-    /**
-     * Connects to a specified database and runs the given query.
-     * 
-     * @param query
-     * @return ResultSet
-     * @throws SQLException 
-     */
-    private static ResultSet runQuery(String query) throws SQLException {
-        Connection connection = DriverManager.getConnection(DATABASE_URL, username, password);
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(query);
+    public void updateBook(Book book) throws SQLException {
+        final String UPDATE_BOOK = String.format(
+                "UPDATE titles SET title='%s', isbn='%s', copyright='%s', editionNumber=%d"
+                + " WHERE titles.isbn='%s'", 
+                book.getTitle(), book.getIsbn(), book.getCopyright(), 
+                book.getEditionNumber(), book.getIsbn());
         
-        return resultSet;
+        connection.createStatement().executeUpdate(UPDATE_BOOK);
+    }
+    
+    public void addBookForAuthor(Book book, int authorId) throws SQLException {
+        final String INSERT_BOOK = String.format(
+                "INSERT INTO titles (title, isbn, copyright, editionNumber)"
+                + " VALUES ('%s', '%s', '%s', %d)", book.getTitle(), book.getIsbn(), book.getCopyright(), book.getEditionNumber());
+        final String INSERT_AUTHOR_ISBN = String.format(
+                "INSERT INTO authorISBN (authorID, isbn)"
+                + " VALUES (%d, '%s')", authorId, book.getIsbn());
+        
+        connection.createStatement().executeUpdate(INSERT_BOOK);
+        connection.createStatement().executeUpdate(INSERT_AUTHOR_ISBN);
     }
 }

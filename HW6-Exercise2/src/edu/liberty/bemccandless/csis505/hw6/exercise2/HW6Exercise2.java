@@ -14,13 +14,24 @@ import javax.swing.ListModel;
  */
 public class HW6Exercise2 extends javax.swing.JFrame {
     
-    private final DataService dataService = new DataService();
+    private DataService dataService = null;
+    private final List<Book> bookList = new ArrayList();
+    private int currentBookIndex;
+    private int bookListSize = 0;
+    private boolean editMode = false;
 
     /**
      * Creates new form SqlDataView
      */
     public HW6Exercise2() {
-        initComponents();
+        try {
+            dataService = new DataService();
+            initComponents();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane,"Unable to establish connection to database", "SQL Error", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex);
+            System.exit(1);
+        }
     }
 
     /**
@@ -54,8 +65,18 @@ public class HW6Exercise2 extends javax.swing.JFrame {
         editBookBtn = new javax.swing.JButton();
         deleteAuthorBtn = new javax.swing.JButton();
         deleteBookBtn = new javax.swing.JButton();
+        bookCancelBtn = new javax.swing.JButton();
+        bookSaveBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        titleTextBox.setEditable(false);
+        titleTextBox.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        titleTextBox.setEnabled(false);
+
+        copyrightTextBox.setEditable(false);
+        copyrightTextBox.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        copyrightTextBox.setEnabled(false);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel1.setText("Authors");
@@ -67,6 +88,9 @@ public class HW6Exercise2 extends javax.swing.JFrame {
 
         jLabel5.setText("ISBN");
 
+        isbnTextBox.setEditable(false);
+        isbnTextBox.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        isbnTextBox.setEnabled(false);
         isbnTextBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 isbnTextBoxActionPerformed(evt);
@@ -74,6 +98,10 @@ public class HW6Exercise2 extends javax.swing.JFrame {
         });
 
         jLabel6.setText("Edition");
+
+        editionTextBox.setEditable(false);
+        editionTextBox.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        editionTextBox.setEnabled(false);
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("Title");
@@ -97,6 +125,7 @@ public class HW6Exercise2 extends javax.swing.JFrame {
         editAuthorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/pencil.png"))); // NOI18N
 
         previousBookBtn.setText("Previous");
+        previousBookBtn.setEnabled(false);
         previousBookBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 previousBookBtnActionPerformed(evt);
@@ -104,8 +133,21 @@ public class HW6Exercise2 extends javax.swing.JFrame {
         });
 
         nextBookBtn.setText("Next");
+        nextBookBtn.setEnabled(false);
+        nextBookBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextBookBtnActionPerformed(evt);
+            }
+        });
 
         currentBookTextBox.setEditable(false);
+        currentBookTextBox.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        currentBookTextBox.setEnabled(false);
+        currentBookTextBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                currentBookTextBoxActionPerformed(evt);
+            }
+        });
 
         addBookBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/plus.png"))); // NOI18N
         addBookBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -115,10 +157,31 @@ public class HW6Exercise2 extends javax.swing.JFrame {
         });
 
         editBookBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/pencil.png"))); // NOI18N
+        editBookBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editBookBtnActionPerformed(evt);
+            }
+        });
 
         deleteAuthorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/user-minus.png"))); // NOI18N
 
         deleteBookBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/trashcan.png"))); // NOI18N
+
+        bookCancelBtn.setText("Cancel");
+        bookCancelBtn.setEnabled(false);
+        bookCancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bookCancelBtnActionPerformed(evt);
+            }
+        });
+
+        bookSaveBtn.setText("Save");
+        bookSaveBtn.setEnabled(false);
+        bookSaveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bookSaveBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -136,47 +199,82 @@ public class HW6Exercise2 extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deleteAuthorBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(addBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(editBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deleteBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(isbnTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(copyrightTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(editionTextBox))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(titleTextBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(61, 61, 61)
-                                .addComponent(previousBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(addBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(currentBookTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(editBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(nextBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addComponent(deleteBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(isbnTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(copyrightTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(editionTextBox))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(titleTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(61, 61, 61)
+                                        .addComponent(previousBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(currentBookTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(nextBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(bookSaveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(bookCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(27, 27, 27))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(deleteBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(titleTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel7))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(isbnTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel3)
+                                    .addComponent(copyrightTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel6)
+                                    .addComponent(editionTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(previousBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(nextBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(currentBookTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(addBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(editBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addGap(41, 41, 41)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(bookCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bookSaveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
@@ -184,34 +282,12 @@ public class HW6Exercise2 extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(deleteAuthorBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(addAuthorBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(deleteAuthorBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(addAuthorBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(deleteBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(titleTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(isbnTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel3)
-                            .addComponent(copyrightTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6)
-                            .addComponent(editionTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(previousBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(nextBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(currentBookTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(addBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(editBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1)
-                        .addComponent(jLabel4)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -232,7 +308,13 @@ public class HW6Exercise2 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void previousBookBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousBookBtnActionPerformed
-        // TODO add your handling code here:
+        currentBookIndex--;
+      
+        if (currentBookIndex < 0) {
+           currentBookIndex = bookListSize - 1;
+        }
+
+        currentBookTextBoxActionPerformed(evt);  
     }//GEN-LAST:event_previousBookBtnActionPerformed
 
     private void addAuthorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addAuthorBtnActionPerformed
@@ -240,19 +322,33 @@ public class HW6Exercise2 extends javax.swing.JFrame {
     }//GEN-LAST:event_addAuthorBtnActionPerformed
 
     private void addBookBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBookBtnActionPerformed
-        // TODO add your handling code here:
+        clearBookTextBoxes();
+        isbnTextBox.setEditable(true);
+        isbnTextBox.setEnabled(true);
+        setBookTextBoxEnabled(true);
     }//GEN-LAST:event_addBookBtnActionPerformed
 
+    private void clearBookTextBoxes() {
+        titleTextBox.setText("");
+        copyrightTextBox.setText("");
+        editionTextBox.setText("");
+        isbnTextBox.setText("");
+        currentBookTextBox.setText("");
+    }
+    
     private void isbnTextBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isbnTextBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_isbnTextBoxActionPerformed
 
     private void authorListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_authorListValueChanged
+        previousBookBtn.setEnabled(true);
+        nextBookBtn.setEnabled(true);
+        
         Author author = authorList.getSelectedValue();
         try {
+            bookList.clear();
             ResultSet books = dataService.selectBooksByAuthor(author.getAuthorID());
             
-            List<Book> bookList = new ArrayList();
             while (books.next()) {
                 Book book = new Book();
                 book.setTitle(books.getString("title"));
@@ -264,22 +360,110 @@ public class HW6Exercise2 extends javax.swing.JFrame {
             }
             
             if (bookList.isEmpty()) {
-                JOptionPane.showMessageDialog(rootPane, "No records found", "Books", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(rootPane, "No records found.", "Books", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
             
-            titleTextBox.setText(bookList.get(0).getTitle());
-            isbnTextBox.setText(bookList.get(0).getIsbn());
-            copyrightTextBox.setText(bookList.get(0).getCopyright());
-            editionTextBox.setText(String.valueOf(bookList.get(0).getEditionNumber()));
-            currentBookTextBox.setText(String.format("%d / %d", 1, bookList.size()));
+            if (evt != null) {
+                currentBookIndex = 0;
+            }
+            bookListSize = bookList.size();
+            
+            currentBookTextBoxActionPerformed(null);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(
-                    rootPane, "Unable to get list of books", "SQL Error", JOptionPane.ERROR_MESSAGE);
+                    rootPane, "Unable to get list of books.", "SQL Error", JOptionPane.ERROR_MESSAGE);
             System.err.println(ex);
         }
     }//GEN-LAST:event_authorListValueChanged
 
+    private void nextBookBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextBookBtnActionPerformed
+        currentBookIndex++;
+      
+        if (currentBookIndex >= bookListSize) {
+           currentBookIndex = 0;
+        }
+
+        currentBookTextBoxActionPerformed(evt);
+    }//GEN-LAST:event_nextBookBtnActionPerformed
+
+    private void currentBookTextBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_currentBookTextBoxActionPerformed
+        Book book = bookList.get(currentBookIndex);
+        
+        titleTextBox.setText(book.getTitle());
+        isbnTextBox.setText(book.getIsbn());
+        copyrightTextBox.setText(book.getCopyright());
+        editionTextBox.setText(String.valueOf(book.getEditionNumber()));
+        
+        currentBookTextBox.setText(String.format("%d / %d", currentBookIndex + 1, bookListSize));
+    }//GEN-LAST:event_currentBookTextBoxActionPerformed
+
+    private void editBookBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBookBtnActionPerformed
+        editMode = true;
+        setBookTextBoxEnabled(true);
+    }//GEN-LAST:event_editBookBtnActionPerformed
+
+    private void bookSaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookSaveBtnActionPerformed
+        setBookTextBoxEnabled(false);
+        try {
+            if (editMode) {
+                Book book = bookList.get(currentBookIndex);
+                book.setTitle(titleTextBox.getText());
+                book.setIsbn(isbnTextBox.getText());
+                book.setCopyright(copyrightTextBox.getText());
+                book.setEditionNumber(Integer.valueOf(editionTextBox.getText()));
+
+                dataService.updateBook(book);
+                bookList.add(book);
+                editMode = false;
+            } else {
+                Book book = new Book();
+                book.setTitle(titleTextBox.getText());
+                book.setIsbn(isbnTextBox.getText());
+                book.setCopyright(copyrightTextBox.getText());
+                book.setEditionNumber(Integer.valueOf(editionTextBox.getText()));
+
+                dataService.addBookForAuthor(book, authorList.getSelectedValue().getAuthorID());
+                
+                currentBookIndex = bookList.size();
+            }
+            
+            authorListValueChanged(null);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Edition must be an integer value.", "Invalid Entry", JOptionPane.ERROR_MESSAGE);
+            setBookTextBoxEnabled(true);
+            editionTextBox.requestFocus();
+            editionTextBox.selectAll();
+            System.err.println(ex);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Unable to save record.", "SQL Error", JOptionPane.ERROR_MESSAGE);
+            setBookTextBoxEnabled(true);
+            System.err.println(ex);
+        }
+    }//GEN-LAST:event_bookSaveBtnActionPerformed
+
+    private void bookCancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookCancelBtnActionPerformed
+        setBookTextBoxEnabled(false);
+        authorListValueChanged(null);
+    }//GEN-LAST:event_bookCancelBtnActionPerformed
+    
+    private void setBookTextBoxEnabled(boolean value) {
+        authorList.setEnabled(!value);
+        
+        titleTextBox.setEditable(value);
+        copyrightTextBox.setEditable(value);
+        editionTextBox.setEditable(value);
+        
+        titleTextBox.setEnabled(value);
+        copyrightTextBox.setEnabled(value);
+        editionTextBox.setEnabled(value);
+        
+        bookSaveBtn.setEnabled(value);
+        bookCancelBtn.setEnabled(value);
+        nextBookBtn.setEnabled(!value);
+        previousBookBtn.setEnabled(!value);
+    }
+    
     private ListModel<Author> populateAuthorList() {
         DefaultListModel listModel = new DefaultListModel();
         try {
@@ -294,7 +478,7 @@ public class HW6Exercise2 extends javax.swing.JFrame {
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(
-                    rootPane, "Unable to get list of authors", "SQL Error", JOptionPane.ERROR_MESSAGE);
+                    rootPane, "Unable to get list of authors.", "SQL Error", JOptionPane.ERROR_MESSAGE);
             System.err.println(ex);
         }
         
@@ -344,6 +528,8 @@ public class HW6Exercise2 extends javax.swing.JFrame {
     private javax.swing.JButton addAuthorBtn;
     private javax.swing.JButton addBookBtn;
     private javax.swing.JList<Author> authorList;
+    private javax.swing.JButton bookCancelBtn;
+    private javax.swing.JButton bookSaveBtn;
     private javax.swing.JTextField copyrightTextBox;
     private javax.swing.JTextField currentBookTextBox;
     private javax.swing.JButton deleteAuthorBtn;
