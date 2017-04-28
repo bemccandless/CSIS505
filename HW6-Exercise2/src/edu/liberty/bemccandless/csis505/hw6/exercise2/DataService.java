@@ -61,4 +61,16 @@ public class DataService {
         connection.createStatement().executeUpdate(INSERT_BOOK);
         connection.createStatement().executeUpdate(INSERT_AUTHOR_ISBN);
     }
+    
+    public void deleteBookForAuthor(String isbn, int authorId) throws SQLException {
+        final String DELETE_BOOK = String.format(
+                "DELETE FROM titles"
+                + " WHERE titles.isbn='%s'", isbn);
+        final String DELETE_AUTHOR_ISBN = String.format(
+                "DELETE FROM authorISBN"
+                + " WHERE authorISBN.isbn='%s' and authorISBN.authorID=%d", isbn, authorId);
+        
+        connection.createStatement().executeUpdate(DELETE_AUTHOR_ISBN);
+        connection.createStatement().executeUpdate(DELETE_BOOK);
+    }
 }

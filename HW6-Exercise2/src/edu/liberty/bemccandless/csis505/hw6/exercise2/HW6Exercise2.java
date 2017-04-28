@@ -166,6 +166,11 @@ public class HW6Exercise2 extends javax.swing.JFrame {
         deleteAuthorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/user-minus.png"))); // NOI18N
 
         deleteBookBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/trashcan.png"))); // NOI18N
+        deleteBookBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBookBtnActionPerformed(evt);
+            }
+        });
 
         bookCancelBtn.setText("Cancel");
         bookCancelBtn.setEnabled(false);
@@ -446,6 +451,21 @@ public class HW6Exercise2 extends javax.swing.JFrame {
         setBookTextBoxEnabled(false);
         authorListValueChanged(null);
     }//GEN-LAST:event_bookCancelBtnActionPerformed
+
+    private void deleteBookBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBookBtnActionPerformed
+        try {
+            String isbn = bookList.get(currentBookIndex).getIsbn();
+            int authorId = authorList.getSelectedValue().getAuthorID();
+            
+            dataService.deleteBookForAuthor(isbn, authorId);
+            currentBookIndex = 0;
+            authorListValueChanged(null);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(
+                    rootPane, "Unable to delete book.", "SQL Error", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex);
+        }
+    }//GEN-LAST:event_deleteBookBtnActionPerformed
     
     private void setBookTextBoxEnabled(boolean value) {
         authorList.setEnabled(!value);

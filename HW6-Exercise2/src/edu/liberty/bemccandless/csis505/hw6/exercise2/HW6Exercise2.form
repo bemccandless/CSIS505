@@ -355,6 +355,9 @@
               <Image iconType="3" name="/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/trashcan.png"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteBookBtnActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="bookCancelBtn">
           <Properties>
