@@ -7,19 +7,30 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- *
+ * This class interacts with the database to retrieve and modify data.
+ * 
  * @author bemccandless
  */
 public class DataService {
+    
     private static final String USERNAME = "deitel";
     private static final String PASSWORD = "deitel";
     private static final String DATABASE_URL = "jdbc:derby://localhost:1527/books";
     private final Connection connection;
 
+    /**
+     * Empty constructor that sets up the database connection.
+     * 
+     * @throws SQLException 
+     */
     public DataService() throws SQLException {
         this.connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
     }
     
+    /**
+     * @return all records in the authors table
+     * @throws SQLException 
+     */
     public ResultSet selectAllAuthors() throws SQLException {
         final String SELECT_ALL_AUTHORS = "SELECT authorID, lastName, firstName FROM authors ORDER BY lastName, firstName";
         return connection.createStatement().executeQuery(SELECT_ALL_AUTHORS);
@@ -41,6 +52,12 @@ public class DataService {
         return connection.createStatement().executeQuery(SELECT_AUTHORS_BOOKS);
     }
     
+    /**
+     * Modify a specific book record with the updated information.
+     * 
+     * @param book
+     * @throws SQLException 
+     */
     public void updateBook(Book book) throws SQLException {
         final String UPDATE_BOOK = String.format(
                 "UPDATE titles SET title='%s', isbn='%s', copyright='%s', editionNumber=%d"
@@ -51,6 +68,13 @@ public class DataService {
         connection.createStatement().executeUpdate(UPDATE_BOOK);
     }
     
+    /**
+     * Add a book for a specific author.
+     * 
+     * @param book
+     * @param authorId
+     * @throws SQLException 
+     */
     public void addBookForAuthor(Book book, int authorId) throws SQLException {
         final String INSERT_BOOK = String.format(
                 "INSERT INTO titles (title, isbn, copyright, editionNumber)"
@@ -63,6 +87,13 @@ public class DataService {
         connection.createStatement().executeUpdate(INSERT_AUTHOR_ISBN);
     }
     
+    /**
+     * Delete a book for a specific author.
+     * 
+     * @param isbn
+     * @param authorId
+     * @throws SQLException 
+     */
     public void deleteBookForAuthor(String isbn, int authorId) throws SQLException {
         final String DELETE_AUTHOR_ISBN = String.format(
                 "DELETE FROM authorISBN"
@@ -71,6 +102,12 @@ public class DataService {
         connection.createStatement().executeUpdate(DELETE_AUTHOR_ISBN);
     }
     
+    /**
+     * Modify a specific author record with the updated information.
+     * 
+     * @param author
+     * @throws SQLException 
+     */
     public void updateAuthor(Author author) throws SQLException {
         final String UPDATE_AUTHOR = String.format(
                 "UPDATE authors SET firstName='%s', lastName='%s'"
@@ -79,6 +116,13 @@ public class DataService {
         connection.createStatement().executeUpdate(UPDATE_AUTHOR);
     }
     
+    /**
+     * Add a author to the authors table.
+     * 
+     * @param author
+     * @return
+     * @throws SQLException 
+     */
     public int addAuthor(Author author) throws SQLException {
         final String INSERT_AUTHOR = String.format(
                 "INSERT INTO authors (firstName, lastName)"
@@ -95,6 +139,12 @@ public class DataService {
         return -1;
     }
     
+    /**
+     * Delete a author from the authors table
+     * 
+     * @param author
+     * @throws SQLException 
+     */
     public void deleteAuthor(Author author) throws SQLException {
         final String DELETE_AUTHOR = String.format(
                 "DELETE FROM authors"

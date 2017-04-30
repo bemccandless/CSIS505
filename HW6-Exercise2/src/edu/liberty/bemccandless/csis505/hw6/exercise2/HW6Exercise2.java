@@ -9,7 +9,10 @@ import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 
 /**
- *
+ * This application displays data from the books database regarding authors
+ * and books they have published.  Users can also add, edit or delete any authors
+ * or books from the database.
+ * 
  * @author bemccandless
  */
 public class HW6Exercise2 extends javax.swing.JFrame {
