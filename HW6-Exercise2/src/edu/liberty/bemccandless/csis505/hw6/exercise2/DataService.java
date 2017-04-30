@@ -64,15 +64,11 @@ public class DataService {
     }
     
     public void deleteBookForAuthor(String isbn, int authorId) throws SQLException {
-        final String DELETE_BOOK = String.format(
-                "DELETE FROM titles"
-                + " WHERE titles.isbn='%s'", isbn);
         final String DELETE_AUTHOR_ISBN = String.format(
                 "DELETE FROM authorISBN"
                 + " WHERE authorISBN.isbn='%s' and authorISBN.authorID=%d", isbn, authorId);
         
         connection.createStatement().executeUpdate(DELETE_AUTHOR_ISBN);
-        connection.createStatement().executeUpdate(DELETE_BOOK);
     }
     
     public void updateAuthor(Author author) throws SQLException {
@@ -105,9 +101,6 @@ public class DataService {
                 + " WHERE authors.authorID=%d", author.getAuthorID());
         final String DELETE_AUTHOR_ISBN = String.format(
                 "DELETE FROM authorISBN"
-                + " WHERE authorISBN.authorID=%d", author.getAuthorID());
-        final String SELECT_AUTHOR_ISBN_BY_AUTHORID = String.format(
-                "SELECT isbn FROM authorISBN "
                 + " WHERE authorISBN.authorID=%d", author.getAuthorID());
         
         connection.createStatement().executeUpdate(DELETE_AUTHOR_ISBN);

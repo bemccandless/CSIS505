@@ -427,8 +427,13 @@ public class HW6Exercise2 extends javax.swing.JFrame {
 
     private void addBookBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBookBtnActionPerformed
         clearBookTextBoxes();
+        
         isbnTextBox.setEditable(true);
         isbnTextBox.setEnabled(true);
+        
+        editBookBtn.setEnabled(false);
+        deleteBookBtn.setEnabled(false);
+        setAuthorButtonsEnabled(false);
         setBookTextBoxEnabled(true);
     }//GEN-LAST:event_addBookBtnActionPerformed
 
@@ -521,9 +526,19 @@ public class HW6Exercise2 extends javax.swing.JFrame {
 
     private void editBookBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBookBtnActionPerformed
         bookEditMode = true;
+        
+        addBookBtn.setEnabled(false);
+        deleteBookBtn.setEnabled(false);
+        setAuthorButtonsEnabled(false);
         setBookTextBoxEnabled(true);
     }//GEN-LAST:event_editBookBtnActionPerformed
 
+    private void setAuthorButtonsEnabled(boolean value) {
+        addAuthorBtn.setEnabled(value);
+        editAuthorBtn.setEnabled(value);
+        deleteAuthorBtn.setEnabled(value);
+    }
+    
     private void bookSaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookSaveBtnActionPerformed
         setBookTextBoxEnabled(false);
         try {
@@ -548,6 +563,10 @@ public class HW6Exercise2 extends javax.swing.JFrame {
                 
                 currentBookIndex = bookList.size();
             }
+            setAuthorButtonsEnabled(true);
+            addBookBtn.setEnabled(true);
+            editBookBtn.setEnabled(true);
+            deleteBookBtn.setEnabled(true);
             
             authorListValueChanged(null);
         } catch (NumberFormatException ex) {
@@ -565,6 +584,11 @@ public class HW6Exercise2 extends javax.swing.JFrame {
 
     private void bookCancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookCancelBtnActionPerformed
         setBookTextBoxEnabled(false);
+        setAuthorButtonsEnabled(true);
+        addBookBtn.setEnabled(true);
+        editBookBtn.setEnabled(true);
+        deleteBookBtn.setEnabled(true);
+        
         authorListValueChanged(null);
     }//GEN-LAST:event_bookCancelBtnActionPerformed
 
@@ -574,7 +598,11 @@ public class HW6Exercise2 extends javax.swing.JFrame {
             int authorId = authorList.getSelectedValue().getAuthorID();
             
             dataService.deleteBookForAuthor(isbn, authorId);
-            currentBookIndex = 0;
+            bookListSize--;
+            
+            if (currentBookIndex > bookListSize - 1) {
+                currentBookIndex --;
+            }
             authorListValueChanged(null);
         } catch (SQLException ex) {
             System.err.println(ex);
@@ -633,20 +661,20 @@ public class HW6Exercise2 extends javax.swing.JFrame {
         try {
             dataService.deleteAuthor(author);
             authorList.setModel(populateAuthorList());
-            if (currentAuthorIndex > authorList.getModel().getSize()) {
-                authorList.setSelectedIndex(authorList.getModel().getSize() - 1);
+            if (currentAuthorIndex > authorList.getModel().getSize() - 1) {
+                currentAuthorIndex = authorList.getModel().getSize() - 1;
+                authorList.setSelectedIndex(currentAuthorIndex);
             } else {
                 authorList.setSelectedIndex(currentAuthorIndex);
             } 
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            System.err.println(ex);
             JOptionPane.showMessageDialog(rootPane, "Unable to delete author.", "SQL Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_deleteAuthorBtnActionPerformed
     
     private int findAuthorIndex(Author author) {
         for (int index=0; index < authorList.getModel().getSize(); index++) {
-            System.out.printf("AuthorID=%s, Index[%d] AuthorID=%s%n", author.getAuthorID(), index, authorList.getModel().getElementAt(index).getAuthorID());
             if (author.getAuthorID() == authorList.getModel().getElementAt(index).getAuthorID()) {
                 return index;
             }
