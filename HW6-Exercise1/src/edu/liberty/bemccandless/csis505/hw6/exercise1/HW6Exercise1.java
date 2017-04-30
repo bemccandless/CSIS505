@@ -54,7 +54,7 @@ public class HW6Exercise1 {
             addAuthor("Brian", "McCandless");
             
             ResultSet allAuthorsAfter = selectAllAuthors();
-            printResults("Before adding another author", allAuthorsAfter);
+            printResults("After adding another author", allAuthorsAfter);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -67,7 +67,7 @@ public class HW6Exercise1 {
             deleteBookForAuthor("0132121360", 5);
             
             ResultSet booksByAuthorAfter = selectBooksByAuthor("Michael", "Morgano");
-            printResults("Before deleting book from author", booksByAuthorAfter);
+            printResults("After deleting book from author", booksByAuthorAfter);
         } catch (SQLException e) {
             e.printStackTrace();
         }
