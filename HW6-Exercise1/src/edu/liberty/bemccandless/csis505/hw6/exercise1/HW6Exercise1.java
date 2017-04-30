@@ -32,9 +32,8 @@ public class HW6Exercise1 {
         }
         
         // Select all book titles for a specified author ordered by year
-        String author = "Abbey";
-        try (ResultSet resultSet = selectBooksByAuthor(author)) {
-            printResults("Select all book titles for a specified author ordered by year", resultSet);
+        try (ResultSet booksByAuthor = selectBooksByAuthor("Abbey", "Deitel")) {
+            printResults("Select all book titles for a specified author ordered by year", booksByAuthor);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -43,6 +42,32 @@ public class HW6Exercise1 {
         String title = "Android for Programmers: An App-Driven Approach";
         try (ResultSet resultSet = selectAuthorsByTitle(title)) {
             printResults("Select all authors for a specifed book title ordered by last name then first name", resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        // Add an author to the authors table
+        try {
+            ResultSet allAuthorsBefore = selectAllAuthors();
+            printResults("Before adding another author", allAuthorsBefore);
+            
+            addAuthor("Brian", "McCandless");
+            
+            ResultSet allAuthorsAfter = selectAllAuthors();
+            printResults("Before adding another author", allAuthorsAfter);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        // Delete a book from am author
+        try {
+            ResultSet booksByAuthorBefore = selectBooksByAuthor("Michael", "Morgano");
+            printResults("Before deleting book from author", booksByAuthorBefore);
+            
+            deleteBookForAuthor("0132121360", 5);
+            
+            ResultSet booksByAuthorAfter = selectBooksByAuthor("Michael", "Morgano");
+            printResults("Before deleting book from author", booksByAuthorAfter);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -59,17 +84,18 @@ public class HW6Exercise1 {
     }
     
     /**
-     * @param author
+     * @param firstName
+     * @param lastName
      * @return ResultSet of selecting all book title, isbn and copyright for a specific author.
      * @throws SQLException 
      */
-    public static ResultSet selectBooksByAuthor(String author) throws SQLException {
+    public static ResultSet selectBooksByAuthor(String firstName, String lastName) throws SQLException {
         final String SELECT_AUTHORS_BOOKS = 
-                " SELECT DISTINCT title, titles.isbn, copyright FROM titles"
+                " SELECT title, titles.isbn, copyright FROM titles"
                 + " INNER JOIN authorISBN ON authorISBN.isbn = titles.isbn"
                 + " INNER JOIN authors ON authors.authorId = authorISBN.authorID"
-                + " WHERE authors.firstName LIKE '" + author + "'"
-                + "   OR authors.lastName LIKE '" + author + "'"
+                + " WHERE authors.firstName='" + firstName + "'"
+                + "   AND authors.lastName='" + lastName + "'"
                 + " ORDER BY copyright";
         return runQuery(SELECT_AUTHORS_BOOKS);
     }
@@ -87,6 +113,36 @@ public class HW6Exercise1 {
                 + " WHERE title LIKE '" + title + "'"
                 + " ORDER BY lastName, firstName";
         return runQuery(SELECT_TITLE_AUTHORS);
+    }
+    
+    /**
+     * Delete a book for a specific author.
+     * 
+     * @param isbn
+     * @param authorId
+     * @throws SQLException 
+     */
+    public static void deleteBookForAuthor(String isbn, int authorId) throws SQLException {
+        final String DELETE_AUTHOR_ISBN = String.format(
+                "DELETE FROM authorISBN"
+                + " WHERE authorISBN.isbn='%s' and authorISBN.authorID=%d", isbn, authorId);
+        
+        runQuery(DELETE_AUTHOR_ISBN);
+    }
+    
+    /**
+     * Add a author to the authors table.
+     * 
+     * @param firstName
+     * @param lastName
+     * @throws SQLException 
+     */
+    public static void addAuthor(String firstName, String lastName) throws SQLException {
+        final String INSERT_AUTHOR = String.format(
+                "INSERT INTO authors (firstName, lastName)"
+                + " VALUES ('%s', '%s')", firstName, lastName);
+        
+        runQuery(INSERT_AUTHOR);
     }
     
     /**
@@ -128,9 +184,10 @@ public class HW6Exercise1 {
     private static ResultSet runQuery(String query) throws SQLException {
         Connection connection = DriverManager.getConnection(DATABASE_URL, username, password);
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(query);
         
-        return resultSet;
+        statement.execute(query);
+        
+        return statement.getResultSet();
     }
 
 }
