@@ -18,7 +18,8 @@ public class HW6Exercise2 extends javax.swing.JFrame {
     private final List<Book> bookList = new ArrayList();
     private int currentBookIndex;
     private int bookListSize = 0;
-    private boolean editMode = false;
+    private boolean bookEditMode = false;
+    private boolean authorEditMode = false;
 
     /**
      * Creates new form SqlDataView
@@ -28,8 +29,8 @@ public class HW6Exercise2 extends javax.swing.JFrame {
             dataService = new DataService();
             initComponents();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(rootPane,"Unable to establish connection to database", "SQL Error", JOptionPane.ERROR_MESSAGE);
             System.err.println(ex);
+            JOptionPane.showMessageDialog(rootPane,"Unable to establish connection to database", "SQL Error", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
     }
@@ -43,6 +44,14 @@ public class HW6Exercise2 extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        authorDialog = new javax.swing.JDialog();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        firstNameTextBox = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        lastNameTextBox = new javax.swing.JTextField();
+        authorCancelBtn = new javax.swing.JButton();
+        authorSaveBtn = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         titleTextBox = new javax.swing.JTextField();
         copyrightTextBox = new javax.swing.JTextField();
@@ -67,6 +76,77 @@ public class HW6Exercise2 extends javax.swing.JFrame {
         deleteBookBtn = new javax.swing.JButton();
         bookCancelBtn = new javax.swing.JButton();
         bookSaveBtn = new javax.swing.JButton();
+
+        authorDialog.setAlwaysOnTop(true);
+        authorDialog.setName(""); // NOI18N
+        authorDialog.setResizable(false);
+        authorDialog.setSize(new java.awt.Dimension(312, 134));
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel2.setText("Author");
+
+        jLabel8.setText("First Name");
+
+        jLabel9.setText("Last Name");
+
+        authorCancelBtn.setText("Cancel");
+        authorCancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                authorCancelBtnActionPerformed(evt);
+            }
+        });
+
+        authorSaveBtn.setText("Save");
+        authorSaveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                authorSaveBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout authorDialogLayout = new javax.swing.GroupLayout(authorDialog.getContentPane());
+        authorDialog.getContentPane().setLayout(authorDialogLayout);
+        authorDialogLayout.setHorizontalGroup(
+            authorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(authorDialogLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(authorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(authorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(authorDialogLayout.createSequentialGroup()
+                            .addGap(12, 12, 12)
+                            .addComponent(jLabel8)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(firstNameTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel2))
+                    .addGroup(authorDialogLayout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(authorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, authorDialogLayout.createSequentialGroup()
+                                .addComponent(authorSaveBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(authorCancelBtn))
+                            .addComponent(lastNameTextBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
+        );
+        authorDialogLayout.setVerticalGroup(
+            authorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(authorDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(authorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(firstNameTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(authorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(lastNameTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(authorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(authorCancelBtn)
+                    .addComponent(authorSaveBtn))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -123,6 +203,12 @@ public class HW6Exercise2 extends javax.swing.JFrame {
         });
 
         editAuthorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/pencil.png"))); // NOI18N
+        editAuthorBtn.setEnabled(false);
+        editAuthorBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editAuthorBtnActionPerformed(evt);
+            }
+        });
 
         previousBookBtn.setText("Previous");
         previousBookBtn.setEnabled(false);
@@ -150,6 +236,7 @@ public class HW6Exercise2 extends javax.swing.JFrame {
         });
 
         addBookBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/plus.png"))); // NOI18N
+        addBookBtn.setEnabled(false);
         addBookBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addBookBtnActionPerformed(evt);
@@ -157,6 +244,7 @@ public class HW6Exercise2 extends javax.swing.JFrame {
         });
 
         editBookBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/pencil.png"))); // NOI18N
+        editBookBtn.setEnabled(false);
         editBookBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editBookBtnActionPerformed(evt);
@@ -164,8 +252,15 @@ public class HW6Exercise2 extends javax.swing.JFrame {
         });
 
         deleteAuthorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/user-minus.png"))); // NOI18N
+        deleteAuthorBtn.setEnabled(false);
+        deleteAuthorBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteAuthorBtnActionPerformed(evt);
+            }
+        });
 
         deleteBookBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/liberty/bemccandless/csis505/hw6/exercise2/resources/trashcan.png"))); // NOI18N
+        deleteBookBtn.setEnabled(false);
         deleteBookBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteBookBtnActionPerformed(evt);
@@ -323,7 +418,11 @@ public class HW6Exercise2 extends javax.swing.JFrame {
     }//GEN-LAST:event_previousBookBtnActionPerformed
 
     private void addAuthorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addAuthorBtnActionPerformed
-        // TODO add your handling code here:
+        firstNameTextBox.setText("");
+        lastNameTextBox.setText("");
+        
+        authorDialog.setTitle("Add Author");
+        authorDialog.setVisible(true);
     }//GEN-LAST:event_addAuthorBtnActionPerformed
 
     private void addBookBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBookBtnActionPerformed
@@ -348,8 +447,17 @@ public class HW6Exercise2 extends javax.swing.JFrame {
     private void authorListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_authorListValueChanged
         previousBookBtn.setEnabled(true);
         nextBookBtn.setEnabled(true);
+        editAuthorBtn.setEnabled(true);
+        deleteAuthorBtn.setEnabled(true);
+        addBookBtn.setEnabled(true);
+        editBookBtn.setEnabled(true);
+        deleteBookBtn.setEnabled(true);
         
         Author author = authorList.getSelectedValue();
+        if (author == null) {
+            return;
+        }
+        
         try {
             bookList.clear();
             ResultSet books = dataService.selectBooksByAuthor(author.getAuthorID());
@@ -365,7 +473,15 @@ public class HW6Exercise2 extends javax.swing.JFrame {
             }
             
             if (bookList.isEmpty()) {
-                JOptionPane.showMessageDialog(rootPane, "No records found.", "Books", JOptionPane.INFORMATION_MESSAGE);
+                titleTextBox.setText("");
+                isbnTextBox.setText("");
+                editionTextBox.setText("");
+                copyrightTextBox.setText("");
+                currentBookTextBox.setText("");
+                
+                nextBookBtn.setEnabled(false);
+                previousBookBtn.setEnabled(false);
+                
                 return;
             }
             
@@ -376,9 +492,9 @@ public class HW6Exercise2 extends javax.swing.JFrame {
             
             currentBookTextBoxActionPerformed(null);
         } catch (SQLException ex) {
+            System.err.println(ex);
             JOptionPane.showMessageDialog(
                     rootPane, "Unable to get list of books.", "SQL Error", JOptionPane.ERROR_MESSAGE);
-            System.err.println(ex);
         }
     }//GEN-LAST:event_authorListValueChanged
 
@@ -404,14 +520,14 @@ public class HW6Exercise2 extends javax.swing.JFrame {
     }//GEN-LAST:event_currentBookTextBoxActionPerformed
 
     private void editBookBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBookBtnActionPerformed
-        editMode = true;
+        bookEditMode = true;
         setBookTextBoxEnabled(true);
     }//GEN-LAST:event_editBookBtnActionPerformed
 
     private void bookSaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookSaveBtnActionPerformed
         setBookTextBoxEnabled(false);
         try {
-            if (editMode) {
+            if (bookEditMode) {
                 Book book = bookList.get(currentBookIndex);
                 book.setTitle(titleTextBox.getText());
                 book.setIsbn(isbnTextBox.getText());
@@ -420,7 +536,7 @@ public class HW6Exercise2 extends javax.swing.JFrame {
 
                 dataService.updateBook(book);
                 bookList.add(book);
-                editMode = false;
+                bookEditMode = false;
             } else {
                 Book book = new Book();
                 book.setTitle(titleTextBox.getText());
@@ -441,9 +557,9 @@ public class HW6Exercise2 extends javax.swing.JFrame {
             editionTextBox.selectAll();
             System.err.println(ex);
         } catch (SQLException ex) {
+            System.err.println(ex);
             JOptionPane.showMessageDialog(rootPane, "Unable to save record.", "SQL Error", JOptionPane.ERROR_MESSAGE);
             setBookTextBoxEnabled(true);
-            System.err.println(ex);
         }
     }//GEN-LAST:event_bookSaveBtnActionPerformed
 
@@ -461,11 +577,83 @@ public class HW6Exercise2 extends javax.swing.JFrame {
             currentBookIndex = 0;
             authorListValueChanged(null);
         } catch (SQLException ex) {
+            System.err.println(ex);
             JOptionPane.showMessageDialog(
                     rootPane, "Unable to delete book.", "SQL Error", JOptionPane.ERROR_MESSAGE);
-            System.err.println(ex);
         }
     }//GEN-LAST:event_deleteBookBtnActionPerformed
+
+    private void editAuthorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editAuthorBtnActionPerformed
+        authorEditMode = true;
+        Author author = authorList.getSelectedValue();
+        firstNameTextBox.setText(author.getFirstName());
+        lastNameTextBox.setText(author.getLastName());
+        
+        authorDialog.setTitle("Edit Author");
+        authorDialog.setVisible(true);
+    }//GEN-LAST:event_editAuthorBtnActionPerformed
+
+    private void authorCancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authorCancelBtnActionPerformed
+        authorDialog.setVisible(false);
+        authorEditMode = false;
+    }//GEN-LAST:event_authorCancelBtnActionPerformed
+
+    private void authorSaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authorSaveBtnActionPerformed
+        try {
+            Author author;
+            if (authorEditMode) {
+                author = authorList.getSelectedValue();
+                author.setFirstName(firstNameTextBox.getText());
+                author.setLastName(lastNameTextBox.getText());
+                dataService.updateAuthor(author);
+            } else {
+                author = new Author();
+                author.setFirstName(firstNameTextBox.getText());
+                author.setLastName(lastNameTextBox.getText());
+                
+                int authorID = dataService.addAuthor(author);
+                author.setAuthorID(authorID);
+            }
+            authorList.setModel(populateAuthorList());
+            authorDialog.setVisible(false);
+            authorList.setRequestFocusEnabled(true);
+            authorList.setSelectedIndex(findAuthorIndex(author));            
+
+            authorEditMode = false;
+        } catch (SQLException ex) {
+            System.err.println(ex);
+            JOptionPane.showMessageDialog(rootPane, "Unable to save record.", "SQL Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_authorSaveBtnActionPerformed
+
+    private void deleteAuthorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteAuthorBtnActionPerformed
+        Author author = authorList.getSelectedValue();
+        int currentAuthorIndex = authorList.getSelectedIndex();
+        
+        try {
+            dataService.deleteAuthor(author);
+            authorList.setModel(populateAuthorList());
+            if (currentAuthorIndex > authorList.getModel().getSize()) {
+                authorList.setSelectedIndex(authorList.getModel().getSize() - 1);
+            } else {
+                authorList.setSelectedIndex(currentAuthorIndex);
+            } 
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, "Unable to delete author.", "SQL Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_deleteAuthorBtnActionPerformed
+    
+    private int findAuthorIndex(Author author) {
+        for (int index=0; index < authorList.getModel().getSize(); index++) {
+            System.out.printf("AuthorID=%s, Index[%d] AuthorID=%s%n", author.getAuthorID(), index, authorList.getModel().getElementAt(index).getAuthorID());
+            if (author.getAuthorID() == authorList.getModel().getElementAt(index).getAuthorID()) {
+                return index;
+            }
+        }
+        System.out.println("-1");
+        return -1;
+    }
     
     private void setBookTextBoxEnabled(boolean value) {
         authorList.setEnabled(!value);
@@ -497,9 +685,9 @@ public class HW6Exercise2 extends javax.swing.JFrame {
                 listModel.addElement(author);
             }
         } catch (SQLException ex) {
+            System.err.println(ex);
             JOptionPane.showMessageDialog(
                     rootPane, "Unable to get list of authors.", "SQL Error", JOptionPane.ERROR_MESSAGE);
-            System.err.println(ex);
         }
         
         return listModel;
@@ -547,7 +735,10 @@ public class HW6Exercise2 extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addAuthorBtn;
     private javax.swing.JButton addBookBtn;
+    private javax.swing.JButton authorCancelBtn;
+    private javax.swing.JDialog authorDialog;
     private javax.swing.JList<Author> authorList;
+    private javax.swing.JButton authorSaveBtn;
     private javax.swing.JButton bookCancelBtn;
     private javax.swing.JButton bookSaveBtn;
     private javax.swing.JTextField copyrightTextBox;
@@ -557,15 +748,20 @@ public class HW6Exercise2 extends javax.swing.JFrame {
     private javax.swing.JButton editAuthorBtn;
     private javax.swing.JButton editBookBtn;
     private javax.swing.JTextField editionTextBox;
+    private javax.swing.JTextField firstNameTextBox;
     private javax.swing.JTextField isbnTextBox;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField lastNameTextBox;
     private javax.swing.JButton nextBookBtn;
     private javax.swing.JButton previousBookBtn;
     private javax.swing.JTextField titleTextBox;

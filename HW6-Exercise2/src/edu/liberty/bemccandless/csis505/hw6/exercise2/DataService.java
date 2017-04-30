@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
@@ -72,5 +73,44 @@ public class DataService {
         
         connection.createStatement().executeUpdate(DELETE_AUTHOR_ISBN);
         connection.createStatement().executeUpdate(DELETE_BOOK);
+    }
+    
+    public void updateAuthor(Author author) throws SQLException {
+        final String UPDATE_AUTHOR = String.format(
+                "UPDATE authors SET firstName='%s', lastName='%s'"
+                + " WHERE authors.authorID=%d", author.getFirstName(), author.getLastName(), author.getAuthorID());
+        
+        connection.createStatement().executeUpdate(UPDATE_AUTHOR);
+    }
+    
+    public int addAuthor(Author author) throws SQLException {
+        final String INSERT_AUTHOR = String.format(
+                "INSERT INTO authors (firstName, lastName)"
+                + " VALUES ('%s', '%s')", author.getFirstName(), author.getLastName());
+        
+        Statement insertStatement = connection.createStatement();
+        insertStatement.executeUpdate(INSERT_AUTHOR, Statement.RETURN_GENERATED_KEYS);
+        ResultSet generatedKeys = insertStatement.getGeneratedKeys();
+        
+        while (generatedKeys.next()) {
+            return generatedKeys.getInt(1);
+        }
+        
+        return -1;
+    }
+    
+    public void deleteAuthor(Author author) throws SQLException {
+        final String DELETE_AUTHOR = String.format(
+                "DELETE FROM authors"
+                + " WHERE authors.authorID=%d", author.getAuthorID());
+        final String DELETE_AUTHOR_ISBN = String.format(
+                "DELETE FROM authorISBN"
+                + " WHERE authorISBN.authorID=%d", author.getAuthorID());
+        final String SELECT_AUTHOR_ISBN_BY_AUTHORID = String.format(
+                "SELECT isbn FROM authorISBN "
+                + " WHERE authorISBN.authorID=%d", author.getAuthorID());
+        
+        connection.createStatement().executeUpdate(DELETE_AUTHOR_ISBN);
+        connection.createStatement().executeUpdate(DELETE_AUTHOR);
     }
 }
