@@ -21,14 +21,24 @@ public class HW7Exercise2 {
         
         list.print();
         
-        String result = list.searchIndexedList("Eric");
+        String name = "Eric";
+        String result = list.searchIndexedList(name);
         
         if (result != null) {
-            System.out.printf("'%s' was found%n", result);
+            System.out.printf("'%s' was found%n", name);
         } else {
-            System.out.printf("'%s' was not found%n", result);
+            System.out.printf("'%s' was not found%n", name);
         }
 
+        
+        name = "Frodo";
+        result = list.searchIndexedList(name);
+        
+        if (result != null) {
+            System.out.printf("'%s' was found%n", name);
+        } else {
+            System.out.printf("'%s' was not found%n", name);
+        }
     }
 
 }

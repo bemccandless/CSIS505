@@ -4,7 +4,7 @@ class ListNode {
 
     String data;
     ListNode nextNode;
-    ListNode indexNode;
+    ListNode nextIndexNode;
 
     ListNode(String object) { 
        this(object, null); 
@@ -56,10 +56,10 @@ public class IndexedList {
         if (indexedNode.nextNode == null) {
             indexedNode.nextNode = new ListNode(insertItem);
         } else {
-            while (insertItem.equals(indexedNode.getNext().getData())) {
+            while (indexedNode.getNext() != null) {
                 indexedNode = indexedNode.getNext();
             }
-            indexedNode.nextNode = new ListNode(insertItem, indexedNode.indexNode);
+            indexedNode.nextNode = new ListNode(insertItem);
         }
     }
 
@@ -71,10 +71,15 @@ public class IndexedList {
 
         System.out.printf("The %s is: ", name);
         ListNode current = firstNode;
-
+        ListNode indexNode = firstNode;
+        
         while (current != null) {
             System.out.printf("%s ", current.data);
-            current = current.nextNode;
+            if (current.nextNode == null) {
+                current = indexNode = indexNode.nextIndexNode;
+            } else {
+                current = current.nextNode;
+            }
         }
 
         System.out.println();
@@ -92,7 +97,7 @@ public class IndexedList {
         if (isEmpty()) {
             firstNode = lastNode = new ListNode(insertItem);
         } else {
-            lastNode = lastNode.indexNode = lastNode.nextNode = new ListNode(insertItem);
+            lastNode = lastNode.nextIndexNode = new ListNode(insertItem);
         }
     } 
 
@@ -102,11 +107,11 @@ public class IndexedList {
     
     private ListNode findNode(String searchValue) {
         ListNode currentNode = firstNode;
-        while (currentNode.nextNode != null) {
+        while (currentNode.nextIndexNode != null) {
             if (currentNode.getData().equals(searchValue)) {
                 return currentNode;
             } 
-            currentNode = currentNode.nextNode;
+            currentNode = currentNode.nextIndexNode;
         }
         
         return null;
