@@ -14,6 +14,7 @@ public class HW7Exercise2 {
         list.insertInIndexedList("Xena");
         list.insertInIndexedList("Claire");
         list.insertInIndexedList("Elijah");
+        list.insertInIndexedList("Einstein");
         list.insertInIndexedList("Eric");
         list.insertInIndexedList("Isaiah");
         list.insertInIndexedList("Olivia");

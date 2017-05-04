@@ -41,18 +41,14 @@ public class IndexedList {
     
     public String searchIndexedList(String searchItem) {
         ListNode indexedNode = findNode(String.valueOf(searchItem.charAt(0)));
-        if (indexedNode.nextNode == null) {
-            return null;
-        } else {
-            while (indexedNode.nextNode != null) {
-                if (searchItem.equals(indexedNode.getNext().getData())) {
-                    return indexedNode.getData();
-                }
-                indexedNode = indexedNode.getNext();
+        while (indexedNode.nextNode != null) {
+            if (searchItem.equals(indexedNode.getData())) {
+                return indexedNode.getData();
             }
-            return null;
+            indexedNode = indexedNode.getNext();
         }
-
+        
+        return null;
     }
 
     public void insertInIndexedList(String insertItem) {
