@@ -1,5 +1,10 @@
 package edu.liberty.bemccandless.csis505.hw7.exercise2;
 
+/**
+ * Used to create a self-referencing list of nodes
+ * 
+ * @author bemccandless
+ */
 class ListNode {
 
     String data;
@@ -24,6 +29,11 @@ class ListNode {
     } 
 }
 
+/**
+ * A utility class for adding and searching for a listNode in an indexed list.
+ * 
+ * @author bemccandless
+ */
 public class IndexedList {
     
     private ListNode firstNode;
@@ -34,11 +44,21 @@ public class IndexedList {
         this("list"); 
     } 
 
+    /**
+     * Initialize and create indexed list
+     * 
+     * @param listName 
+     */
     public IndexedList(String listName) {
         name = listName;
         createIndex();
     }
     
+    /**
+     * Search for a given value in the list
+     * @param searchItem
+     * @return search value if found, else null
+     */
     public String searchIndexedList(String searchItem) {
         ListNode indexedNode = findNode(String.valueOf(searchItem.charAt(0)));
         while (indexedNode != null) {
@@ -51,6 +71,10 @@ public class IndexedList {
         return null;
     }
 
+    /**
+     * Insert a value into the indexed list
+     * @param insertItem 
+     */
     public void insertInIndexedList(String insertItem) {
         ListNode indexedNode = findNode(String.valueOf(insertItem.charAt(0)));
         if (indexedNode.nextNode == null) {
@@ -63,6 +87,9 @@ public class IndexedList {
         }
     }
 
+    /**
+     * Print the indexed list
+     */
     public void print() {
         if (isEmpty()) {
             System.out.printf("Empty %s%n", name);
@@ -85,14 +112,11 @@ public class IndexedList {
         System.out.println();
     } 
     
-    private void insertAtFront(String insertItem) {
-        if (isEmpty()) {
-            firstNode = lastNode = new ListNode(insertItem);
-        } else {
-            firstNode = new ListNode(insertItem, firstNode);
-        }
-    } 
-    
+    /**
+     * Insert nodes in the back of list.  
+     * Used to help create the indexes in the list
+     * @param insertItem 
+     */
     private void insertIndexAtBack(String insertItem) {
         if (isEmpty()) {
             firstNode = lastNode = new ListNode(insertItem);
@@ -101,10 +125,21 @@ public class IndexedList {
         }
     } 
 
+    /**
+     * Checks to see if the first node in the list is null.
+     * @return boolean
+     */
     private boolean isEmpty() { 
         return firstNode == null;
     } 
     
+    /**
+     * Find a node in the list for a given value.
+     * Helps to find indexed node in the list
+     * 
+     * @param searchValue
+     * @return 
+     */
     private ListNode findNode(String searchValue) {
         ListNode currentNode = firstNode;
         while (currentNode.nextIndexNode != null) {
@@ -117,6 +152,10 @@ public class IndexedList {
         return null;
     }
     
+    /**
+     * Create an index node for each letter of the alphabet.  This helps to 
+     * increase the speed of searching the indexed list.
+     */
     private void createIndex() {
         String[] letters = {
             "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", 

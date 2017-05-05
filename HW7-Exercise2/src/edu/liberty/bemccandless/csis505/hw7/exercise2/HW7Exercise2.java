@@ -1,7 +1,9 @@
 package edu.liberty.bemccandless.csis505.hw7.exercise2;
 
 /**
- *
+ * Creates an indexed list to reduce the nodes that need to be checked when
+ * searching for a given value.
+ * 
  * @author bemccandless
  */
 public class HW7Exercise2 {
@@ -29,6 +31,12 @@ public class HW7Exercise2 {
         
     }
     
+    /**
+     * Searches for given name in indexed list and outputs the result of 
+     * whether of not the value is found.
+     * 
+     * @param name 
+     */
     private static void findName(String name) {
         String result = list.searchIndexedList(name);
         
