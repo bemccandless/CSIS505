@@ -4,7 +4,8 @@ import java.security.SecureRandom;
 import java.util.Scanner;
 
 /**
- *
+ * Searches a list of random integers for a prompted input
+ * 
  * @author bemccandless
  */
 public class HW7Exercise1 {

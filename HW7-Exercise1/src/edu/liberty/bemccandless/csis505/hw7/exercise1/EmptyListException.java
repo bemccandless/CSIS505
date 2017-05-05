@@ -1,5 +1,10 @@
 package edu.liberty.bemccandless.csis505.hw7.exercise1;
 
+/**
+ * Exception to through if the list is found to be empty
+ * 
+ * @author bemccandless
+ */
 public class EmptyListException extends RuntimeException {
 
     public EmptyListException() {

@@ -1,5 +1,8 @@
 package edu.liberty.bemccandless.csis505.hw7.exercise1;
 
+/**
+ * Used to create a self-referencing list of nodes
+ */
 class ListNode<T> {
 
     T data;
@@ -23,6 +26,11 @@ class ListNode<T> {
     } 
 }
 
+/**
+ * A utility class to add, delete and search for list nodes in a generic list.
+ * 
+ * @param <T> 
+ */
 public class List<T> {
     
     private ListNode<T> firstNode;
@@ -30,15 +38,29 @@ public class List<T> {
     private ListNode<T> currentNode;
     private String name;
 
+    /**
+     * Constructor for list with a default name
+     */
     public List() { 
         this("list"); 
     } 
 
+    /**
+     * Constructor for list with a provided name
+     * 
+     * @param listName 
+     */
     public List(String listName) {
         name = listName;
         firstNode = lastNode = currentNode = null;
     } 
 
+    /**
+     * Find a given value in the generic list of nodes
+     * 
+     * @param searchValue
+     * @return 
+     */
     public T findItemRecursivelyMcCandless(T searchValue) {
         if (currentNode == null) {
             currentNode = firstNode;
@@ -59,6 +81,11 @@ public class List<T> {
         return findItemRecursivelyMcCandless(searchValue);
     }
 
+    /**
+     * Insert a node to the front of the list
+     * 
+     * @param insertItem 
+     */
     public void insertAtFront(T insertItem) {
         if (isEmpty()) {
             firstNode = lastNode = new ListNode(insertItem);
@@ -67,6 +94,11 @@ public class List<T> {
         }
     } 
 
+    /**
+     * Insert a node to the back of the list
+     * 
+     * @param insertItem 
+     */
     public void insertAtBack(T insertItem) {
         if (isEmpty()) {
             firstNode = lastNode = new ListNode(insertItem);
@@ -75,6 +107,12 @@ public class List<T> {
         }
     } 
 
+    /**
+     * Remove the node at the front of the list
+     * 
+     * @return
+     * @throws EmptyListException 
+     */
     public T removeFromFront() throws EmptyListException {
         if (isEmpty()) {
             throw new EmptyListException(name);
@@ -91,6 +129,12 @@ public class List<T> {
         return removedItem;
     }
 
+    /**
+     * Remove the node at the back of the list
+     * 
+     * @return
+     * @throws EmptyListException 
+     */
     public T removeFromBack() throws EmptyListException {
         if (isEmpty()) {
             throw new EmptyListException(name);
@@ -114,10 +158,18 @@ public class List<T> {
         return removedItem;
     } 
 
+    /**
+     * Checks if the first node in the list is empty
+     * 
+     * @return 
+     */
     public boolean isEmpty() { 
         return firstNode == null;
     } 
 
+    /**
+     * Prints the list
+     */
     public void print() {
         if (isEmpty()) {
             System.out.printf("Empty %s%n", name);
