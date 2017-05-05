@@ -41,7 +41,7 @@ public class IndexedList {
     
     public String searchIndexedList(String searchItem) {
         ListNode indexedNode = findNode(String.valueOf(searchItem.charAt(0)));
-        while (indexedNode.nextNode != null) {
+        while (indexedNode != null) {
             if (searchItem.equals(indexedNode.getData())) {
                 return indexedNode.getData();
             }
