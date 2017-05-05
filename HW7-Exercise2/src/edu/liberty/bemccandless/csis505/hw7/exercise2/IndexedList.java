@@ -2,8 +2,6 @@ package edu.liberty.bemccandless.csis505.hw7.exercise2;
 
 /**
  * Used to create a self-referencing list of nodes
- * 
- * @author bemccandless
  */
 class ListNode {
 
@@ -31,8 +29,6 @@ class ListNode {
 
 /**
  * A utility class for adding and searching for a listNode in an indexed list.
- * 
- * @author bemccandless
  */
 public class IndexedList {
     
