@@ -512,6 +512,7 @@ public class TuneUp extends javax.swing.JFrame {
             vehicleYearTextField.setText(String.valueOf(vehicle.getYear()));
             vehicleMileageTextField.setText(String.valueOf(vehicle.getMileage()));
             
+            clearAddVehicleTextFields();
             addVehicleDialogBox.setVisible(false);
         } catch (SQLException ex) {
             System.err.println(ex);
@@ -526,15 +527,17 @@ public class TuneUp extends javax.swing.JFrame {
     }//GEN-LAST:event_addVehicleSaveBtnActionPerformed
 
     private void addVehicleCancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehicleCancelBtnActionPerformed
+        clearAddVehicleTextFields();
+        addVehicleDialogBox.setVisible(false);
+    }//GEN-LAST:event_addVehicleCancelBtnActionPerformed
+
+    private void clearAddVehicleTextFields() {
         addDriverTextField.setText("");
         addMakeTextField.setText("");
         addModelTextField.setText("");
         addYearTextField.setText("");
         addMileageTextField.setText("");
-        
-        addVehicleDialogBox.setVisible(false);
-    }//GEN-LAST:event_addVehicleCancelBtnActionPerformed
-
+    }
     /**
      * @param args the command line arguments
      */
