@@ -1,16 +1,38 @@
 package edu.liberty.bemccandless.csis505.finalproject.tuneup;
 
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.config.DbConfig;
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.Vehicle;
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.VehicleController;
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.VehicleService;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author bemccandless
  */
 public class TuneUp extends javax.swing.JFrame {
+    
+    private VehicleController vehicleController;
 
     /**
      * Creates new form TuneUpGui
      */
     public TuneUp() {
         initComponents();
+        
+        VehicleService vehicleService = new VehicleService();
+        vehicleController = new VehicleController(vehicleService);
+        
+        try {
+            DbConfig.getDbConnection();
+        } catch (SQLException ex) {
+            System.err.println(ex);
+            JOptionPane.showMessageDialog(rootPane, "Unable to connection to database.", "SQL Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
+        }
     }
 
     /**
@@ -22,6 +44,21 @@ public class TuneUp extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        addVehicleDialogBox = new javax.swing.JDialog();
+        jLabel10 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        addDriverTextField = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        addMakeTextField = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        addModelTextField = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        addYearTextField = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        addMileageTextField = new javax.swing.JTextField();
+        addVehicleCancelBtn = new javax.swing.JButton();
+        addVehicleSaveBtn = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -53,9 +90,133 @@ public class TuneUp extends javax.swing.JFrame {
         addVehicleMaintenanceBtn = new javax.swing.JButton();
         editVehicleBtn = new javax.swing.JButton();
 
+        addVehicleDialogBox.setTitle("Add Vehicle");
+        addVehicleDialogBox.setMinimumSize(new java.awt.Dimension(320, 240));
+        addVehicleDialogBox.setResizable(false);
+        addVehicleDialogBox.setSize(new java.awt.Dimension(0, 0));
+
+        jLabel10.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
+        jLabel10.setText("Vehicle Information");
+
+        jPanel6.setMinimumSize(new java.awt.Dimension(50, 10));
+        jPanel6.setName("Vehicle Information"); // NOI18N
+        jPanel6.setPreferredSize(new java.awt.Dimension(326, 251));
+
+        jLabel11.setText("Driver");
+
+        jLabel12.setText("Make");
+
+        jLabel13.setText("Model");
+
+        jLabel14.setText("Year");
+
+        jLabel15.setText("Mileage");
+
+        addVehicleCancelBtn.setText("Cancel");
+        addVehicleCancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addVehicleCancelBtnActionPerformed(evt);
+            }
+        });
+
+        addVehicleSaveBtn.setText("Save");
+        addVehicleSaveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addVehicleSaveBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(addDriverTextField))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel14))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(addYearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel15)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(addMileageTextField))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(addMakeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel13)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(addModelTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(addVehicleSaveBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(addVehicleCancelBtn)
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(addDriverTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(addMakeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13)
+                    .addComponent(addModelTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(addYearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15)
+                    .addComponent(addMileageTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addVehicleCancelBtn)
+                    .addComponent(addVehicleSaveBtn))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout addVehicleDialogBoxLayout = new javax.swing.GroupLayout(addVehicleDialogBox.getContentPane());
+        addVehicleDialogBox.getContentPane().setLayout(addVehicleDialogBoxLayout);
+        addVehicleDialogBoxLayout.setHorizontalGroup(
+            addVehicleDialogBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addVehicleDialogBoxLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(addVehicleDialogBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(addVehicleDialogBoxLayout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        addVehicleDialogBoxLayout.setVerticalGroup(
+            addVehicleDialogBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addVehicleDialogBoxLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("TuneUp - Vehicle Maintenance Tracker");
         setMinimumSize(new java.awt.Dimension(800, 600));
         setName("appFrame"); // NOI18N
+        setResizable(false);
         setSize(new java.awt.Dimension(800, 600));
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
@@ -104,6 +265,11 @@ public class TuneUp extends javax.swing.JFrame {
         removeVehicleBtn.setText("Remove");
 
         addVehicleBtn.setText("Add");
+        addVehicleBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addVehicleBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -141,13 +307,23 @@ public class TuneUp extends javax.swing.JFrame {
 
         jLabel4.setText("Driver");
 
+        vehicleMakeTextField.setEditable(false);
+
         jLabel5.setText("Make");
 
+        vehicleDriverTextField.setEditable(false);
+
         jLabel6.setText("Model");
+
+        vehicleModelTextField.setEditable(false);
+
+        vehicleYearTextField.setEditable(false);
 
         jLabel7.setText("Year");
 
         jLabel8.setText("Mileage");
+
+        vehicleMileageTextField.setEditable(false);
 
         jLabel9.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jLabel9.setText("Maintenance");
@@ -315,6 +491,50 @@ public class TuneUp extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void addVehicleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehicleBtnActionPerformed
+        addVehicleDialogBox.setVisible(true);
+    }//GEN-LAST:event_addVehicleBtnActionPerformed
+
+    private void addVehicleSaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehicleSaveBtnActionPerformed
+        Vehicle vehicle = new Vehicle();
+        vehicle.setDriver(addDriverTextField.getText());
+        vehicle.setMake(addMakeTextField.getText());
+        vehicle.setModel(addModelTextField.getText());
+        vehicle.setYear(Integer.valueOf(addYearTextField.getText()));
+        vehicle.setMileage(Integer.valueOf(addMileageTextField.getText()));
+        
+        try {
+            vehicleController.addVehicle(vehicle);
+            
+            vehicleDriverTextField.setText(vehicle.getDriver());
+            vehicleMakeTextField.setText(vehicle.getMake());
+            vehicleModelTextField.setText(vehicle.getModel());
+            vehicleYearTextField.setText(String.valueOf(vehicle.getYear()));
+            vehicleMileageTextField.setText(String.valueOf(vehicle.getMileage()));
+            
+            addVehicleDialogBox.setVisible(false);
+        } catch (SQLException ex) {
+            System.err.println(ex);
+            JOptionPane.showMessageDialog(rootPane, "Unable to add vehicle", "SQL Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                DbConfig.close();
+            } catch (SQLException ex) {
+                System.err.println(ex);
+            }
+        }
+    }//GEN-LAST:event_addVehicleSaveBtnActionPerformed
+
+    private void addVehicleCancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehicleCancelBtnActionPerformed
+        addDriverTextField.setText("");
+        addMakeTextField.setText("");
+        addModelTextField.setText("");
+        addYearTextField.setText("");
+        addMileageTextField.setText("");
+        
+        addVehicleDialogBox.setVisible(false);
+    }//GEN-LAST:event_addVehicleCancelBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -352,10 +572,24 @@ public class TuneUp extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField addDriverTextField;
+    private javax.swing.JTextField addMakeTextField;
+    private javax.swing.JTextField addMileageTextField;
+    private javax.swing.JTextField addModelTextField;
     private javax.swing.JButton addVehicleBtn;
+    private javax.swing.JButton addVehicleCancelBtn;
+    private javax.swing.JDialog addVehicleDialogBox;
     private javax.swing.JButton addVehicleMaintenanceBtn;
+    private javax.swing.JButton addVehicleSaveBtn;
+    private javax.swing.JTextField addYearTextField;
     private javax.swing.JButton editVehicleBtn;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -369,6 +603,7 @@ public class TuneUp extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
