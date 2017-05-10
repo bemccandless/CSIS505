@@ -5,6 +5,7 @@ import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.Vehicle;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.VehicleController;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.VehicleService;
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 
@@ -110,7 +111,24 @@ public class TuneUp extends javax.swing.JFrame {
 
         jLabel14.setText("Year");
 
+        addYearTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addYearTextFieldActionPerformed(evt);
+            }
+        });
+        addYearTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                addYearTextFieldKeyTyped(evt);
+            }
+        });
+
         jLabel15.setText("Mileage");
+
+        addMileageTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                addMileageTextFieldKeyTyped(evt);
+            }
+        });
 
         addVehicleCancelBtn.setText("Cancel");
         addVehicleCancelBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -494,6 +512,7 @@ public class TuneUp extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addVehicleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehicleBtnActionPerformed
+        toggleAllButtonsEnabled(false);
         addVehicleDialogBox.setVisible(true);
     }//GEN-LAST:event_addVehicleBtnActionPerformed
 
@@ -505,6 +524,20 @@ public class TuneUp extends javax.swing.JFrame {
         vehicle.setYear(Integer.valueOf(addYearTextField.getText()));
         vehicle.setMileage(Integer.valueOf(addMileageTextField.getText()));
         
+        if (vehicle.getDriver().length() > 30) {
+            JOptionPane.showMessageDialog(rootPane, "'Driver' must be less than 30 characters", "Invalid Entry", JOptionPane.ERROR_MESSAGE);
+            return;
+        } else if (vehicle.getMake().length() > 20) {
+            JOptionPane.showMessageDialog(rootPane, "'Make' must be less than 20 characters", "Invalid Entry", JOptionPane.ERROR_MESSAGE);
+            return;
+        } else if (vehicle.getModel().length() > 20) {
+            JOptionPane.showMessageDialog(rootPane, "'Model' must be less than 20 characters", "Invalid Entry", JOptionPane.ERROR_MESSAGE);
+            return;
+        } else if (String.valueOf(vehicle.getYear()).length() < 4) {
+            JOptionPane.showMessageDialog(rootPane, "'Year' must be 4 digits", "Invalid Entry", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         try {
             vehicleController.addVehicle(vehicle);
             populateVehicleList();
@@ -513,6 +546,7 @@ public class TuneUp extends javax.swing.JFrame {
             
             clearAddVehicleTextFields();
             addVehicleDialogBox.setVisible(false);
+            toggleAllButtonsEnabled(true);
         } catch (SQLException ex) {
             System.err.println(ex);
             JOptionPane.showMessageDialog(rootPane, "Unable to add vehicle", "SQL Error", JOptionPane.ERROR_MESSAGE);
@@ -525,6 +559,14 @@ public class TuneUp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_addVehicleSaveBtnActionPerformed
 
+    private void toggleAllButtonsEnabled(boolean enabled) {
+        addVehicleBtn.setEnabled(enabled);
+        removeVehicleBtn.setEnabled(enabled);
+        editVehicleBtn.setEnabled(enabled);
+        addVehicleMaintenanceBtn.setEnabled(enabled);
+        removeVehicleMaintenanceBtn.setEnabled(enabled);
+    }
+    
     private void populateVehicleList() {
         try {
             ListModel<Vehicle> vehicleListModel = vehicleController.getAllVehicles();
@@ -547,6 +589,7 @@ public class TuneUp extends javax.swing.JFrame {
     
     private void addVehicleCancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehicleCancelBtnActionPerformed
         clearAddVehicleTextFields();
+        toggleAllButtonsEnabled(true);
         addVehicleDialogBox.setVisible(false);
     }//GEN-LAST:event_addVehicleCancelBtnActionPerformed
 
@@ -558,6 +601,24 @@ public class TuneUp extends javax.swing.JFrame {
         
         populateVehicleInformationFields(selectedVehicle);
     }//GEN-LAST:event_vehicleListValueChanged
+
+    private void addYearTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addYearTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addYearTextFieldActionPerformed
+
+    private void addYearTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_addYearTextFieldKeyTyped
+        if (addYearTextField.getText().length() == 4) {
+            evt.consume();
+        } else if (!Pattern.matches("[0-9]", String.valueOf(evt.getKeyChar())) || evt.getKeyChar() == '\b') {
+            evt.consume();
+        }
+    }//GEN-LAST:event_addYearTextFieldKeyTyped
+
+    private void addMileageTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_addMileageTextFieldKeyTyped
+        if (!Pattern.matches("[0-9]", String.valueOf(evt.getKeyChar())) || evt.getKeyChar() == '\b') {
+            evt.consume();
+        }
+    }//GEN-LAST:event_addMileageTextFieldKeyTyped
 
     private void populateVehicleInformationFields(Vehicle vehicle) {
         vehicleDriverTextField.setText(vehicle.getDriver());
