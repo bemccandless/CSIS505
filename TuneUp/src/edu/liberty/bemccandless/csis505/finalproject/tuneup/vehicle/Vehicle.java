@@ -25,7 +25,7 @@ public class Vehicle {
         this.mileage = mileage;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 

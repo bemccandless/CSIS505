@@ -27,8 +27,8 @@ public class VehicleController {
         
     }
     
-    public void deleteVehicle(Vehicle vehicle) {
-        
+    public void deleteVehicle(Vehicle vehicle) throws SQLException {
+        vehicleService.deleteVehicle(vehicle);
     }
     
 }

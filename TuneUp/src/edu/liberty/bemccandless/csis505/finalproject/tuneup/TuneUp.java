@@ -283,6 +283,11 @@ public class TuneUp extends javax.swing.JFrame {
         populateVehicleList();
 
         removeVehicleBtn.setText("Remove");
+        removeVehicleBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeVehicleBtnActionPerformed(evt);
+            }
+        });
 
         addVehicleBtn.setText("Add");
         addVehicleBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -571,7 +576,7 @@ public class TuneUp extends javax.swing.JFrame {
         try {
             ListModel<Vehicle> vehicleListModel = vehicleController.getAllVehicles();
             vehicleList.setModel(vehicleListModel);
-            if (vehicleListModel.getSize() != 0) {
+            if (vehicleListModel.getSize() != 0 && vehicleList.getSelectedIndex() == -1) {
                 vehicleList.setSelectedIndex(0);
                 vehicleList.requestFocusInWindow();
             }
@@ -619,6 +624,27 @@ public class TuneUp extends javax.swing.JFrame {
             evt.consume();
         }
     }//GEN-LAST:event_addMileageTextFieldKeyTyped
+
+    private void removeVehicleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeVehicleBtnActionPerformed
+        Vehicle vehicle = vehicleList.getSelectedValue();
+        if (vehicle == null) {
+            return;
+        }
+        
+        try {
+            vehicleController.deleteVehicle(vehicle);
+            populateVehicleList();
+        } catch (SQLException ex) {
+            System.err.println(ex);
+            JOptionPane.showMessageDialog(rootPane, String.format("Unable to delete vehicle [%s].", vehicle), "SQL Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                DbConfig.close();
+            } catch (SQLException ex) {
+                System.err.println(ex);
+            }
+        }
+    }//GEN-LAST:event_removeVehicleBtnActionPerformed
 
     private void populateVehicleInformationFields(Vehicle vehicle) {
         vehicleDriverTextField.setText(vehicle.getDriver());

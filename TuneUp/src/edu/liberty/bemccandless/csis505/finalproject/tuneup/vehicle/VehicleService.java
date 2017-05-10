@@ -57,7 +57,12 @@ public class VehicleService {
         
     }
     
-    public void deleteVehicle(Vehicle vehicle) {
+    public void deleteVehicle(Vehicle vehicle) throws SQLException {
+        String deleteVehicleSql = "delete from vehicles where id=?";
         
+        PreparedStatement deleteVehicleStatement = DbConfig.getDbConnection().prepareStatement(deleteVehicleSql);
+        deleteVehicleStatement.setInt(1, vehicle.getId());
+        
+        deleteVehicleStatement.executeUpdate();
     }
 }
