@@ -77,5 +77,30 @@ public class Vehicle {
     public String toString() {
         return String.format("%d %s %s (%s)", year, make, model, driver);
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 11 * hash + this.id;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Vehicle other = (Vehicle) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
+    }
     
 }

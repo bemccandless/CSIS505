@@ -5,9 +5,8 @@ import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.Vehicle;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.VehicleController;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.VehicleService;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.ListModel;
 
 /**
  *
@@ -15,17 +14,12 @@ import javax.swing.JOptionPane;
  */
 public class TuneUp extends javax.swing.JFrame {
     
-    private VehicleController vehicleController;
+    private final VehicleController vehicleController;
 
     /**
      * Creates new form TuneUpGui
      */
     public TuneUp() {
-        initComponents();
-        
-        VehicleService vehicleService = new VehicleService();
-        vehicleController = new VehicleController(vehicleService);
-        
         try {
             DbConfig.getDbConnection();
         } catch (SQLException ex) {
@@ -33,6 +27,12 @@ public class TuneUp extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Unable to connection to database.", "SQL Error", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
+        
+        VehicleService vehicleService = new VehicleService();
+        vehicleController = new VehicleController(vehicleService);
+        
+        initComponents();
+        
     }
 
     /**
@@ -255,12 +255,14 @@ public class TuneUp extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jLabel2.setText("Vehicles");
 
-        vehicleList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        vehicleList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        vehicleList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                vehicleListValueChanged(evt);
+            }
         });
         jScrollPane2.setViewportView(vehicleList);
+        populateVehicleList();
 
         removeVehicleBtn.setText("Remove");
 
@@ -505,12 +507,9 @@ public class TuneUp extends javax.swing.JFrame {
         
         try {
             vehicleController.addVehicle(vehicle);
-            
-            vehicleDriverTextField.setText(vehicle.getDriver());
-            vehicleMakeTextField.setText(vehicle.getMake());
-            vehicleModelTextField.setText(vehicle.getModel());
-            vehicleYearTextField.setText(String.valueOf(vehicle.getYear()));
-            vehicleMileageTextField.setText(String.valueOf(vehicle.getMileage()));
+            populateVehicleList();
+            vehicleList.setSelectedValue(vehicle, true);
+            vehicleList.requestFocusInWindow();
             
             clearAddVehicleTextFields();
             addVehicleDialogBox.setVisible(false);
@@ -526,11 +525,48 @@ public class TuneUp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_addVehicleSaveBtnActionPerformed
 
+    private void populateVehicleList() {
+        try {
+            ListModel<Vehicle> vehicleListModel = vehicleController.getAllVehicles();
+            vehicleList.setModel(vehicleListModel);
+            if (vehicleListModel.getSize() != 0) {
+                vehicleList.setSelectedIndex(0);
+                vehicleList.requestFocusInWindow();
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex);
+            JOptionPane.showMessageDialog(rootPane, "Unable to obtain list of vehicles.", "SQL Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                DbConfig.close();
+            } catch (SQLException ex) {
+                System.err.println(ex);
+            }
+        }
+    }
+    
     private void addVehicleCancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehicleCancelBtnActionPerformed
         clearAddVehicleTextFields();
         addVehicleDialogBox.setVisible(false);
     }//GEN-LAST:event_addVehicleCancelBtnActionPerformed
 
+    private void vehicleListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_vehicleListValueChanged
+        Vehicle selectedVehicle = vehicleList.getSelectedValue();
+        if (selectedVehicle == null) {
+            return;
+        }
+        
+        populateVehicleInformationFields(selectedVehicle);
+    }//GEN-LAST:event_vehicleListValueChanged
+
+    private void populateVehicleInformationFields(Vehicle vehicle) {
+        vehicleDriverTextField.setText(vehicle.getDriver());
+        vehicleMakeTextField.setText(vehicle.getMake());
+        vehicleModelTextField.setText(vehicle.getModel());
+        vehicleYearTextField.setText(String.valueOf(vehicle.getYear()));
+        vehicleMileageTextField.setText(String.valueOf(vehicle.getMileage()));
+    }
+    
     private void clearAddVehicleTextFields() {
         addDriverTextField.setText("");
         addMakeTextField.setText("");
@@ -614,7 +650,7 @@ public class TuneUp extends javax.swing.JFrame {
     private javax.swing.JButton removeVehicleMaintenanceBtn;
     private javax.swing.JList<String> upcomingMaintenanceList;
     private javax.swing.JTextField vehicleDriverTextField;
-    private javax.swing.JList<String> vehicleList;
+    private javax.swing.JList<Vehicle> vehicleList;
     private javax.swing.JTable vehicleMaintenanceTable;
     private javax.swing.JTextField vehicleMakeTextField;
     private javax.swing.JTextField vehicleMileageTextField;
