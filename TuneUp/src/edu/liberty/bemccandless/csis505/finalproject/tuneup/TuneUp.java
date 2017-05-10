@@ -578,6 +578,7 @@ public class TuneUp extends javax.swing.JFrame {
             vehicleList.setModel(vehicleListModel);
             if (vehicleListModel.getSize() != 0 && vehicleList.getSelectedIndex() == -1) {
                 vehicleList.setSelectedIndex(0);
+                vehicleList.ensureIndexIsVisible(0);
                 vehicleList.requestFocusInWindow();
             }
         } catch (SQLException ex) {
