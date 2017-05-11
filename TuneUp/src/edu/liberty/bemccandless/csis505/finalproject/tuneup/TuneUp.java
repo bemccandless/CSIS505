@@ -1,11 +1,20 @@
 package edu.liberty.bemccandless.csis505.finalproject.tuneup;
 
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.config.DbConfig;
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.MaintenanceController;
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.MaintenanceService;
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.MaintenanceType;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.Vehicle;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.VehicleController;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.VehicleService;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 
@@ -16,6 +25,8 @@ import javax.swing.ListModel;
 public class TuneUp extends javax.swing.JFrame {
     
     private final VehicleController vehicleController;
+    private final MaintenanceController maintenanceController;
+    
     private boolean editMode;
 
     /**
@@ -31,7 +42,10 @@ public class TuneUp extends javax.swing.JFrame {
         }
         
         VehicleService vehicleService = new VehicleService();
+        MaintenanceService maintenanceService = new MaintenanceService();
+        
         vehicleController = new VehicleController(vehicleService);
+        maintenanceController = new MaintenanceController(maintenanceService);
         
         initComponents();
         
@@ -61,6 +75,19 @@ public class TuneUp extends javax.swing.JFrame {
         addMileageTextField = new javax.swing.JTextField();
         addVehicleCancelBtn = new javax.swing.JButton();
         addVehicleSaveBtn = new javax.swing.JButton();
+        addMaintenanceDialogBox = new javax.swing.JDialog();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        maintenanceDateTextField = new javax.swing.JFormattedTextField();
+        maintenanceTypeComboBox = new javax.swing.JComboBox<>();
+        jLabel18 = new javax.swing.JLabel();
+        maintenanceMileageTextField = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        maintenancePriceTextField = new javax.swing.JFormattedTextField();
+        addMaintenanceCancelBtn = new javax.swing.JButton();
+        addMaintenanceSaveBtn = new javax.swing.JButton();
+        jLabel21 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -231,6 +258,108 @@ public class TuneUp extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        addMaintenanceDialogBox.setTitle("Add Maintenance Item");
+        addMaintenanceDialogBox.setMinimumSize(new java.awt.Dimension(300, 260));
+        addMaintenanceDialogBox.setResizable(false);
+
+        jLabel16.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
+        jLabel16.setText("Maintenance");
+
+        jLabel17.setText("Date");
+
+        maintenanceDateTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("MM/dd/yyyy"))));
+
+        ComboBoxModel maintenanceTypeList = new DefaultComboBoxModel(MaintenanceType.getItems());
+        maintenanceTypeComboBox.setModel(maintenanceTypeList);
+
+        jLabel18.setText("Type");
+
+        jLabel19.setText("Mileage");
+
+        jLabel20.setText("Price");
+
+        maintenancePriceTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getCurrencyInstance())));
+
+        addMaintenanceCancelBtn.setText("Cancel");
+        addMaintenanceCancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addMaintenanceCancelBtnActionPerformed(evt);
+            }
+        });
+
+        addMaintenanceSaveBtn.setText("Save");
+        addMaintenanceSaveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addMaintenanceSaveBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel21.setText("[MM/DD/YYYY]");
+        jLabel21.setToolTipText("");
+
+        javax.swing.GroupLayout addMaintenanceDialogBoxLayout = new javax.swing.GroupLayout(addMaintenanceDialogBox.getContentPane());
+        addMaintenanceDialogBox.getContentPane().setLayout(addMaintenanceDialogBoxLayout);
+        addMaintenanceDialogBoxLayout.setHorizontalGroup(
+            addMaintenanceDialogBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addMaintenanceDialogBoxLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(addMaintenanceDialogBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(addMaintenanceDialogBoxLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(addMaintenanceDialogBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(addMaintenanceDialogBoxLayout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addComponent(jLabel17))
+                            .addComponent(jLabel19)
+                            .addComponent(jLabel18)
+                            .addComponent(jLabel20))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(addMaintenanceDialogBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(addMaintenanceDialogBoxLayout.createSequentialGroup()
+                                .addComponent(maintenanceDateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel21))
+                            .addComponent(maintenanceTypeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(maintenanceMileageTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(maintenancePriceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel16))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addMaintenanceDialogBoxLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(addMaintenanceSaveBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(addMaintenanceCancelBtn)
+                .addContainerGap())
+        );
+        addMaintenanceDialogBoxLayout.setVerticalGroup(
+            addMaintenanceDialogBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addMaintenanceDialogBoxLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(addMaintenanceDialogBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(maintenanceDateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel21))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(addMaintenanceDialogBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(maintenanceTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(addMaintenanceDialogBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(maintenanceMileageTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel19))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(addMaintenanceDialogBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel20)
+                    .addComponent(maintenancePriceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(addMaintenanceDialogBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addMaintenanceCancelBtn)
+                    .addComponent(addMaintenanceSaveBtn))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TuneUp - Vehicle Maintenance Tracker");
         setMinimumSize(new java.awt.Dimension(800, 600));
@@ -370,6 +499,11 @@ public class TuneUp extends javax.swing.JFrame {
         removeVehicleMaintenanceBtn.setText("Remove");
 
         addVehicleMaintenanceBtn.setText("Add");
+        addVehicleMaintenanceBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addVehicleMaintenanceBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -679,6 +813,43 @@ public class TuneUp extends javax.swing.JFrame {
         addVehicleDialogBox.setVisible(true);
     }//GEN-LAST:event_editVehicleBtnActionPerformed
 
+    private void addVehicleMaintenanceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehicleMaintenanceBtnActionPerformed
+        toggleAllButtonsEnabled(false);
+        addMaintenanceDialogBox.setVisible(true);
+    }//GEN-LAST:event_addVehicleMaintenanceBtnActionPerformed
+
+    private void addMaintenanceSaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMaintenanceSaveBtnActionPerformed
+        try {
+            DateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
+            maintenanceController.addMaintenanceItem(
+                    vehicleList.getSelectedValue(),
+                    MaintenanceType.getType(maintenanceTypeComboBox.getSelectedItem().toString()),
+                    Integer.valueOf(maintenanceMileageTextField.getText()),
+                    new Date(dateFormatter.parse(maintenanceDateTextField.getText()).getTime()),
+                    Double.valueOf(maintenancePriceTextField.getText()));
+            
+            toggleAllButtonsEnabled(true);
+            addMaintenanceDialogBox.setVisible(false);
+        } catch (ParseException ex) {
+            System.err.println(ex);
+            JOptionPane.showMessageDialog(rootPane, "Invalid service date format.", "Parse Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException ex) {
+            System.err.println(ex);
+            JOptionPane.showMessageDialog(rootPane, "Unable to add maintenance item", "SQL Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                DbConfig.close();
+            } catch (SQLException ex) {
+                System.err.println(ex);
+            }
+        }
+    }//GEN-LAST:event_addMaintenanceSaveBtnActionPerformed
+
+    private void addMaintenanceCancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMaintenanceCancelBtnActionPerformed
+        toggleAllButtonsEnabled(true);
+        addMaintenanceDialogBox.setVisible(false);
+    }//GEN-LAST:event_addMaintenanceCancelBtnActionPerformed
+
     private void populateVehicleInformationFields(Vehicle vehicle) {
         vehicleDriverTextField.setText(vehicle.getDriver());
         vehicleMakeTextField.setText(vehicle.getMake());
@@ -732,6 +903,9 @@ public class TuneUp extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField addDriverTextField;
+    private javax.swing.JButton addMaintenanceCancelBtn;
+    private javax.swing.JDialog addMaintenanceDialogBox;
+    private javax.swing.JButton addMaintenanceSaveBtn;
     private javax.swing.JTextField addMakeTextField;
     private javax.swing.JTextField addMileageTextField;
     private javax.swing.JTextField addModelTextField;
@@ -749,7 +923,13 @@ public class TuneUp extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -766,6 +946,10 @@ public class TuneUp extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JFormattedTextField maintenanceDateTextField;
+    private javax.swing.JTextField maintenanceMileageTextField;
+    private javax.swing.JFormattedTextField maintenancePriceTextField;
+    private javax.swing.JComboBox<String> maintenanceTypeComboBox;
     private javax.swing.JButton removeVehicleBtn;
     private javax.swing.JButton removeVehicleMaintenanceBtn;
     private javax.swing.JList<String> upcomingMaintenanceList;

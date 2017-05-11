@@ -3,6 +3,7 @@
  * Created: May 8, 2017
  */
 DROP TABLE vehicles;
+DROP TABLE maintenance_items;
 
 CREATE TABLE vehicles (
     id int not null generated always as identity,
@@ -11,6 +12,17 @@ CREATE TABLE vehicles (
     model varchar (20) not null,
     "year" int not null,
     mileage int not null,
+
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE maintenance_items (
+    id int not null generated always as identity,
+    vehicle_id int not null,
+    "type" varchar (50) not null,
+    mileage int not null,
+    service_date date not null,
+    price varchar(50) not null,
 
     PRIMARY KEY (id)
 );

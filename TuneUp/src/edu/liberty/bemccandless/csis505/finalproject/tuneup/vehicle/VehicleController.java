@@ -23,7 +23,7 @@ public class VehicleController {
         vehicleService.addVehicle(vehicle);
     }
     
-    public void editVehicle(Vehicle vehicle) {
+    public void editVehicle(Vehicle vehicle) throws SQLException {
         vehicleService.editVehicle(vehicle);
     }
     
