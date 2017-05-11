@@ -16,6 +16,7 @@ import javax.swing.ListModel;
 public class TuneUp extends javax.swing.JFrame {
     
     private final VehicleController vehicleController;
+    private boolean editMode;
 
     /**
      * Creates new form TuneUpGui
@@ -461,6 +462,11 @@ public class TuneUp extends javax.swing.JFrame {
         );
 
         editVehicleBtn.setText("Edit");
+        editVehicleBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editVehicleBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -522,7 +528,13 @@ public class TuneUp extends javax.swing.JFrame {
     }//GEN-LAST:event_addVehicleBtnActionPerformed
 
     private void addVehicleSaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehicleSaveBtnActionPerformed
-        Vehicle vehicle = new Vehicle();
+        Vehicle vehicle;
+        if (editMode) {
+            vehicle = vehicleList.getSelectedValue();
+        } else {
+            vehicle = new Vehicle();
+        }
+        
         vehicle.setDriver(addDriverTextField.getText());
         vehicle.setMake(addMakeTextField.getText());
         vehicle.setModel(addModelTextField.getText());
@@ -544,7 +556,11 @@ public class TuneUp extends javax.swing.JFrame {
         }
         
         try {
-            vehicleController.addVehicle(vehicle);
+            if (editMode) {
+                vehicleController.editVehicle(vehicle);
+            } else {
+                vehicleController.addVehicle(vehicle);
+            }
             populateVehicleList();
             vehicleList.setSelectedValue(vehicle, true);
             vehicleList.requestFocusInWindow();
@@ -552,6 +568,7 @@ public class TuneUp extends javax.swing.JFrame {
             clearAddVehicleTextFields();
             addVehicleDialogBox.setVisible(false);
             toggleAllButtonsEnabled(true);
+            editMode = false;
         } catch (SQLException ex) {
             System.err.println(ex);
             JOptionPane.showMessageDialog(rootPane, "Unable to add vehicle", "SQL Error", JOptionPane.ERROR_MESSAGE);
@@ -594,6 +611,7 @@ public class TuneUp extends javax.swing.JFrame {
     }
     
     private void addVehicleCancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehicleCancelBtnActionPerformed
+        editMode = false;
         clearAddVehicleTextFields();
         toggleAllButtonsEnabled(true);
         addVehicleDialogBox.setVisible(false);
@@ -646,6 +664,20 @@ public class TuneUp extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_removeVehicleBtnActionPerformed
+
+    private void editVehicleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editVehicleBtnActionPerformed
+        editMode = true;
+        toggleAllButtonsEnabled(false);
+        
+        Vehicle vehicle = vehicleList.getSelectedValue();
+        addDriverTextField.setText(vehicle.getDriver());
+        addMakeTextField.setText(vehicle.getMake());
+        addModelTextField.setText(vehicle.getModel());
+        addYearTextField.setText(String.valueOf(vehicle.getYear()));
+        addMileageTextField.setText(String.valueOf(vehicle.getMileage()));
+        
+        addVehicleDialogBox.setVisible(true);
+    }//GEN-LAST:event_editVehicleBtnActionPerformed
 
     private void populateVehicleInformationFields(Vehicle vehicle) {
         vehicleDriverTextField.setText(vehicle.getDriver());

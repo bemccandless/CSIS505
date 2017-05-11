@@ -53,8 +53,18 @@ public class VehicleService {
         
     }
     
-    public void editVehicle(Vehicle vehicle) {
+    public void editVehicle(Vehicle vehicle) throws SQLException {
+        String updateVehicleSql = "update tuneup.vehicles set driver=?, make=?, model=?, \"year\"=?, mileage=? where id=?";
         
+        PreparedStatement updateVehicleStatement = DbConfig.getDbConnection().prepareStatement(updateVehicleSql, Statement.RETURN_GENERATED_KEYS);
+        updateVehicleStatement.setString(1, vehicle.getDriver());
+        updateVehicleStatement.setString(2, vehicle.getMake());
+        updateVehicleStatement.setString(3, vehicle.getModel());
+        updateVehicleStatement.setInt(4, vehicle.getYear());
+        updateVehicleStatement.setInt(5, vehicle.getMileage());
+        updateVehicleStatement.setInt(6, vehicle.getId());
+        
+        updateVehicleStatement.executeUpdate();
     }
     
     public void deleteVehicle(Vehicle vehicle) throws SQLException {

@@ -683,6 +683,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Edit"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editVehicleBtnActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
