@@ -19,7 +19,7 @@ CREATE TABLE vehicles (
 CREATE TABLE maintenance_items (
     id int not null generated always as identity,
     vehicle_id int not null,
-    "type" varchar (50) not null,
+    "TYPE" varchar (50) not null,
     mileage int not null,
     service_date date not null,
     price varchar(50) not null,
@@ -37,3 +37,6 @@ insert into vehicles (driver, make, model, "year", mileage)
     values ('Margie', 'Ford', 'Focus', 2017, 3200);
 insert into vehicles (driver, make, model, "year", mileage)
     values ('Bill', 'Ford', 'F-150', 2001, 97000);
+
+select * from tuneup.MAINTENANCE_ITEMS;
+select * from tuneup.VEHICLES;

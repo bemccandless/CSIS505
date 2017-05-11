@@ -278,7 +278,7 @@ public class TuneUp extends javax.swing.JFrame {
 
         jLabel20.setText("Price");
 
-        maintenancePriceTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getCurrencyInstance())));
+        maintenancePriceTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
 
         addMaintenanceCancelBtn.setText("Cancel");
         addMaintenanceCancelBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -483,17 +483,18 @@ public class TuneUp extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jLabel9.setText("Maintenance");
 
-        vehicleMaintenanceTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        try {
+            vehicleMaintenanceTable.setModel(maintenanceController.getAllMaintenanceItems());
+        } catch (SQLException ex) {
+            System.err.println(ex);
+            JOptionPane.showMessageDialog(rootPane, "Unable to obtain maintenance items.", "SQL Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                DbConfig.close();
+            } catch (SQLException ex) {
+                System.err.println(ex);
             }
-        ));
+        }
         jScrollPane3.setViewportView(vehicleMaintenanceTable);
 
         removeVehicleMaintenanceBtn.setText("Remove");

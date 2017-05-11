@@ -13,9 +13,16 @@ import java.text.NumberFormat;
  * @author bemccandless
  */
 public class MaintenanceService {
+    
+    public ResultSet getAllMaintenanceItems() throws SQLException {
+        String selectItemsSql = "select * from tuneup.maintenance_items order by service_date desc";
+        PreparedStatement selectItemsStatement = DbConfig.getDbConnection().prepareStatement(selectItemsSql);
+        
+        return selectItemsStatement.executeQuery();
+    }
 
     public void addMaintenanceItem(Vehicle vehicle, MaintenanceItem maintenanceItem) throws SQLException {
-        String insertMaintenanceSql = "insert into tuneup.maintenance (vehicle_id, type, mileage, service_date, price) values (?, ?, ?, ?, ?)";
+        String insertMaintenanceSql = "insert into tuneup.maintenance_items (vehicle_id, type, mileage, service_date, price) values (?, ?, ?, ?, ?)";
         
         PreparedStatement insertMaintenanceStatement = DbConfig.getDbConnection().prepareStatement(insertMaintenanceSql, Statement.RETURN_GENERATED_KEYS);
         insertMaintenanceStatement.setInt(1, vehicle.getId());
