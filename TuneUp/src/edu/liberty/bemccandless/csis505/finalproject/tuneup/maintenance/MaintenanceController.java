@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -18,6 +20,10 @@ public class MaintenanceController {
 
     public MaintenanceController(MaintenanceService maintenanceService) {
         this.maintenanceService = maintenanceService;
+    }
+    
+    public ComboBoxModel<MaintenanceType> getAllMaintenanceTypes() {
+        return new DefaultComboBoxModel(maintenanceService.getAllMaintenanceTypes().toArray());
     }
     
     public TableModel getMaintenanceItemsByVehicle(Vehicle vehicle) throws SQLException {
@@ -46,9 +52,9 @@ public class MaintenanceController {
         return model;
     }
     
-    public void addMaintenanceItem(Vehicle vehicle, MaintenanceType maintenanceType, int serviceMileage, Date serviceDate, double price) throws SQLException {
+    public void addMaintenanceItem(Vehicle vehicle, String maintenanceType, int serviceMileage, Date serviceDate, double price) throws SQLException {
         MaintenanceItem maintenanceItem = new MaintenanceItem(
-                maintenanceType, serviceMileage, serviceDate, price);
+                MaintenanceTypeFactory.getMaintenanceType(maintenanceType), serviceMileage, serviceDate, price);
         
         maintenanceService.addMaintenanceItem(vehicle, maintenanceItem);
     }

@@ -318,7 +318,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="ComboBoxModel maintenanceTypeList = new DefaultComboBoxModel(MaintenanceType.getItems());"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="ComboBoxModel maintenanceTypeList = maintenanceController.getAllMaintenanceTypes();"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>

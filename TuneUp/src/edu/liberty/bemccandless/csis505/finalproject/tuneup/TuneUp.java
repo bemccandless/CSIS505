@@ -3,7 +3,6 @@ package edu.liberty.bemccandless.csis505.finalproject.tuneup;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.config.DbConfig;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.MaintenanceController;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.MaintenanceService;
-import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.MaintenanceType;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.Vehicle;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.VehicleController;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.VehicleService;
@@ -15,7 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.Enumeration;
 import java.util.regex.Pattern;
 import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.table.DefaultTableModel;
@@ -274,7 +272,7 @@ public class TuneUp extends javax.swing.JFrame {
 
         maintenanceDateTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("MM/dd/yyyy"))));
 
-        ComboBoxModel maintenanceTypeList = new DefaultComboBoxModel(MaintenanceType.getItems());
+        ComboBoxModel maintenanceTypeList = maintenanceController.getAllMaintenanceTypes();
         maintenanceTypeComboBox.setModel(maintenanceTypeList);
 
         jLabel18.setText("Type");
@@ -804,7 +802,7 @@ public class TuneUp extends javax.swing.JFrame {
     }//GEN-LAST:event_vehicleListValueChanged
 
     private void addYearTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addYearTextFieldActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_addYearTextFieldActionPerformed
 
     private void addYearTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_addYearTextFieldKeyTyped
@@ -870,7 +868,7 @@ public class TuneUp extends javax.swing.JFrame {
             DateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
             maintenanceController.addMaintenanceItem(
                     vehicleList.getSelectedValue(),
-                    MaintenanceType.getType(maintenanceTypeComboBox.getSelectedItem().toString()),
+                    maintenanceTypeComboBox.getSelectedItem().toString(),
                     Integer.valueOf(maintenanceMileageTextField.getText()),
                     new Date(dateFormatter.parse(maintenanceDateTextField.getText()).getTime()),
                     Double.valueOf(maintenancePriceTextField.getText()));

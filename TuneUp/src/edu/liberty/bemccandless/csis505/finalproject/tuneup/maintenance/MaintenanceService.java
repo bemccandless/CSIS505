@@ -7,12 +7,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.NumberFormat;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
  * @author bemccandless
  */
 public class MaintenanceService {
+    
+    public List<String> getAllMaintenanceTypes() {
+        return Arrays.asList(
+                "Air Filter Replacement", "Brake Replacement", "Inspection",
+                "New Tires", "Oil Change", "Tire Rotation");
+    }
     
     public ResultSet getMaintenanceItemsByVehicle(Vehicle vehicle) throws SQLException {
         String selectItemsSql = 
@@ -31,7 +39,7 @@ public class MaintenanceService {
         
         PreparedStatement insertMaintenanceStatement = DbConfig.getDbConnection().prepareStatement(insertMaintenanceSql, Statement.RETURN_GENERATED_KEYS);
         insertMaintenanceStatement.setInt(1, vehicle.getId());
-        insertMaintenanceStatement.setString(2, maintenanceItem.getMaintenanceType().getItem());
+        insertMaintenanceStatement.setString(2, maintenanceItem.getMaintenanceType().getType());
         insertMaintenanceStatement.setInt(3, maintenanceItem.getServiceMileage());
         insertMaintenanceStatement.setDate(4, maintenanceItem.getServiceDate());
         insertMaintenanceStatement.setString(5, NumberFormat.getCurrencyInstance().format(maintenanceItem.getPrice()));

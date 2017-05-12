@@ -1,41 +1,55 @@
 package edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Date;
+import java.time.Period;
 
 /**
  *
  * @author bemccandless
  */
-public enum MaintenanceType {
-    AIR_FILTER_REPLACEMENT("Air Filter Replacement"), BRAKE_REPLACEMENT("Brake Replacement"), 
-    INSPECTION("Inspection"), NEW_TIRES("New Tires"), OIL_CHANGE("Oil Change"), TIRE_ROTATION("Tire Rotation");
+public abstract class MaintenanceType {
     
-    private final String item;
-    
-    MaintenanceType(String item) {
-        this.item = item;
+    private String type;
+    private Period timeBetweenService;
+    private int mileageBetweenService;
+
+    public MaintenanceType(String type, Period timeBetweenService, int mileageBetweenService) {
+        this.type = type;
+        this.timeBetweenService = timeBetweenService;
+        this.mileageBetweenService = mileageBetweenService;
+    }
+
+    public Date calculateNextServiceDate(Date date) {
+        // TODO: add calculation logic
+        return new Date(0);
     }
     
-    public String getItem() {
-        return item;
+    public int calculateNextServiceMileage(int mileage) {
+        return mileage + this.mileageBetweenService;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Period getTimeBetweenService() {
+        return timeBetweenService;
+    }
+
+    public void setTimeBetweenService(Period timeBetweenService) {
+        this.timeBetweenService = timeBetweenService;
+    }
+
+    public int getMileageBetweenService() {
+        return mileageBetweenService;
+    }
+
+    public void setMileageBetweenService(int mileageBetweenService) {
+        this.mileageBetweenService = mileageBetweenService;
     }
     
-    public static MaintenanceType getType(String item) {
-        for (MaintenanceType value : MaintenanceType.values()) {
-            if(value.getItem().equals(item)) {
-                return value;
-            }
-        }
-        throw new IllegalStateException();
-    }
-    
-    public static String[] getItems() {
-        List<String> items = new ArrayList();
-        for (MaintenanceType value : MaintenanceType.values()) {
-            items.add(value.getItem());
-        }
-        
-        return items.toArray(new String[items.size()]);
-    }
 }
