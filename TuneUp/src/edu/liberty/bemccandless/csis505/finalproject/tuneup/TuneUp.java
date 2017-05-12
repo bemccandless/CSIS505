@@ -379,12 +379,9 @@ public class TuneUp extends javax.swing.JFrame {
         jLabel1.setText("Upcoming Maintenance");
 
         try {
-            Vehicle selectedVehicle = vehicleList.getSelectedValue();
-            if (selectedVehicle != null) {
-                upcomingMaintenanceList.setModel(eventController.getAllEventsForVehicle(selectedVehicle)
-                );
-                upcomingMaintenanceList.setFixedCellHeight(15);
-            }
+            upcomingMaintenanceList.setModel(eventController.getAllEvents()
+            );
+            upcomingMaintenanceList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         } catch (SQLException ex) {
             System.err.println(ex);
             JOptionPane.showMessageDialog(rootPane, "Unable to obtain upcoming maintenance items.", "SQL Error", JOptionPane.ERROR_MESSAGE);
@@ -816,7 +813,6 @@ public class TuneUp extends javax.swing.JFrame {
         
         populateVehicleMaintenanceTable(selectedVehicle);
         populateVehicleInformationFields(selectedVehicle);
-        populateUpcomingMaintenanceList(selectedVehicle);
     }//GEN-LAST:event_vehicleListValueChanged
 
     private void addYearTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addYearTextFieldActionPerformed
@@ -900,6 +896,8 @@ public class TuneUp extends javax.swing.JFrame {
             maintenanceMileageTextField.setText("");
             maintenancePriceTextField.setText("");
             
+            populateUpcomingMaintenanceList();
+            
             toggleAllButtonsEnabled(true);
             addMaintenanceDialogBox.setVisible(false);
         } catch (ParseException ex) {
@@ -932,6 +930,7 @@ public class TuneUp extends javax.swing.JFrame {
             maintenanceController.deleteMaintenanceItem(maintenanceItemId);
             
             populateVehicleMaintenanceTable(vehicleList.getSelectedValue());
+            populateUpcomingMaintenanceList();
         } catch (SQLException ex) {
             System.err.println(ex);
             JOptionPane.showMessageDialog(rootPane, "Unable to delete maintenance item", "SQL Error", JOptionPane.ERROR_MESSAGE);
@@ -992,11 +991,9 @@ public class TuneUp extends javax.swing.JFrame {
         }
     }
     
-    private void populateUpcomingMaintenanceList(Vehicle vehicle) {
+    private void populateUpcomingMaintenanceList() {
         try {
-            if (vehicle != null) {
-                upcomingMaintenanceList.setModel(eventController.getAllEventsForVehicle(vehicle));
-            }
+            upcomingMaintenanceList.setModel(eventController.getAllEvents());
         } catch (SQLException ex) {
             System.err.println(ex);
             JOptionPane.showMessageDialog(rootPane, "Unable to obtain upcoming maintenance items.", "SQL Error", JOptionPane.ERROR_MESSAGE);

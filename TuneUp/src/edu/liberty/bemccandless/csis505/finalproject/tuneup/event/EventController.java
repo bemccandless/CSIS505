@@ -1,7 +1,6 @@
 package edu.liberty.bemccandless.csis505.finalproject.tuneup.event;
 
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.MaintenanceService;
-import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.Vehicle;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.VehicleService;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,9 +23,9 @@ public class EventController {
         this.maintenanceService = maintenanceService;
     }
 
-    public ListModel getAllEventsForVehicle(Vehicle vehicle) throws SQLException {
+    public ListModel getAllEvents() throws SQLException {
         DefaultListModel<Event> events = new DefaultListModel();
-        ResultSet eventResults = eventService.getAllEventsForVehicle(vehicle);
+        ResultSet eventResults = eventService.getAllEvents();
         
         while (eventResults.next()) {
             Event event = new Event();

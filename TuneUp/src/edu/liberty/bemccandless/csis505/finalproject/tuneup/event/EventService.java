@@ -2,7 +2,6 @@ package edu.liberty.bemccandless.csis505.finalproject.tuneup.event;
 
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.config.DbConfig;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.MaintenanceType;
-import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.Vehicle;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,14 +22,11 @@ public class EventService {
         return maintenanceType.calculateNextServiceMileage(currentMilage);
     }
     
-    public ResultSet getAllEventsForVehicle(Vehicle vehicle) throws SQLException {
+    public ResultSet getAllEvents() throws SQLException {
         String selectAllEventsSql = 
-                "select * from tuneup.events "
-                + " where vehicle_id=?"
-                + " order by estimated_maintenance_date desc";
+                "select * from tuneup.events order by estimated_maintenance_date";
         
         PreparedStatement selectAllEventsStatement = DbConfig.getDbConnection().prepareStatement(selectAllEventsSql);
-        selectAllEventsStatement.setInt(1, vehicle.getId());
         
         return selectAllEventsStatement.executeQuery();
     }

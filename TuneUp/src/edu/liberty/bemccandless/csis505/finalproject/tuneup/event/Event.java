@@ -69,7 +69,7 @@ public class Event {
 
     @Override
     public String toString() {
-        return String.format("%d %s %s %s%nRecommended Mileage: %s%nEstimated Date: %s",
+        return String.format("<html>%d %s %s %s<br/>Recommended Mileage: %s<br>Estimated Date: %s</html>",
                 vehicle.getYear(), vehicle.getMake(), vehicle.getModel(), 
                 maintenanceItem.getMaintenanceType().getType(), this.getRecommendedMileage(), 
                 this.getEstimatedMaintenanceDate());
