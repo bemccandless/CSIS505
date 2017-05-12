@@ -18,6 +18,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
@@ -45,8 +46,8 @@ public class TuneUp extends javax.swing.JFrame {
             System.exit(1);
         }
         
-        VehicleService vehicleService = new VehicleService();
         MaintenanceService maintenanceService = new MaintenanceService();
+        VehicleService vehicleService = new VehicleService(maintenanceService);
         
         vehicleController = new VehicleController(vehicleService);
         maintenanceController = new MaintenanceController(maintenanceService);
@@ -489,32 +490,34 @@ public class TuneUp extends javax.swing.JFrame {
 
         try {
             Vehicle vehicle = vehicleList.getSelectedValue();
-            vehicleMaintenanceTable.setModel(maintenanceController.getMaintenanceItemsByVehicle(vehicle));
-            vehicleMaintenanceTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-            // Hide the ID and VEHICLE_ID column from view, but still able to maintain
-            // them in the model for when removing items.
-            TableColumnModel columnModel = vehicleMaintenanceTable.getColumnModel();
-            Enumeration columns = columnModel.getColumns();
+            if (vehicle != null) {
+                vehicleMaintenanceTable.setModel(maintenanceController.getMaintenanceItemsByVehicle(vehicle));
+                vehicleMaintenanceTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+                // Hide the ID and VEHICLE_ID column from view, but still able to maintain
+                // them in the model for when removing items.
+                TableColumnModel columnModel = vehicleMaintenanceTable.getColumnModel();
+                Enumeration columns = columnModel.getColumns();
 
-            TableColumn column = null;
-            boolean removed = false;
-            while (columns.hasMoreElements()) {
-                if (!removed) {
-                    column = (TableColumn) columns.nextElement();
-                }
-                removed = false;
+                TableColumn column = null;
+                boolean removed = false;
+                while (columns.hasMoreElements()) {
+                    if (!removed) {
+                        column = (TableColumn) columns.nextElement();
+                    }
+                    removed = false;
 
-                if (column != null) {
-                    if (column.getHeaderValue().equals("ID")) {
-                        TableColumn tempColumn = column;
-                        column = (TableColumn) columns.nextElement();
-                        columnModel.removeColumn(tempColumn);
-                        removed = true;
-                    } else if (column.getHeaderValue().equals("VEHICLE_ID")) {
-                        TableColumn tempColumn = column;
-                        column = (TableColumn) columns.nextElement();
-                        columnModel.removeColumn(tempColumn);
-                        removed = true;
+                    if (column != null) {
+                        if (column.getHeaderValue().equals("ID")) {
+                            TableColumn tempColumn = column;
+                            column = (TableColumn) columns.nextElement();
+                            columnModel.removeColumn(tempColumn);
+                            removed = true;
+                        } else if (column.getHeaderValue().equals("VEHICLE_ID")) {
+                            TableColumn tempColumn = column;
+                            column = (TableColumn) columns.nextElement();
+                            columnModel.removeColumn(tempColumn);
+                            removed = true;
+                        }
                     }
                 }
             }
@@ -827,6 +830,10 @@ public class TuneUp extends javax.swing.JFrame {
         try {
             vehicleController.deleteVehicle(vehicle);
             populateVehicleList();
+            
+            if (vehicleList.getModel().getSize() == 0) {
+                vehicleMaintenanceTable.setModel(new DefaultTableModel());
+            }
         } catch (SQLException ex) {
             System.err.println(ex);
             JOptionPane.showMessageDialog(rootPane, String.format("Unable to delete vehicle [%s].", vehicle), "SQL Error", JOptionPane.ERROR_MESSAGE);
@@ -901,6 +908,10 @@ public class TuneUp extends javax.swing.JFrame {
 
     private void removeVehicleMaintenanceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeVehicleMaintenanceBtnActionPerformed
         try {
+            if (vehicleMaintenanceTable.getSelectedRow() == -1) {
+                return;
+            }
+            
             int maintenanceItemId = (int) vehicleMaintenanceTable.getModel().getValueAt(vehicleMaintenanceTable.getSelectedRow(), 0);
             maintenanceController.deleteMaintenanceItem(maintenanceItemId);
             

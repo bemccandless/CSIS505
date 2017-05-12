@@ -52,4 +52,13 @@ public class MaintenanceService {
         
         deleteMaintenanceItemStatement.executeUpdate();
     }
+    
+    public void deleteMaintenanceItemsForVehicle(Vehicle vehicle) throws SQLException {
+        String deleteMaintenanceItemsForVehicleSql = "delete from maintenance_items where vehicle_id=?";
+        
+        PreparedStatement deleteMaintenanceItemsForVehicleStatement = DbConfig.getDbConnection().prepareStatement(deleteMaintenanceItemsForVehicleSql);
+        deleteMaintenanceItemsForVehicleStatement.setInt(1, vehicle.getId());
+        
+        deleteMaintenanceItemsForVehicleStatement.executeUpdate();
+    }
 }
