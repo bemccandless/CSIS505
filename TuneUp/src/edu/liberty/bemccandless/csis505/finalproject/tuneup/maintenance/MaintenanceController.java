@@ -20,8 +20,8 @@ public class MaintenanceController {
         this.maintenanceService = maintenanceService;
     }
     
-    public TableModel getAllMaintenanceItems() throws SQLException {
-        ResultSet itemResults = maintenanceService.getAllMaintenanceItems();
+    public TableModel getMaintenanceItemsByVehicle(Vehicle vehicle) throws SQLException {
+        ResultSet itemResults = maintenanceService.getMaintenanceItemsByVehicle(vehicle);
         ResultSetMetaData itemMetadata = itemResults.getMetaData();
         
         String[] columnNames = new String[itemMetadata.getColumnCount()];
@@ -29,7 +29,12 @@ public class MaintenanceController {
             columnNames[i] = itemMetadata.getColumnName(i + 1);
         }
         
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         while (itemResults.next()) {
             Object[] rowValues = new Object[columnNames.length];
             for (int i = 0; i < columnNames.length; i++) {

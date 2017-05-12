@@ -821,13 +821,15 @@
                     <Component class="javax.swing.JTable" name="vehicleMaintenanceTable">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="maintenanceController.getAllMaintenanceItems()" type="code"/>
+                          <Connection code="maintenanceController.getMaintenanceItemsByVehicle(vehicle)" type="code"/>
                         </Property>
-                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
+                          <JTableSelectionModel selectionMode="0"/>
+                        </Property>
                       </Properties>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="} catch (SQLException ex) {&#xa;    System.err.println(ex);&#xa;    JOptionPane.showMessageDialog(rootPane, &quot;Unable to obtain maintenance items.&quot;, &quot;SQL Error&quot;, JOptionPane.ERROR_MESSAGE);&#xa;} finally {&#xa;    try {&#xa;        DbConfig.close();&#xa;    } catch (SQLException ex) {&#xa;        System.err.println(ex);&#xa;    }&#xa;}"/>
-                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="try {"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="try {&#xa;Vehicle vehicle = vehicleList.getSelectedValue();"/>
                       </AuxValues>
                     </Component>
                   </SubComponents>
@@ -836,6 +838,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Remove"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeVehicleMaintenanceBtnActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="addVehicleMaintenanceBtn">
                   <Properties>

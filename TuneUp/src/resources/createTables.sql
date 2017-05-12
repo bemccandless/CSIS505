@@ -24,7 +24,9 @@ CREATE TABLE maintenance_items (
     service_date date not null,
     price varchar(50) not null,
 
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (vehicle_id) REFERENCES vehicles(id)
+    
 );
 
 insert into vehicles (driver, make, model, "year", mileage)

@@ -484,8 +484,9 @@ public class TuneUp extends javax.swing.JFrame {
         jLabel9.setText("Maintenance");
 
         try {
-            vehicleMaintenanceTable.setModel(maintenanceController.getAllMaintenanceItems());
-            vehicleMaintenanceTable.setEnabled(false);
+            Vehicle vehicle = vehicleList.getSelectedValue();
+            vehicleMaintenanceTable.setModel(maintenanceController.getMaintenanceItemsByVehicle(vehicle));
+            vehicleMaintenanceTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         } catch (SQLException ex) {
             System.err.println(ex);
             JOptionPane.showMessageDialog(rootPane, "Unable to obtain maintenance items.", "SQL Error", JOptionPane.ERROR_MESSAGE);
@@ -499,6 +500,11 @@ public class TuneUp extends javax.swing.JFrame {
         jScrollPane3.setViewportView(vehicleMaintenanceTable);
 
         removeVehicleMaintenanceBtn.setText("Remove");
+        removeVehicleMaintenanceBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeVehicleMaintenanceBtnActionPerformed(evt);
+            }
+        });
 
         addVehicleMaintenanceBtn.setText("Add");
         addVehicleMaintenanceBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -759,6 +765,7 @@ public class TuneUp extends javax.swing.JFrame {
             return;
         }
         
+        populateVehicleMaintenanceTable(selectedVehicle);
         populateVehicleInformationFields(selectedVehicle);
     }//GEN-LAST:event_vehicleListValueChanged
 
@@ -830,7 +837,8 @@ public class TuneUp extends javax.swing.JFrame {
                     new Date(dateFormatter.parse(maintenanceDateTextField.getText()).getTime()),
                     Double.valueOf(maintenancePriceTextField.getText()));
             
-            vehicleMaintenanceTable.setModel(maintenanceController.getAllMaintenanceItems());
+            Vehicle vehicle = vehicleList.getSelectedValue();
+            vehicleMaintenanceTable.setModel(maintenanceController.getMaintenanceItemsByVehicle(vehicle));
             
             maintenanceDateTextField.setText("");
             maintenanceTypeComboBox.setSelectedIndex(-1);
@@ -859,6 +867,25 @@ public class TuneUp extends javax.swing.JFrame {
         addMaintenanceDialogBox.setVisible(false);
     }//GEN-LAST:event_addMaintenanceCancelBtnActionPerformed
 
+    private void removeVehicleMaintenanceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeVehicleMaintenanceBtnActionPerformed
+        // TODO: add remove maintenance item
+    }//GEN-LAST:event_removeVehicleMaintenanceBtnActionPerformed
+
+    private void populateVehicleMaintenanceTable(Vehicle vehicle) {
+        try {
+            vehicleMaintenanceTable.setModel(maintenanceController.getMaintenanceItemsByVehicle(vehicle));
+        } catch (SQLException ex) {
+            System.err.println(ex);
+            JOptionPane.showMessageDialog(rootPane, "Unable to obtain maintenance items for vehicle", "SQL Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                DbConfig.close();
+            } catch (SQLException ex) {
+                System.err.println(ex);
+            }
+        }
+    }
+    
     private void populateVehicleInformationFields(Vehicle vehicle) {
         vehicleDriverTextField.setText(vehicle.getDriver());
         vehicleMakeTextField.setText(vehicle.getMake());
