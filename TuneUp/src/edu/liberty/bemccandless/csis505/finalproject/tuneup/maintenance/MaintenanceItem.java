@@ -7,7 +7,8 @@ import java.sql.Date;
  * @author bemccandless
  */
 public class MaintenanceItem {
-
+    
+    private int id;
     private MaintenanceType maintenanceType;
     private int serviceMileage;
     private Date serviceDate;
@@ -21,6 +22,14 @@ public class MaintenanceItem {
         this.serviceMileage = serviceMileage;
         this.serviceDate = serviceDate;
         this.price = price;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public MaintenanceType getMaintenanceType() {

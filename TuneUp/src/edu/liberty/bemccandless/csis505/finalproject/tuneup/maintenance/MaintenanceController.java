@@ -53,4 +53,8 @@ public class MaintenanceController {
         maintenanceService.addMaintenanceItem(vehicle, maintenanceItem);
     }
     
+    public void deleteMaintenanceItem(int maintenanceItemId) throws SQLException {
+        maintenanceService.deleteMaintenanceItem(maintenanceItemId);
+    }
+    
 }

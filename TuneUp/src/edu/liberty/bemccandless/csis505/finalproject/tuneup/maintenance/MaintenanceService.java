@@ -16,7 +16,7 @@ public class MaintenanceService {
     
     public ResultSet getMaintenanceItemsByVehicle(Vehicle vehicle) throws SQLException {
         String selectItemsSql = 
-                "select \"TYPE\", mileage, service_date, price from tuneup.maintenance_items "
+                "select id, vehicle_id, \"TYPE\", mileage, service_date, price from tuneup.maintenance_items "
                 + " where vehicle_id=?"
                 + " order by service_date desc";
         
@@ -40,7 +40,16 @@ public class MaintenanceService {
         
         ResultSet generatedKey = insertMaintenanceStatement.getGeneratedKeys();
         if (generatedKey.next()) {
-            vehicle.setId(generatedKey.getInt(1));
+            maintenanceItem.setId(generatedKey.getInt(1));
         }
+    }
+    
+    public void deleteMaintenanceItem(int maintenanceItemId) throws SQLException {
+        String deleteMaintenanceItemSql = "delete from maintenance_items where id=?";
+        
+        PreparedStatement deleteMaintenanceItemStatement = DbConfig.getDbConnection().prepareStatement(deleteMaintenanceItemSql);
+        deleteMaintenanceItemStatement.setInt(1, maintenanceItemId);
+        
+        deleteMaintenanceItemStatement.executeUpdate();
     }
 }

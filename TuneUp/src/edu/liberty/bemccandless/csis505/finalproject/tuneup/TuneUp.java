@@ -12,11 +12,15 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Enumeration;
 import java.util.regex.Pattern;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -487,9 +491,36 @@ public class TuneUp extends javax.swing.JFrame {
             Vehicle vehicle = vehicleList.getSelectedValue();
             vehicleMaintenanceTable.setModel(maintenanceController.getMaintenanceItemsByVehicle(vehicle));
             vehicleMaintenanceTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+            // Hide the ID and VEHICLE_ID column from view, but still able to maintain
+            // them in the model for when removing items.
+            TableColumnModel columnModel = vehicleMaintenanceTable.getColumnModel();
+            Enumeration columns = columnModel.getColumns();
+
+            TableColumn column = null;
+            boolean removed = false;
+            while (columns.hasMoreElements()) {
+                if (!removed) {
+                    column = (TableColumn) columns.nextElement();
+                }
+                removed = false;
+
+                if (column != null) {
+                    if (column.getHeaderValue().equals("ID")) {
+                        TableColumn tempColumn = column;
+                        column = (TableColumn) columns.nextElement();
+                        columnModel.removeColumn(tempColumn);
+                        removed = true;
+                    } else if (column.getHeaderValue().equals("VEHICLE_ID")) {
+                        TableColumn tempColumn = column;
+                        column = (TableColumn) columns.nextElement();
+                        columnModel.removeColumn(tempColumn);
+                        removed = true;
+                    }
+                }
+            }
         } catch (SQLException ex) {
             System.err.println(ex);
-            JOptionPane.showMessageDialog(rootPane, "Unable to obtain maintenance items.", "SQL Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane, "Unable to obtain maintenance items for vehicle", "SQL Error", JOptionPane.ERROR_MESSAGE);
         } finally {
             try {
                 DbConfig.close();
@@ -838,7 +869,8 @@ public class TuneUp extends javax.swing.JFrame {
                     Double.valueOf(maintenancePriceTextField.getText()));
             
             Vehicle vehicle = vehicleList.getSelectedValue();
-            vehicleMaintenanceTable.setModel(maintenanceController.getMaintenanceItemsByVehicle(vehicle));
+            
+            populateVehicleMaintenanceTable(vehicle);
             
             maintenanceDateTextField.setText("");
             maintenanceTypeComboBox.setSelectedIndex(-1);
@@ -868,12 +900,59 @@ public class TuneUp extends javax.swing.JFrame {
     }//GEN-LAST:event_addMaintenanceCancelBtnActionPerformed
 
     private void removeVehicleMaintenanceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeVehicleMaintenanceBtnActionPerformed
-        // TODO: add remove maintenance item
+        try {
+            int maintenanceItemId = (int) vehicleMaintenanceTable.getModel().getValueAt(vehicleMaintenanceTable.getSelectedRow(), 0);
+            maintenanceController.deleteMaintenanceItem(maintenanceItemId);
+            
+            populateVehicleMaintenanceTable(vehicleList.getSelectedValue());
+        } catch (SQLException ex) {
+            System.err.println(ex);
+            JOptionPane.showMessageDialog(rootPane, "Unable to delete maintenance item", "SQL Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                DbConfig.close();
+            } catch (SQLException ex) {
+                System.err.println(ex);
+            }
+        }
     }//GEN-LAST:event_removeVehicleMaintenanceBtnActionPerformed
 
     private void populateVehicleMaintenanceTable(Vehicle vehicle) {
         try {
-            vehicleMaintenanceTable.setModel(maintenanceController.getMaintenanceItemsByVehicle(vehicle));
+            TableModel tableModel =  maintenanceController.getMaintenanceItemsByVehicle(vehicle);
+            vehicleMaintenanceTable.setModel(tableModel);
+            
+            if (tableModel.getRowCount() > 0) {
+                vehicleMaintenanceTable.setRowSelectionInterval(0, 0);
+            }
+
+            // Hide the ID and VEHICLE_ID column from view, but still able to maintain
+            // them in the model for when removing items.
+            TableColumnModel columnModel = vehicleMaintenanceTable.getColumnModel();
+            Enumeration columns = columnModel.getColumns();
+            
+            TableColumn column = null;
+            boolean removed = false;
+            while (columns.hasMoreElements()) {
+                if (!removed) {
+                    column = (TableColumn) columns.nextElement();
+                }
+                removed = false;
+                
+                if (column != null) {
+                    if (column.getHeaderValue().equals("ID")) {
+                        TableColumn tempColumn = column;
+                        column = (TableColumn) columns.nextElement();
+                        columnModel.removeColumn(tempColumn);
+                        removed = true;
+                    } else if (column.getHeaderValue().equals("VEHICLE_ID")) {
+                        TableColumn tempColumn = column;
+                        column = (TableColumn) columns.nextElement();
+                        columnModel.removeColumn(tempColumn);
+                        removed = true;
+                    }
+                }
+            }
         } catch (SQLException ex) {
             System.err.println(ex);
             JOptionPane.showMessageDialog(rootPane, "Unable to obtain maintenance items for vehicle", "SQL Error", JOptionPane.ERROR_MESSAGE);
