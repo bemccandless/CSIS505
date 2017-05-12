@@ -15,7 +15,7 @@ import java.text.NumberFormat;
 public class MaintenanceService {
     
     public ResultSet getAllMaintenanceItems() throws SQLException {
-        String selectItemsSql = "select * from tuneup.maintenance_items order by service_date desc";
+        String selectItemsSql = "select \"TYPE\", mileage, service_date, price from tuneup.maintenance_items order by service_date desc";
         PreparedStatement selectItemsStatement = DbConfig.getDbConnection().prepareStatement(selectItemsSql);
         
         return selectItemsStatement.executeQuery();
@@ -26,7 +26,7 @@ public class MaintenanceService {
         
         PreparedStatement insertMaintenanceStatement = DbConfig.getDbConnection().prepareStatement(insertMaintenanceSql, Statement.RETURN_GENERATED_KEYS);
         insertMaintenanceStatement.setInt(1, vehicle.getId());
-        insertMaintenanceStatement.setString(2, maintenanceItem.getMaintenanceType().toString());
+        insertMaintenanceStatement.setString(2, maintenanceItem.getMaintenanceType().getItem());
         insertMaintenanceStatement.setInt(3, maintenanceItem.getServiceMileage());
         insertMaintenanceStatement.setDate(4, maintenanceItem.getServiceDate());
         insertMaintenanceStatement.setString(5, NumberFormat.getCurrencyInstance().format(maintenanceItem.getPrice()));

@@ -485,6 +485,7 @@ public class TuneUp extends javax.swing.JFrame {
 
         try {
             vehicleMaintenanceTable.setModel(maintenanceController.getAllMaintenanceItems());
+            vehicleMaintenanceTable.setEnabled(false);
         } catch (SQLException ex) {
             System.err.println(ex);
             JOptionPane.showMessageDialog(rootPane, "Unable to obtain maintenance items.", "SQL Error", JOptionPane.ERROR_MESSAGE);
@@ -828,6 +829,13 @@ public class TuneUp extends javax.swing.JFrame {
                     Integer.valueOf(maintenanceMileageTextField.getText()),
                     new Date(dateFormatter.parse(maintenanceDateTextField.getText()).getTime()),
                     Double.valueOf(maintenancePriceTextField.getText()));
+            
+            vehicleMaintenanceTable.setModel(maintenanceController.getAllMaintenanceItems());
+            
+            maintenanceDateTextField.setText("");
+            maintenanceTypeComboBox.setSelectedIndex(-1);
+            maintenanceMileageTextField.setText("");
+            maintenancePriceTextField.setText("");
             
             toggleAllButtonsEnabled(true);
             addMaintenanceDialogBox.setVisible(false);
