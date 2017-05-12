@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,6 +19,27 @@ public class MaintenanceService {
         return Arrays.asList(
                 "Air Filter Replacement", "Brake Replacement", "Inspection",
                 "New Tires", "Oil Change", "Tire Rotation");
+    }
+    
+    public MaintenanceItem getMaintenanceItemById(int id) throws SQLException {
+        String selectItemsByIdSql = "select * from tuneup.maintenance_items where id=?";
+        
+        PreparedStatement selectItemsByIdStatement = DbConfig.getDbConnection().prepareStatement(selectItemsByIdSql);
+        selectItemsByIdStatement.setInt(1, id);
+        
+        ResultSet itemResults = selectItemsByIdStatement.executeQuery();
+
+        MaintenanceItem maintenanceItem = null;
+        while (itemResults.next()) {
+            maintenanceItem = new MaintenanceItem(
+                    itemResults.getInt("id"),
+                    MaintenanceTypeFactory.getMaintenanceType(itemResults.getString("type")),
+                    itemResults.getInt("mileage"),
+                    itemResults.getDate("service_date"),
+                    itemResults.getDouble("price"));
+        }
+        
+        return maintenanceItem;
     }
     
     public ResultSet getMaintenanceItemsByVehicle(Vehicle vehicle) throws SQLException {
@@ -42,7 +62,7 @@ public class MaintenanceService {
         insertMaintenanceStatement.setString(2, maintenanceItem.getMaintenanceType().getType());
         insertMaintenanceStatement.setInt(3, maintenanceItem.getServiceMileage());
         insertMaintenanceStatement.setDate(4, maintenanceItem.getServiceDate());
-        insertMaintenanceStatement.setString(5, NumberFormat.getCurrencyInstance().format(maintenanceItem.getPrice()));
+        insertMaintenanceStatement.setDouble(5, maintenanceItem.getPrice());
         
         insertMaintenanceStatement.executeUpdate();
         

@@ -10,6 +10,7 @@ import java.sql.Date;
  */
 public class Event {
     
+    private int id;
     private Vehicle vehicle;
     private MaintenanceItem maintenanceItem;
     private Date estimatedMaintenanceDate;
@@ -18,11 +19,20 @@ public class Event {
     public Event() {
     }
 
-    public Event(Vehicle vehicle, MaintenanceItem maintenanceItem, Date estimatedMaintenanceDate, int recommendedMileage) {
+    public Event(int id, Vehicle vehicle, MaintenanceItem maintenanceItem, Date estimatedMaintenanceDate, int recommendedMileage) {
+        this.id = id;
         this.vehicle = vehicle;
         this.maintenanceItem = maintenanceItem;
         this.estimatedMaintenanceDate = estimatedMaintenanceDate;
         this.recommendedMileage = recommendedMileage;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Vehicle getVehicle() {
@@ -41,11 +51,11 @@ public class Event {
         this.maintenanceItem = maintenanceItem;
     }
 
-    public Date getEstimatedMaintenance() {
+    public Date getEstimatedMaintenanceDate() {
         return estimatedMaintenanceDate;
     }
 
-    public void setEstimatedMaintenance(Date estimatedMaintenanceDate) {
+    public void setEstimatedMaintenanceDate(Date estimatedMaintenanceDate) {
         this.estimatedMaintenanceDate = estimatedMaintenanceDate;
     }
 
@@ -62,7 +72,7 @@ public class Event {
         return String.format("%d %s %s %s%nRecommended Mileage: %s%nEstimated Date: %s",
                 vehicle.getYear(), vehicle.getMake(), vehicle.getModel(), 
                 maintenanceItem.getMaintenanceType().getType(), this.getRecommendedMileage(), 
-                this.getEstimatedMaintenance());
+                this.getEstimatedMaintenanceDate());
     }
     
 }

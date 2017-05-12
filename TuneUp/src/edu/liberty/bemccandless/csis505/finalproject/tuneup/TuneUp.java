@@ -1,6 +1,8 @@
 package edu.liberty.bemccandless.csis505.finalproject.tuneup;
 
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.config.DbConfig;
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.event.EventController;
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.event.EventService;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.MaintenanceController;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.MaintenanceService;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.Vehicle;
@@ -29,6 +31,7 @@ public class TuneUp extends javax.swing.JFrame {
     
     private final VehicleController vehicleController;
     private final MaintenanceController maintenanceController;
+    private final EventController eventController;
     
     private boolean editMode;
 
@@ -46,9 +49,11 @@ public class TuneUp extends javax.swing.JFrame {
         
         MaintenanceService maintenanceService = new MaintenanceService();
         VehicleService vehicleService = new VehicleService(maintenanceService);
+        EventService eventService = new EventService();
         
         vehicleController = new VehicleController(vehicleService);
         maintenanceController = new MaintenanceController(maintenanceService);
+        eventController = new EventController(eventService, vehicleService, maintenanceService);
         
         initComponents();
         
@@ -373,11 +378,23 @@ public class TuneUp extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jLabel1.setText("Upcoming Maintenance");
 
-        upcomingMaintenanceList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        try {
+            Vehicle selectedVehicle = vehicleList.getSelectedValue();
+            if (selectedVehicle != null) {
+                upcomingMaintenanceList.setModel(eventController.getAllEventsForVehicle(selectedVehicle)
+                );
+                upcomingMaintenanceList.setFixedCellHeight(15);
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex);
+            JOptionPane.showMessageDialog(rootPane, "Unable to obtain upcoming maintenance items.", "SQL Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                DbConfig.close();
+            } catch (SQLException ex) {
+                System.err.println(ex);
+            }
+        }
         jScrollPane1.setViewportView(upcomingMaintenanceList);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -799,6 +816,7 @@ public class TuneUp extends javax.swing.JFrame {
         
         populateVehicleMaintenanceTable(selectedVehicle);
         populateVehicleInformationFields(selectedVehicle);
+        populateUpcomingMaintenanceList(selectedVehicle);
     }//GEN-LAST:event_vehicleListValueChanged
 
     private void addYearTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addYearTextFieldActionPerformed
@@ -965,6 +983,23 @@ public class TuneUp extends javax.swing.JFrame {
         } catch (SQLException ex) {
             System.err.println(ex);
             JOptionPane.showMessageDialog(rootPane, "Unable to obtain maintenance items for vehicle", "SQL Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                DbConfig.close();
+            } catch (SQLException ex) {
+                System.err.println(ex);
+            }
+        }
+    }
+    
+    private void populateUpcomingMaintenanceList(Vehicle vehicle) {
+        try {
+            if (vehicle != null) {
+                upcomingMaintenanceList.setModel(eventController.getAllEventsForVehicle(vehicle));
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex);
+            JOptionPane.showMessageDialog(rootPane, "Unable to obtain upcoming maintenance items.", "SQL Error", JOptionPane.ERROR_MESSAGE);
         } finally {
             try {
                 DbConfig.close();

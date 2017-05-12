@@ -15,10 +15,32 @@ import javax.swing.ListModel;
  */
 public class VehicleService {
     
-    private MaintenanceService maintenanceService;
+    private final MaintenanceService maintenanceService;
 
     public VehicleService(MaintenanceService maintenanceService) {
         this.maintenanceService = maintenanceService;
+    }
+    
+    public Vehicle getVehicleById(int id) throws SQLException {
+        String selectVehicleByIdSql = "select * from tuneup.vehicles where id=?";
+        
+        PreparedStatement selectVehicleByIdStatement = DbConfig.getDbConnection().prepareStatement(selectVehicleByIdSql);
+        selectVehicleByIdStatement.setInt(1, id);
+        
+        ResultSet vehicleResults = selectVehicleByIdStatement.executeQuery();
+
+        Vehicle vehicle = null;
+        while (vehicleResults.next()) {
+            vehicle = new Vehicle(
+                    vehicleResults.getInt("id"),
+                    vehicleResults.getString("driver"),
+                    vehicleResults.getString("make"),
+                    vehicleResults.getString("model"),
+                    vehicleResults.getInt("year"),
+                    vehicleResults.getInt("mileage"));
+        }
+        
+        return vehicle;
     }
     
     public ListModel<Vehicle> getAllVehicles() throws SQLException {

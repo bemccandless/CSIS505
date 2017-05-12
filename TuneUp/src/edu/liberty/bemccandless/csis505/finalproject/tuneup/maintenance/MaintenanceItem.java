@@ -17,7 +17,8 @@ public class MaintenanceItem {
     public MaintenanceItem() {
     }
 
-    public MaintenanceItem(MaintenanceType maintenanceType, int serviceMileage, Date serviceDate, double price) {
+    public MaintenanceItem(int id, MaintenanceType maintenanceType, int serviceMileage, Date serviceDate, double price) {
+        this.id = id;
         this.maintenanceType = maintenanceType;
         this.serviceMileage = serviceMileage;
         this.serviceDate = serviceDate;

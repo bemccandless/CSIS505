@@ -23,7 +23,7 @@ CREATE TABLE maintenance_items (
     "TYPE" varchar (50) not null,
     mileage int not null,
     service_date date not null,
-    price varchar(50) not null,
+    price double not null,
 
     PRIMARY KEY (id),
     FOREIGN KEY (vehicle_id) REFERENCES vehicles(id)
@@ -57,19 +57,19 @@ insert into vehicles (driver, make, model, "year", mileage)
 -- add maintenance items for vehicles
 -- Brian
 insert into maintenance_items (vehicle_id, "TYPE", mileage, service_date, price)
-    values (1, 'Oil Change', 163222, date('2017-02-14'), '$35.67');
+    values (1, 'Oil Change', 163222, date('2017-02-14'), 35.67);
 insert into maintenance_items (vehicle_id, "TYPE", mileage, service_date, price)
-    values (1, 'New Tires', 155778, date('2015-11-02'), '$408.98');
+    values (1, 'New Tires', 155778, date('2015-11-02'), 408.98);
 insert into maintenance_items (vehicle_id, "TYPE", mileage, service_date, price)
-    values (1, 'Tire Rotation', 161220, date('2016-03-27'), '$5.99');
+    values (1, 'Tire Rotation', 161220, date('2016-03-27'), 5.99);
 --Amy
 insert into maintenance_items (vehicle_id, "TYPE", mileage, service_date, price)
-    values (2, 'Oil Change', 47548, date('2016-07-28'), '$38.40');
+    values (2, 'Oil Change', 47548, date('2016-07-28'), 38.40);
 insert into maintenance_items (vehicle_id, "TYPE", mileage, service_date, price)
-    values (2, 'Air Filter Replacement', 47548, date('2016-07-28'), '$12.00');
+    values (2, 'Air Filter Replacement', 47548, date('2016-07-28'), 12.00);
 --Bruce
 insert into maintenance_items (vehicle_id, "TYPE", mileage, service_date, price)
-    values (3, 'Brake Replacement', 33741, date('2017-05-10'), '$76.05');
+    values (3, 'Brake Replacement', 33741, date('2017-05-10'), 76.05);
 
 --add events for upcoming maintenance
 -- Brian
@@ -90,3 +90,4 @@ insert into events (vehicle_id, maintenance_item_id, estimated_maintenance_date,
 
 select * from tuneup.MAINTENANCE_ITEMS;
 select * from tuneup.VEHICLES;
+select * from tuneup.EVENTS;

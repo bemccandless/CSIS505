@@ -53,8 +53,11 @@ public class MaintenanceController {
     }
     
     public void addMaintenanceItem(Vehicle vehicle, String maintenanceType, int serviceMileage, Date serviceDate, double price) throws SQLException {
-        MaintenanceItem maintenanceItem = new MaintenanceItem(
-                MaintenanceTypeFactory.getMaintenanceType(maintenanceType), serviceMileage, serviceDate, price);
+        MaintenanceItem maintenanceItem = new MaintenanceItem();
+        maintenanceItem.setMaintenanceType(MaintenanceTypeFactory.getMaintenanceType(maintenanceType));
+        maintenanceItem.setServiceMileage(serviceMileage);
+        maintenanceItem.setServiceDate(serviceDate);
+        maintenanceItem.setPrice(price);
         
         maintenanceService.addMaintenanceItem(vehicle, maintenanceItem);
     }
