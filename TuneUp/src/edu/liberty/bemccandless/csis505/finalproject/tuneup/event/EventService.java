@@ -48,5 +48,14 @@ public class EventService {
             event.setId(generatedKey.getInt(1));
         }
     }
+    
+    public void deleteEventsForMaintenanceItem(int maintenanceItemId) throws SQLException {
+        String deleteEventsForMaintenanceItemSql = "delete from events where maintenance_item_id=?";
+        
+        PreparedStatement deleteEventsForMaintenanceItemStatement = DbConfig.getDbConnection().prepareStatement(deleteEventsForMaintenanceItemSql);
+        deleteEventsForMaintenanceItemStatement.setInt(1, maintenanceItemId);
+        
+        deleteEventsForMaintenanceItemStatement.executeUpdate();
+    }
 
 }

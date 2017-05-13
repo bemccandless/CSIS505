@@ -55,7 +55,7 @@ public class TuneUp extends javax.swing.JFrame {
         EventService eventService = new EventService();
         
         vehicleController = new VehicleController(vehicleService);
-        maintenanceController = new MaintenanceController(maintenanceService);
+        maintenanceController = new MaintenanceController(maintenanceService, eventService);
         eventController = new EventController(eventService, vehicleService, maintenanceService);
         
         initComponents();

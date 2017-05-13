@@ -56,4 +56,5 @@ public class EventController {
         
         eventService.addEvent(event);
     }
+    
 }

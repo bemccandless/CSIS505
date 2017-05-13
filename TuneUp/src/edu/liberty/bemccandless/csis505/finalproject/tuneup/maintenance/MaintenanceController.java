@@ -1,5 +1,6 @@
 package edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance;
 
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.event.EventService;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.MaintenanceType;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.Vehicle;
 import java.sql.ResultSet;
@@ -17,9 +18,11 @@ import javax.swing.table.TableModel;
 public class MaintenanceController {
 
     private final MaintenanceService maintenanceService;
+    private final EventService eventService;
 
-    public MaintenanceController(MaintenanceService maintenanceService) {
+    public MaintenanceController(MaintenanceService maintenanceService, EventService eventService) {
         this.maintenanceService = maintenanceService;
+        this.eventService = eventService;
     }
     
     public ComboBoxModel<MaintenanceType> getAllMaintenanceTypes() {
@@ -57,6 +60,7 @@ public class MaintenanceController {
     }
     
     public void deleteMaintenanceItem(int maintenanceItemId) throws SQLException {
+        eventService.deleteEventsForMaintenanceItem(maintenanceItemId);
         maintenanceService.deleteMaintenanceItem(maintenanceItemId);
     }
     
