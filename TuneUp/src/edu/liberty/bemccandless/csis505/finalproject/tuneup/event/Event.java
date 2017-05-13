@@ -69,9 +69,22 @@ public class Event {
 
     @Override
     public String toString() {
-        return String.format("<html>%d %s %s %s<br/>Recommended Mileage: %s<br>Estimated Date: %s</html>",
-                vehicle.getYear(), vehicle.getMake(), vehicle.getModel(), 
-                maintenanceItem.getMaintenanceType().getType(), this.getRecommendedMileage(), 
+        return String.format(
+                    "<html>\n" +
+                    "	<div style='padding: 5px 0px;'>\n" +
+                    "		<div style='padding: 2px 0px'>\n" +
+                    "			<b>%s -- %d %s %s</b>\n" +
+                    "		</div>\n" +
+                    "		<div>\n" +
+                    "			Recommended Mileage:  %s\n" +
+                    "		</div>\n" +
+                    "		<div>\n" +
+                    "			Estimated Service Date: %s\n" +
+                    "		</div>\n" +
+                    "	</div>\n" +
+                    "</html>",
+                maintenanceItem.getMaintenanceType().getType(), vehicle.getYear(), 
+                vehicle.getMake(), vehicle.getModel(), this.getRecommendedMileage(), 
                 this.getEstimatedMaintenanceDate());
     }
     
