@@ -73,7 +73,7 @@ public class Event {
                     "<html>\n" +
                     "	<div style='padding: 5px 0px;'>\n" +
                     "		<div style='padding: 2px 0px'>\n" +
-                    "			<b>%s -- %d %s %s</b>\n" +
+                    "			<b>%s -- %d %s %s (%s)</b>\n" +
                     "		</div>\n" +
                     "		<div>\n" +
                     "			Recommended Mileage:  %s\n" +
@@ -84,7 +84,7 @@ public class Event {
                     "	</div>\n" +
                     "</html>",
                 maintenanceItem.getMaintenanceType().getType(), vehicle.getYear(), 
-                vehicle.getMake(), vehicle.getModel(), this.getRecommendedMileage(), 
+                vehicle.getMake(), vehicle.getModel(), vehicle.getDriver(), this.getRecommendedMileage(), 
                 this.getEstimatedMaintenanceDate());
     }
     
