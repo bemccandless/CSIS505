@@ -60,6 +60,7 @@ public class TuneUp extends javax.swing.JFrame {
         
         initComponents();
         
+        vehicleListValueChanged(null);
     }
 
     /**
@@ -756,9 +757,11 @@ public class TuneUp extends javax.swing.JFrame {
             vehicleList.setSelectedValue(vehicle, true);
             vehicleList.requestFocusInWindow();
             
+            toggleAllButtonsEnabled(true);
+            populateVehicleMaintenanceTable(vehicle);
+            
             clearAddVehicleTextFields();
             addVehicleDialogBox.setVisible(false);
-            toggleAllButtonsEnabled(true);
             editMode = false;
         } catch (SQLException ex) {
             System.err.println(ex);
@@ -784,6 +787,21 @@ public class TuneUp extends javax.swing.JFrame {
         try {
             ListModel<Vehicle> vehicleListModel = vehicleController.getAllVehicles();
             vehicleList.setModel(vehicleListModel);
+            
+            // Should add/edit/remove buttons be disabled
+            if (vehicleList.getModel().getSize() > 0) {
+                addVehicleMaintenanceBtn.setEnabled(true);
+                removeVehicleMaintenanceBtn.setEnabled(true);
+                editVehicleBtn.setEnabled(true);
+                removeVehicleBtn.setEnabled(true);
+            } else {
+                clearVehicleInfoTextFields();
+                addVehicleMaintenanceBtn.setEnabled(false);
+                removeVehicleMaintenanceBtn.setEnabled(false);
+                editVehicleBtn.setEnabled(false);
+                removeVehicleBtn.setEnabled(false);
+            }
+            
             if (vehicleListModel.getSize() != 0 && vehicleList.getSelectedIndex() == -1) {
                 vehicleList.setSelectedIndex(0);
                 vehicleList.ensureIndexIsVisible(0);
@@ -813,7 +831,6 @@ public class TuneUp extends javax.swing.JFrame {
         if (selectedVehicle == null) {
             return;
         }
-        
         populateVehicleMaintenanceTable(selectedVehicle);
         populateVehicleInformationFields(selectedVehicle);
     }//GEN-LAST:event_vehicleListValueChanged
@@ -957,6 +974,9 @@ public class TuneUp extends javax.swing.JFrame {
             
             if (tableModel.getRowCount() > 0) {
                 vehicleMaintenanceTable.setRowSelectionInterval(0, 0);
+                removeVehicleMaintenanceBtn.setEnabled(true);
+            } else {
+                removeVehicleMaintenanceBtn.setEnabled(false);
             }
 
             // Hide the ID and VEHICLE_ID column from view, but still able to maintain
@@ -1020,6 +1040,14 @@ public class TuneUp extends javax.swing.JFrame {
         vehicleModelTextField.setText(vehicle.getModel());
         vehicleYearTextField.setText(String.valueOf(vehicle.getYear()));
         vehicleMileageTextField.setText(String.valueOf(vehicle.getMileage()));
+    }
+    
+    private void clearVehicleInfoTextFields() {
+        vehicleDriverTextField.setText("");
+        vehicleMakeTextField.setText("");
+        vehicleModelTextField.setText("");
+        vehicleMileageTextField.setText("");
+        vehicleYearTextField.setText("");
     }
     
     private void clearAddVehicleTextFields() {
