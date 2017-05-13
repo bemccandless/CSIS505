@@ -1,13 +1,5 @@
 package edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type;
 
-import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.MaintenanceType;
-import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.AirFilterReplacement;
-import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.BrakeReplacement;
-import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.Inspection;
-import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.NewTires;
-import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.OilChange;
-import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.TireRotation;
-
 /**
  *
  * @author bemccandless

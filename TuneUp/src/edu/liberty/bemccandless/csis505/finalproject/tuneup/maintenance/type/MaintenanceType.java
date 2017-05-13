@@ -21,6 +21,7 @@ public abstract class MaintenanceType {
 
     public Date calculateNextServiceDate(Date date) {
         Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(date.getTime());
         cal.add(Calendar.MONTH, monthsBetweenService);
         
         return new Date(cal.getTimeInMillis());
