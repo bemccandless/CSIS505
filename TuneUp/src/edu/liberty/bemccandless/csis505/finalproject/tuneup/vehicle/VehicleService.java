@@ -1,7 +1,6 @@
 package edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle;
 
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.config.DbConfig;
-import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.MaintenanceService;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,12 +13,6 @@ import javax.swing.ListModel;
  * @author bemccandless
  */
 public class VehicleService {
-    
-    private final MaintenanceService maintenanceService;
-
-    public VehicleService(MaintenanceService maintenanceService) {
-        this.maintenanceService = maintenanceService;
-    }
     
     public Vehicle getVehicleById(int id) throws SQLException {
         String selectVehicleByIdSql = "select * from tuneup.vehicles where id=?";
@@ -102,7 +95,6 @@ public class VehicleService {
         PreparedStatement deleteVehicleStatement = DbConfig.getDbConnection().prepareStatement(deleteVehicleSql);
         deleteVehicleStatement.setInt(1, vehicle.getId());
         
-        maintenanceService.deleteMaintenanceItemsForVehicle(vehicle);
         deleteVehicleStatement.executeUpdate();
     }
 }

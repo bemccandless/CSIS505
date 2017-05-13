@@ -51,10 +51,10 @@ public class TuneUp extends javax.swing.JFrame {
         }
         
         MaintenanceService maintenanceService = new MaintenanceService();
-        VehicleService vehicleService = new VehicleService(maintenanceService);
+        VehicleService vehicleService = new VehicleService();
         EventService eventService = new EventService();
         
-        vehicleController = new VehicleController(vehicleService);
+        vehicleController = new VehicleController(vehicleService, maintenanceService, eventService);
         maintenanceController = new MaintenanceController(maintenanceService, eventService);
         eventController = new EventController(eventService, vehicleService, maintenanceService);
         
@@ -845,6 +845,7 @@ public class TuneUp extends javax.swing.JFrame {
         try {
             vehicleController.deleteVehicle(vehicle);
             populateVehicleList();
+            populateUpcomingMaintenanceList();
             
             if (vehicleList.getModel().getSize() == 0) {
                 vehicleMaintenanceTable.setModel(new DefaultTableModel());

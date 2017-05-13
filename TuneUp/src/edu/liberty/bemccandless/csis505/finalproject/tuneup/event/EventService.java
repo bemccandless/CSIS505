@@ -2,6 +2,7 @@ package edu.liberty.bemccandless.csis505.finalproject.tuneup.event;
 
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.config.DbConfig;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.MaintenanceType;
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.Vehicle;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -56,6 +57,15 @@ public class EventService {
         deleteEventsForMaintenanceItemStatement.setInt(1, maintenanceItemId);
         
         deleteEventsForMaintenanceItemStatement.executeUpdate();
+    }
+    
+    public void deleteEventsForVehicle(Vehicle vehicle) throws SQLException {
+        String deleteEventsForVehicleSql = "delete from events where vehicle_id=?";
+        
+        PreparedStatement deleteEventsForVehicleStatement = DbConfig.getDbConnection().prepareStatement(deleteEventsForVehicleSql);
+        deleteEventsForVehicleStatement.setInt(1, vehicle.getId());
+        
+        deleteEventsForVehicleStatement.executeUpdate();
     }
 
 }

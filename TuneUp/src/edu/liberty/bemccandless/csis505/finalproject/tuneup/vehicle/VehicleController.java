@@ -1,5 +1,7 @@
 package edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle;
 
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.event.EventService;
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.MaintenanceService;
 import java.sql.SQLException;
 import javax.swing.ListModel;
 
@@ -10,9 +12,13 @@ import javax.swing.ListModel;
 public class VehicleController {
     
     private final VehicleService vehicleService;
+    private final MaintenanceService maintenanceService;
+    private final EventService eventService;
 
-    public VehicleController(VehicleService vehicleService) {
+    public VehicleController(VehicleService vehicleService, MaintenanceService maintenanceService, EventService eventService) {
         this.vehicleService = vehicleService;
+        this.maintenanceService = maintenanceService;
+        this.eventService = eventService;
     }
     
     public ListModel<Vehicle> getAllVehicles() throws SQLException {
@@ -28,6 +34,8 @@ public class VehicleController {
     }
     
     public void deleteVehicle(Vehicle vehicle) throws SQLException {
+        eventService.deleteEventsForVehicle(vehicle);
+        maintenanceService.deleteMaintenanceItemsForVehicle(vehicle);
         vehicleService.deleteVehicle(vehicle);
     }
     
