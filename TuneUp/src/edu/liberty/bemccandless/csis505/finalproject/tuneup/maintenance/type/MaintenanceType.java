@@ -1,7 +1,7 @@
-package edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance;
+package edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type;
 
 import java.sql.Date;
-import java.time.Period;
+import java.util.Calendar;
 
 /**
  *
@@ -10,18 +10,20 @@ import java.time.Period;
 public abstract class MaintenanceType {
     
     private String type;
-    private Period timeBetweenService;
+    private int monthsBetweenService;
     private int mileageBetweenService;
 
-    public MaintenanceType(String type, Period timeBetweenService, int mileageBetweenService) {
+    public MaintenanceType(String type, int monthsBetweenService, int mileageBetweenService) {
         this.type = type;
-        this.timeBetweenService = timeBetweenService;
+        this.monthsBetweenService = monthsBetweenService;
         this.mileageBetweenService = mileageBetweenService;
     }
 
     public Date calculateNextServiceDate(Date date) {
-        // TODO: add calculation logic
-        return new Date(0);
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, monthsBetweenService);
+        
+        return new Date(cal.getTimeInMillis());
     }
     
     public int calculateNextServiceMileage(int mileage) {
@@ -36,13 +38,14 @@ public abstract class MaintenanceType {
         this.type = type;
     }
 
-    public Period getTimeBetweenService() {
-        return timeBetweenService;
+    public int getMonthsBetweenService() {
+        return monthsBetweenService;
     }
 
-    public void setTimeBetweenService(Period timeBetweenService) {
-        this.timeBetweenService = timeBetweenService;
+    public void setMonthsBetweenService(int monthsBetweenService) {
+        this.monthsBetweenService = monthsBetweenService;
     }
+
 
     public int getMileageBetweenService() {
         return mileageBetweenService;

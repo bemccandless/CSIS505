@@ -1,7 +1,7 @@
 package edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance;
 
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.MaintenanceType;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.Vehicle;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -52,13 +52,7 @@ public class MaintenanceController {
         return model;
     }
     
-    public void addMaintenanceItem(Vehicle vehicle, String maintenanceType, int serviceMileage, Date serviceDate, double price) throws SQLException {
-        MaintenanceItem maintenanceItem = new MaintenanceItem();
-        maintenanceItem.setMaintenanceType(MaintenanceTypeFactory.getMaintenanceType(maintenanceType));
-        maintenanceItem.setServiceMileage(serviceMileage);
-        maintenanceItem.setServiceDate(serviceDate);
-        maintenanceItem.setPrice(price);
-        
+    public void addMaintenanceItem(Vehicle vehicle, MaintenanceItem maintenanceItem) throws SQLException {
         maintenanceService.addMaintenanceItem(vehicle, maintenanceItem);
     }
     

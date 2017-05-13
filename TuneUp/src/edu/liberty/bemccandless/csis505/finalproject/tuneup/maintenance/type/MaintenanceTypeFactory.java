@@ -1,5 +1,6 @@
-package edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance;
+package edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type;
 
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.MaintenanceType;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.AirFilterReplacement;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.BrakeReplacement;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.Inspection;

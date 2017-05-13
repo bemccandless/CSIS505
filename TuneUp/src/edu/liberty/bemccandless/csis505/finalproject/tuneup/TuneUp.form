@@ -487,7 +487,7 @@
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="} catch (SQLException ex) {&#xa;    System.err.println(ex);&#xa;    JOptionPane.showMessageDialog(rootPane, &quot;Unable to obtain upcoming maintenance items.&quot;, &quot;SQL Error&quot;, JOptionPane.ERROR_MESSAGE);&#xa;} finally {&#xa;    try {&#xa;        DbConfig.close();&#xa;    } catch (SQLException ex) {&#xa;        System.err.println(ex);&#xa;    }&#xa;}"/>
                 <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="try {"/>
-                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Event&gt;"/>
               </AuxValues>
             </Component>
           </SubComponents>

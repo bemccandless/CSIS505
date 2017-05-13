@@ -1,6 +1,8 @@
 package edu.liberty.bemccandless.csis505.finalproject.tuneup.event;
 
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.MaintenanceItem;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.MaintenanceService;
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.Vehicle;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.VehicleService;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,5 +41,19 @@ public class EventController {
         }
         
         return events;
+    }
+    
+    public void addEvent(Vehicle vehicle, MaintenanceItem maintenanceItem) throws SQLException {
+        Event event = new Event();
+        event.setVehicle(vehicle);
+        event.setMaintenanceItem(maintenanceItem);
+        event.setEstimatedMaintenanceDate(
+                eventService.calculateEstimatedMaintenanceDate(
+                        maintenanceItem.getServiceDate(), maintenanceItem.getMaintenanceType()));
+        event.setRecommendedMileage(
+                eventService.calculateEstimatedMaintenanceMileage(
+                        vehicle.getMileage(), maintenanceItem.getMaintenanceType()));
+        
+        eventService.addEvent(event);
     }
 }

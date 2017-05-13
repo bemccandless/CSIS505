@@ -1,5 +1,6 @@
 package edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance;
 
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.MaintenanceType;
 import java.sql.Date;
 
 /**

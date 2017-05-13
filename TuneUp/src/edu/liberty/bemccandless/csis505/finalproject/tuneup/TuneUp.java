@@ -1,10 +1,13 @@
 package edu.liberty.bemccandless.csis505.finalproject.tuneup;
 
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.config.DbConfig;
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.event.Event;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.event.EventController;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.event.EventService;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.MaintenanceController;
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.MaintenanceItem;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.MaintenanceService;
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.MaintenanceTypeFactory;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.Vehicle;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.VehicleController;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.VehicleService;
@@ -880,23 +883,23 @@ public class TuneUp extends javax.swing.JFrame {
     private void addMaintenanceSaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMaintenanceSaveBtnActionPerformed
         try {
             DateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
-            maintenanceController.addMaintenanceItem(
-                    vehicleList.getSelectedValue(),
-                    maintenanceTypeComboBox.getSelectedItem().toString(),
-                    Integer.valueOf(maintenanceMileageTextField.getText()),
-                    new Date(dateFormatter.parse(maintenanceDateTextField.getText()).getTime()),
-                    Double.valueOf(maintenancePriceTextField.getText()));
-            
             Vehicle vehicle = vehicleList.getSelectedValue();
-            
+            MaintenanceItem maintenanceItem = new MaintenanceItem();
+            maintenanceItem.setMaintenanceType(MaintenanceTypeFactory.getMaintenanceType(maintenanceTypeComboBox.getSelectedItem().toString()));
+            maintenanceItem.setServiceDate(new Date(dateFormatter.parse(maintenanceDateTextField.getText()).getTime()));
+            maintenanceItem.setServiceMileage(Integer.valueOf(maintenanceMileageTextField.getText()));
+            maintenanceItem.setPrice(Double.valueOf(maintenancePriceTextField.getText()));
+                    
+            maintenanceController.addMaintenanceItem(vehicle, maintenanceItem);
             populateVehicleMaintenanceTable(vehicle);
+            
+            eventController.addEvent(vehicle, maintenanceItem);
+            populateUpcomingMaintenanceList();
             
             maintenanceDateTextField.setText("");
             maintenanceTypeComboBox.setSelectedIndex(-1);
             maintenanceMileageTextField.setText("");
             maintenancePriceTextField.setText("");
-            
-            populateUpcomingMaintenanceList();
             
             toggleAllButtonsEnabled(true);
             addMaintenanceDialogBox.setVisible(false);
@@ -993,7 +996,8 @@ public class TuneUp extends javax.swing.JFrame {
     
     private void populateUpcomingMaintenanceList() {
         try {
-            upcomingMaintenanceList.setModel(eventController.getAllEvents());
+            ListModel<Event> eventListModel = eventController.getAllEvents();
+            upcomingMaintenanceList.setModel(eventListModel);
         } catch (SQLException ex) {
             System.err.println(ex);
             JOptionPane.showMessageDialog(rootPane, "Unable to obtain upcoming maintenance items.", "SQL Error", JOptionPane.ERROR_MESSAGE);
@@ -1108,7 +1112,7 @@ public class TuneUp extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> maintenanceTypeComboBox;
     private javax.swing.JButton removeVehicleBtn;
     private javax.swing.JButton removeVehicleMaintenanceBtn;
-    private javax.swing.JList<String> upcomingMaintenanceList;
+    private javax.swing.JList<Event> upcomingMaintenanceList;
     private javax.swing.JTextField vehicleDriverTextField;
     private javax.swing.JList<Vehicle> vehicleList;
     private javax.swing.JTable vehicleMaintenanceTable;
