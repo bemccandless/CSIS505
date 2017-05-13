@@ -67,5 +67,19 @@ public class EventService {
         
         deleteEventsForVehicleStatement.executeUpdate();
     }
+    
+    public void deleteEventsByServiceType(Vehicle vehicle, String serviceType) throws SQLException {
+        String deleteEventsByServiceTypeSql = 
+                "delete from events where events.id in (select events.id from events"
+                + " join maintenance_items on maintenance_items.id = events.maintenance_item_id"
+                + " where maintenance_items.\"TYPE\"=?"
+                + "     and events.vehicle_id=?)";
+        
+        PreparedStatement deleteEventsByServiceTypeStatement = DbConfig.getDbConnection().prepareStatement(deleteEventsByServiceTypeSql);
+        deleteEventsByServiceTypeStatement.setString(1, serviceType);
+        deleteEventsByServiceTypeStatement.setInt(2, vehicle.getId());
+        
+        deleteEventsByServiceTypeStatement.executeUpdate();
+    }
 
 }

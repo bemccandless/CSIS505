@@ -56,6 +56,7 @@ public class MaintenanceController {
     }
     
     public void addMaintenanceItem(Vehicle vehicle, MaintenanceItem maintenanceItem) throws SQLException {
+        eventService.deleteEventsByServiceType(vehicle, maintenanceItem.getMaintenanceType().getType());
         maintenanceService.addMaintenanceItem(vehicle, maintenanceItem);
     }
     
