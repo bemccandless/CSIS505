@@ -5,7 +5,8 @@ import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.Vehicle;
 import java.sql.Date;
 
 /**
- *
+ * Holds information for an upcoming maintenance item.
+ * 
  * @author bemccandless
  */
 public class Event {
@@ -67,6 +68,11 @@ public class Event {
         this.recommendedMileage = recommendedMileage;
     }
 
+    /**
+     * Formats the display of an upcoming maintenance item in the list.
+     * 
+     * @return 
+     */
     @Override
     public String toString() {
         return String.format(

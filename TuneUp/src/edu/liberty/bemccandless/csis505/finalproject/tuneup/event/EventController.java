@@ -10,7 +10,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
 /**
- *
+ * Maintains a level of control between the data layer and the view layer for Events.
+ * 
  * @author bemccandless
  */
 public class EventController {
@@ -25,6 +26,12 @@ public class EventController {
         this.maintenanceService = maintenanceService;
     }
 
+    /**
+     * Gets all events
+     * 
+     * @return
+     * @throws SQLException 
+     */
     public ListModel getAllEvents() throws SQLException {
         DefaultListModel<Event> events = new DefaultListModel();
         ResultSet eventResults = eventService.getAllEvents();
@@ -43,6 +50,13 @@ public class EventController {
         return events;
     }
     
+    /**
+     * Adds an event for a vehicle and maintenance item.
+     * 
+     * @param vehicle
+     * @param maintenanceItem
+     * @throws SQLException 
+     */
     public void addEvent(Vehicle vehicle, MaintenanceItem maintenanceItem) throws SQLException {
         Event event = new Event();
         event.setVehicle(vehicle);

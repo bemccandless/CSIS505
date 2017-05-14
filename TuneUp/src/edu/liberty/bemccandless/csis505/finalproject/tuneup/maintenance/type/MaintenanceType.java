@@ -4,7 +4,9 @@ import java.sql.Date;
 import java.util.Calendar;
 
 /**
- *
+ * An abstract class for different maintenance types to use in order to have a
+ * central place to calculate the estimated mileage and service date.
+ * 
  * @author bemccandless
  */
 public abstract class MaintenanceType {
@@ -19,6 +21,12 @@ public abstract class MaintenanceType {
         this.mileageBetweenService = mileageBetweenService;
     }
 
+    /**
+     * Calculates the next service date.
+     * 
+     * @param date
+     * @return 
+     */
     public Date calculateNextServiceDate(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(date.getTime());
@@ -27,6 +35,12 @@ public abstract class MaintenanceType {
         return new Date(cal.getTimeInMillis());
     }
     
+    /**
+     * Calculates the next service mileage.
+     * 
+     * @param mileage
+     * @return 
+     */
     public int calculateNextServiceMileage(int mileage) {
         return mileage + this.mileageBetweenService;
     }

@@ -27,7 +27,9 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 /**
- *
+ * Main class of this application.  This application maintains records of vehicle
+ * maintenance and displays upcoming services that need attention.
+ * 
  * @author bemccandless
  */
 public class TuneUp extends javax.swing.JFrame {
@@ -714,11 +716,21 @@ public class TuneUp extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Disables the buttons and displays the form to add a vehicle.
+     * 
+     * @param evt 
+     */
     private void addVehicleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehicleBtnActionPerformed
         toggleAllButtonsEnabled(false);
         addVehicleDialogBox.setVisible(true);
     }//GEN-LAST:event_addVehicleBtnActionPerformed
 
+    /**
+     * Creates a new vehicle record and persist it to the database.
+     * 
+     * @param evt 
+     */
     private void addVehicleSaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehicleSaveBtnActionPerformed
         Vehicle vehicle;
         if (editMode) {
@@ -775,6 +787,9 @@ public class TuneUp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_addVehicleSaveBtnActionPerformed
     
+    /**
+     * Maintains the GUI state of the list of vehicles.
+     */
     private void populateVehicleList() {
         try {
             ListModel<Vehicle> vehicleListModel = vehicleController.getAllVehicles();
@@ -806,6 +821,13 @@ public class TuneUp extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Maintains GUI state when add a vehicle is canceled.
+     * 
+     * Hide the add vehicle form and reset button state.
+     * 
+     * @param evt 
+     */
     private void addVehicleCancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehicleCancelBtnActionPerformed
         editMode = false;
         clearAddVehicleTextFields();
@@ -813,6 +835,11 @@ public class TuneUp extends javax.swing.JFrame {
         addVehicleDialogBox.setVisible(false);
     }//GEN-LAST:event_addVehicleCancelBtnActionPerformed
 
+    /**
+     * Update GUI to display information and maintenance items for selected vehicle.
+     * 
+     * @param evt 
+     */
     private void vehicleListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_vehicleListValueChanged
         Vehicle selectedVehicle = vehicleList.getSelectedValue();
         if (selectedVehicle == null) {
@@ -826,6 +853,11 @@ public class TuneUp extends javax.swing.JFrame {
 
     }//GEN-LAST:event_addYearTextFieldActionPerformed
 
+    /**
+     * Validates the 'Year' text field to ensure a valid response was entered.
+     * 
+     * @param evt 
+     */
     private void addYearTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_addYearTextFieldKeyTyped
         if (addYearTextField.getText().length() == 4) {
             evt.consume();
@@ -834,12 +866,22 @@ public class TuneUp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_addYearTextFieldKeyTyped
 
+    /**
+     * Validates the 'Mileage' text field to ensure a valid response was entered.
+     * 
+     * @param evt 
+     */
     private void addMileageTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_addMileageTextFieldKeyTyped
         if (!Pattern.matches("[0-9]", String.valueOf(evt.getKeyChar())) || evt.getKeyChar() == '\b') {
             evt.consume();
         }
     }//GEN-LAST:event_addMileageTextFieldKeyTyped
 
+    /**
+     * Removes a vehicle from the list.
+     * 
+     * @param evt 
+     */
     private void removeVehicleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeVehicleBtnActionPerformed
         Vehicle vehicle = vehicleList.getSelectedValue();
         if (vehicle == null) {
@@ -866,6 +908,11 @@ public class TuneUp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_removeVehicleBtnActionPerformed
 
+    /**
+     * Update vehicle information and persist it to the database.
+     * 
+     * @param evt 
+     */
     private void editVehicleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editVehicleBtnActionPerformed
         editMode = true;
         toggleAllButtonsEnabled(false);
@@ -880,11 +927,22 @@ public class TuneUp extends javax.swing.JFrame {
         addVehicleDialogBox.setVisible(true);
     }//GEN-LAST:event_editVehicleBtnActionPerformed
 
+    /**
+     * Display the add maintenance form and disable all buttons.
+     * 
+     * @param evt 
+     */
     private void addVehicleMaintenanceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehicleMaintenanceBtnActionPerformed
         toggleAllButtonsEnabled(false);
         addMaintenanceDialogBox.setVisible(true);
     }//GEN-LAST:event_addVehicleMaintenanceBtnActionPerformed
 
+    /**
+     * Creates a new maintenance item record and persist it to the database and 
+     * update the table view for the GUI.
+     * 
+     * @param evt 
+     */
     private void addMaintenanceSaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMaintenanceSaveBtnActionPerformed
         try {
             DateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
@@ -926,11 +984,22 @@ public class TuneUp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_addMaintenanceSaveBtnActionPerformed
 
+    /**
+     * Hides the add maintenance item form.
+     * 
+     * @param evt 
+     */
     private void addMaintenanceCancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMaintenanceCancelBtnActionPerformed
         evaluateButtonState();
         addMaintenanceDialogBox.setVisible(false);
     }//GEN-LAST:event_addMaintenanceCancelBtnActionPerformed
 
+    
+    /**
+     * Deletes the maintenance item for the list.
+     * 
+     * @param evt 
+     */
     private void removeVehicleMaintenanceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeVehicleMaintenanceBtnActionPerformed
         try {
             if (vehicleMaintenanceTable.getSelectedRow() == -1) {
@@ -954,6 +1023,11 @@ public class TuneUp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_removeVehicleMaintenanceBtnActionPerformed
 
+    /**
+     * Displays all maintenance items for a selected vehicle.
+     * 
+     * @param vehicle 
+     */
     private void populateVehicleMaintenanceTable(Vehicle vehicle) {
         try {
             TableModel tableModel =  maintenanceController.getMaintenanceItemsByVehicle(vehicle);
@@ -1005,6 +1079,9 @@ public class TuneUp extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Displays all upcoming events for all vehicles. 
+     */
     private void populateUpcomingMaintenanceList() {
         try {
             ListModel<Event> eventListModel = eventController.getAllEvents();
@@ -1021,6 +1098,10 @@ public class TuneUp extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Looks at the state of the vehicle list and maintenance item table to evaluate
+     * if each button should be enabled or disabled.
+     */
     private void evaluateButtonState() {
         boolean vehicleListHasElements = vehicleList.getModel().getSize() > 0;
         boolean maintenanceTableHasRowCount = vehicleMaintenanceTable.getModel().getRowCount() > 0;
@@ -1033,6 +1114,11 @@ public class TuneUp extends javax.swing.JFrame {
         removeVehicleMaintenanceBtn.setEnabled(vehicleListHasElements && maintenanceTableHasRowCount);
     }
     
+    /**
+     * Toggles all buttons in the GUI to enabled or disabled.
+     * 
+     * @param enabled 
+     */
     private void toggleAllButtonsEnabled(boolean enabled) {
         addVehicleBtn.setEnabled(enabled);
         removeVehicleBtn.setEnabled(enabled);
@@ -1041,6 +1127,11 @@ public class TuneUp extends javax.swing.JFrame {
         removeVehicleMaintenanceBtn.setEnabled(enabled);
     }
     
+    /**
+     * Displays the vehicle information in the GUI.
+     * 
+     * @param vehicle 
+     */
     private void populateVehicleInformationFields(Vehicle vehicle) {
         vehicleDriverTextField.setText(vehicle.getDriver());
         vehicleMakeTextField.setText(vehicle.getMake());
@@ -1049,6 +1140,9 @@ public class TuneUp extends javax.swing.JFrame {
         vehicleMileageTextField.setText(String.valueOf(vehicle.getMileage()));
     }
     
+    /**
+     * Clears all the text fields for the add vehicle form.
+     */
     private void clearAddVehicleTextFields() {
         addDriverTextField.setText("");
         addMakeTextField.setText("");
@@ -1057,6 +1151,8 @@ public class TuneUp extends javax.swing.JFrame {
         addMileageTextField.setText("");
     }
     /**
+     * Start of the application.
+     * 
      * @param args the command line arguments
      */
     public static void main(String args[]) {

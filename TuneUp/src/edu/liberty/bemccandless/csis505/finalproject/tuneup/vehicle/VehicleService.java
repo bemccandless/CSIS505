@@ -9,11 +9,19 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
 /**
- *
+ * Handles database interactions for Vehicles.
+ * 
  * @author bemccandless
  */
 public class VehicleService {
     
+    /**
+     * Get a vehicle by id.
+     * 
+     * @param id
+     * @return
+     * @throws SQLException 
+     */
     public Vehicle getVehicleById(int id) throws SQLException {
         String selectVehicleByIdSql = "select * from tuneup.vehicles where id=?";
         
@@ -36,6 +44,12 @@ public class VehicleService {
         return vehicle;
     }
     
+    /**
+     * Get all vehicles.
+     * 
+     * @return
+     * @throws SQLException 
+     */
     public ListModel<Vehicle> getAllVehicles() throws SQLException {
         String selectVehiclesSql = "select * from tuneup.vehicles order by \"year\", make, model, driver";
         
@@ -56,6 +70,12 @@ public class VehicleService {
         return vehicles;
     }
     
+    /**
+     * Add a vehicle.
+     * 
+     * @param vehicle
+     * @throws SQLException 
+     */
     public void addVehicle(Vehicle vehicle) throws SQLException {
         String insertVehicleSql = "insert into tuneup.vehicles (driver, make, model, \"year\", mileage) values (?, ?, ?, ?, ?)";
         
@@ -75,6 +95,12 @@ public class VehicleService {
         
     }
     
+    /**
+     * Edit a vehicle.
+     * 
+     * @param vehicle
+     * @throws SQLException 
+     */
     public void editVehicle(Vehicle vehicle) throws SQLException {
         String updateVehicleSql = "update tuneup.vehicles set driver=?, make=?, model=?, \"year\"=?, mileage=? where id=?";
         
@@ -89,6 +115,12 @@ public class VehicleService {
         updateVehicleStatement.executeUpdate();
     }
     
+    /**
+     * Delete a vehicle.
+     * 
+     * @param vehicle
+     * @throws SQLException 
+     */
     public void deleteVehicle(Vehicle vehicle) throws SQLException {
         String deleteVehicleSql = "delete from vehicles where id=?";
         

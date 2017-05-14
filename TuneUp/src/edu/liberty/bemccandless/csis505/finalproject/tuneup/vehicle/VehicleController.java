@@ -6,7 +6,8 @@ import java.sql.SQLException;
 import javax.swing.ListModel;
 
 /**
- *
+ * Maintains a level of control between the data layer and the view layer for Vehicles.
+ * 
  * @author bemccandless
  */
 public class VehicleController {
@@ -21,18 +22,42 @@ public class VehicleController {
         this.eventService = eventService;
     }
     
+    /**
+     * Get all vehicles.
+     * 
+     * @return
+     * @throws SQLException 
+     */
     public ListModel<Vehicle> getAllVehicles() throws SQLException {
         return vehicleService.getAllVehicles();
     }
     
+    /**
+     * Add a vehicle.
+     * 
+     * @param vehicle
+     * @throws SQLException 
+     */
     public void addVehicle(Vehicle vehicle) throws SQLException {
         vehicleService.addVehicle(vehicle);
     }
     
+    /**
+     * Edit a vehicle.
+     * 
+     * @param vehicle
+     * @throws SQLException 
+     */
     public void editVehicle(Vehicle vehicle) throws SQLException {
         vehicleService.editVehicle(vehicle);
     }
     
+    /**
+     * Delete a vehicle.
+     * 
+     * @param vehicle
+     * @throws SQLException 
+     */
     public void deleteVehicle(Vehicle vehicle) throws SQLException {
         eventService.deleteEventsForVehicle(vehicle);
         maintenanceService.deleteMaintenanceItemsForVehicle(vehicle);

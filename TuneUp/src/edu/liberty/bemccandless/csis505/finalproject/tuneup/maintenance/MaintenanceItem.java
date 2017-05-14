@@ -4,6 +4,7 @@ import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.Mai
 import java.sql.Date;
 
 /**
+ * Holds information pertaining to a maintenance item.
  *
  * @author bemccandless
  */

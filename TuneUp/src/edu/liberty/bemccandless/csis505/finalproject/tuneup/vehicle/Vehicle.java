@@ -1,7 +1,8 @@
 package edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle;
 
 /**
- *
+ * Holds all the information for a vehicle.
+ * 
  * @author bemccandless
  */
 public class Vehicle {
@@ -73,6 +74,11 @@ public class Vehicle {
         this.mileage = mileage;
     }
 
+    /**
+     * Formats the string for how it is displayed in the vehicles list.
+     * 
+     * @return 
+     */
     @Override
     public String toString() {
         return String.format("%d %s %s (%s)", year, make, model, driver);

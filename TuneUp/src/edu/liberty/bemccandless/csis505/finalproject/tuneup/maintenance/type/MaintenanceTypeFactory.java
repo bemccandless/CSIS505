@@ -1,7 +1,8 @@
 package edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type;
 
 /**
- *
+ * Provides a matching class for a specified maintenance type.
+ * 
  * @author bemccandless
  */
 public final class MaintenanceTypeFactory {

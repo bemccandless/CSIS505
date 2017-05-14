@@ -11,17 +11,30 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *
+ * Handles interacting with the database for maintenance items.
+ * 
  * @author bemccandless
  */
 public class MaintenanceService {
     
+    /**
+     * A list of all available maintenance types.
+     * 
+     * @return 
+     */
     public List<String> getAllMaintenanceTypes() {
         return Arrays.asList(
                 "Air Filter Replacement", "Brake Replacement", "Inspection",
                 "New Tires", "Oil Change", "Tire Rotation");
     }
     
+    /**
+     * Get a maintenance item by id.
+     * 
+     * @param id
+     * @return
+     * @throws SQLException 
+     */
     public MaintenanceItem getMaintenanceItemById(int id) throws SQLException {
         String selectItemsByIdSql = "select * from tuneup.maintenance_items where id=?";
         
@@ -43,6 +56,13 @@ public class MaintenanceService {
         return maintenanceItem;
     }
     
+    /**
+     * Get a maintenance item by vehicle.
+     * 
+     * @param vehicle
+     * @return
+     * @throws SQLException 
+     */
     public ResultSet getMaintenanceItemsByVehicle(Vehicle vehicle) throws SQLException {
         String selectItemsSql = 
                 "select id, vehicle_id, \"TYPE\", mileage, service_date, price from tuneup.maintenance_items "
@@ -55,6 +75,13 @@ public class MaintenanceService {
         return selectItemsStatement.executeQuery();
     }
 
+    /**
+     * Add a maintenance item.
+     * 
+     * @param vehicle
+     * @param maintenanceItem
+     * @throws SQLException 
+     */
     public void addMaintenanceItem(Vehicle vehicle, MaintenanceItem maintenanceItem) throws SQLException {
         String insertMaintenanceSql = "insert into tuneup.maintenance_items (vehicle_id, type, mileage, service_date, price) values (?, ?, ?, ?, ?)";
         
@@ -73,6 +100,12 @@ public class MaintenanceService {
         }
     }
     
+    /**
+     * Delete a maintenance item.
+     * 
+     * @param maintenanceItemId
+     * @throws SQLException 
+     */
     public void deleteMaintenanceItem(int maintenanceItemId) throws SQLException {
         String deleteMaintenanceItemSql = "delete from maintenance_items where id=?";
         
@@ -82,6 +115,12 @@ public class MaintenanceService {
         deleteMaintenanceItemStatement.executeUpdate();
     }
     
+    /**
+     * Delete all maintenance items for a vehicle.
+     * 
+     * @param vehicle
+     * @throws SQLException 
+     */
     public void deleteMaintenanceItemsForVehicle(Vehicle vehicle) throws SQLException {
         String deleteMaintenanceItemsForVehicleSql = "delete from maintenance_items where vehicle_id=?";
         

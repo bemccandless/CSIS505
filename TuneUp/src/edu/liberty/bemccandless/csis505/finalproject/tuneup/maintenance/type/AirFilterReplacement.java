@@ -1,7 +1,9 @@
 package edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type;
 
 /**
- *
+ * Holds the information required to calculate the next service date and mileage
+ * for the specific maintenance type.
+ * 
  * @author bemccandless
  */
 public class AirFilterReplacement extends MaintenanceType {

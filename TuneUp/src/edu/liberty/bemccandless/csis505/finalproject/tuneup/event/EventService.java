@@ -10,20 +10,40 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- *
+ * Handles database interactions for Events.
+ * 
  * @author bemccandless
  */
 public class EventService {
     
+    /**
+     * Calculate the next service date for maintenance based upon the last service date.
+     * 
+     * @param lastServiceDate
+     * @param maintenanceType
+     * @return 
+     */
     public Date calculateEstimatedMaintenanceDate(Date lastServiceDate, MaintenanceType maintenanceType) {
-//        return new Date(LocalDate.now().plus(maintenanceType.getTimeBetweenService()).toEpochDay());
         return maintenanceType.calculateNextServiceDate(lastServiceDate);
     }
     
-    public int calculateEstimatedMaintenanceMileage(int currentMilage, MaintenanceType maintenanceType) {
-        return maintenanceType.calculateNextServiceMileage(currentMilage);
+    /**
+     * Calculate the estimated mileage for maintenance based upon the current mileage of the vehicle.
+     * 
+     * @param currentMileage
+     * @param maintenanceType
+     * @return 
+     */
+    public int calculateEstimatedMaintenanceMileage(int currentMileage, MaintenanceType maintenanceType) {
+        return maintenanceType.calculateNextServiceMileage(currentMileage);
     }
     
+    /**
+     * Get all events ordered by estimated maintenance date ascending.
+     * 
+     * @return
+     * @throws SQLException 
+     */
     public ResultSet getAllEvents() throws SQLException {
         String selectAllEventsSql = 
                 "select * from tuneup.events order by estimated_maintenance_date";
@@ -33,6 +53,12 @@ public class EventService {
         return selectAllEventsStatement.executeQuery();
     }
     
+    /**
+     * Add an event
+     * 
+     * @param event
+     * @throws SQLException 
+     */
     public void addEvent(Event event) throws SQLException {
         String insertEventSql = "insert into events (vehicle_id, maintenance_item_id, estimated_maintenance_date, recommended_mileage) values (?, ?, ?, ?)";
         
@@ -50,6 +76,12 @@ public class EventService {
         }
     }
     
+    /**
+     * Delete event for maintenance id.
+     * 
+     * @param maintenanceItemId
+     * @throws SQLException 
+     */
     public void deleteEventsForMaintenanceItem(int maintenanceItemId) throws SQLException {
         String deleteEventsForMaintenanceItemSql = "delete from events where maintenance_item_id=?";
         
@@ -59,6 +91,12 @@ public class EventService {
         deleteEventsForMaintenanceItemStatement.executeUpdate();
     }
     
+    /**
+     * Delete events for vehicle.
+     * 
+     * @param vehicle
+     * @throws SQLException 
+     */
     public void deleteEventsForVehicle(Vehicle vehicle) throws SQLException {
         String deleteEventsForVehicleSql = "delete from events where vehicle_id=?";
         
@@ -68,6 +106,13 @@ public class EventService {
         deleteEventsForVehicleStatement.executeUpdate();
     }
     
+    /**
+     * Delete events by service type.
+     * 
+     * @param vehicle
+     * @param serviceType
+     * @throws SQLException 
+     */
     public void deleteEventsByServiceType(Vehicle vehicle, String serviceType) throws SQLException {
         String deleteEventsByServiceTypeSql = 
                 "delete from events where events.id in (select events.id from events"
