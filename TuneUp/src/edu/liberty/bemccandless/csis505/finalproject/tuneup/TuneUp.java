@@ -774,32 +774,19 @@ public class TuneUp extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_addVehicleSaveBtnActionPerformed
-
-    private void toggleAllButtonsEnabled(boolean enabled) {
-        addVehicleBtn.setEnabled(enabled);
-        removeVehicleBtn.setEnabled(enabled);
-        editVehicleBtn.setEnabled(enabled);
-        addVehicleMaintenanceBtn.setEnabled(enabled);
-        removeVehicleMaintenanceBtn.setEnabled(enabled);
-    }
     
     private void populateVehicleList() {
         try {
             ListModel<Vehicle> vehicleListModel = vehicleController.getAllVehicles();
             vehicleList.setModel(vehicleListModel);
             
-            // Should add/edit/remove buttons be disabled
-            if (vehicleList.getModel().getSize() > 0) {
-                addVehicleMaintenanceBtn.setEnabled(true);
-                removeVehicleMaintenanceBtn.setEnabled(true);
-                editVehicleBtn.setEnabled(true);
-                removeVehicleBtn.setEnabled(true);
-            } else {
-                clearVehicleInfoTextFields();
-                addVehicleMaintenanceBtn.setEnabled(false);
-                removeVehicleMaintenanceBtn.setEnabled(false);
-                editVehicleBtn.setEnabled(false);
-                removeVehicleBtn.setEnabled(false);
+            evaluateButtonState();
+            if (vehicleList.getModel().getSize() == 0) {
+                vehicleDriverTextField.setText("");
+                vehicleMakeTextField.setText("");
+                vehicleModelTextField.setText("");
+                vehicleMileageTextField.setText("");
+                vehicleYearTextField.setText("");
             }
             
             if (vehicleListModel.getSize() != 0 && vehicleList.getSelectedIndex() == -1) {
@@ -1046,20 +1033,20 @@ public class TuneUp extends javax.swing.JFrame {
         removeVehicleMaintenanceBtn.setEnabled(vehicleListHasElements && maintenanceTableHasRowCount);
     }
     
+    private void toggleAllButtonsEnabled(boolean enabled) {
+        addVehicleBtn.setEnabled(enabled);
+        removeVehicleBtn.setEnabled(enabled);
+        editVehicleBtn.setEnabled(enabled);
+        addVehicleMaintenanceBtn.setEnabled(enabled);
+        removeVehicleMaintenanceBtn.setEnabled(enabled);
+    }
+    
     private void populateVehicleInformationFields(Vehicle vehicle) {
         vehicleDriverTextField.setText(vehicle.getDriver());
         vehicleMakeTextField.setText(vehicle.getMake());
         vehicleModelTextField.setText(vehicle.getModel());
         vehicleYearTextField.setText(String.valueOf(vehicle.getYear()));
         vehicleMileageTextField.setText(String.valueOf(vehicle.getMileage()));
-    }
-    
-    private void clearVehicleInfoTextFields() {
-        vehicleDriverTextField.setText("");
-        vehicleMakeTextField.setText("");
-        vehicleModelTextField.setText("");
-        vehicleMileageTextField.setText("");
-        vehicleYearTextField.setText("");
     }
     
     private void clearAddVehicleTextFields() {

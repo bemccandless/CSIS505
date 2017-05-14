@@ -1,7 +1,7 @@
 package edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance;
 
-import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.MaintenanceTypeFactory;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.config.DbConfig;
+import edu.liberty.bemccandless.csis505.finalproject.tuneup.maintenance.type.MaintenanceTypeFactory;
 import edu.liberty.bemccandless.csis505.finalproject.tuneup.vehicle.Vehicle;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
