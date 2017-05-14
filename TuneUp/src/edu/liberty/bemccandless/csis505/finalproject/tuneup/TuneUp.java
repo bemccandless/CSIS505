@@ -757,7 +757,7 @@ public class TuneUp extends javax.swing.JFrame {
             vehicleList.setSelectedValue(vehicle, true);
             vehicleList.requestFocusInWindow();
             
-            toggleAllButtonsEnabled(true);
+            evaluateButtonState();
             populateVehicleMaintenanceTable(vehicle);
             
             clearAddVehicleTextFields();
@@ -822,7 +822,7 @@ public class TuneUp extends javax.swing.JFrame {
     private void addVehicleCancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehicleCancelBtnActionPerformed
         editMode = false;
         clearAddVehicleTextFields();
-        toggleAllButtonsEnabled(true);
+        evaluateButtonState();
         addVehicleDialogBox.setVisible(false);
     }//GEN-LAST:event_addVehicleCancelBtnActionPerformed
 
@@ -922,7 +922,7 @@ public class TuneUp extends javax.swing.JFrame {
             maintenanceMileageTextField.setText("");
             maintenancePriceTextField.setText("");
             
-            toggleAllButtonsEnabled(true);
+            evaluateButtonState();
             addMaintenanceDialogBox.setVisible(false);
         } catch (ParseException ex) {
             System.err.println(ex);
@@ -940,7 +940,7 @@ public class TuneUp extends javax.swing.JFrame {
     }//GEN-LAST:event_addMaintenanceSaveBtnActionPerformed
 
     private void addMaintenanceCancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMaintenanceCancelBtnActionPerformed
-        toggleAllButtonsEnabled(true);
+        evaluateButtonState();
         addMaintenanceDialogBox.setVisible(false);
     }//GEN-LAST:event_addMaintenanceCancelBtnActionPerformed
 
@@ -1032,6 +1032,18 @@ public class TuneUp extends javax.swing.JFrame {
                 System.err.println(ex);
             }
         }
+    }
+    
+    private void evaluateButtonState() {
+        boolean vehicleListHasElements = vehicleList.getModel().getSize() > 0;
+        boolean maintenanceTableHasRowCount = vehicleMaintenanceTable.getModel().getRowCount() > 0;
+        
+        addVehicleBtn.setEnabled(true);
+        editVehicleBtn.setEnabled(vehicleListHasElements);
+        removeVehicleBtn.setEnabled(vehicleListHasElements);
+        
+        addVehicleMaintenanceBtn.setEnabled(vehicleListHasElements);
+        removeVehicleMaintenanceBtn.setEnabled(vehicleListHasElements && maintenanceTableHasRowCount);
     }
     
     private void populateVehicleInformationFields(Vehicle vehicle) {
